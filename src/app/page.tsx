@@ -1,5 +1,7 @@
 export default function Home() {
   return (
-    <h1>Pockey</h1>
+    <main>
+      <h1 className="text-4xl font-bold tracking-tight">Pockey Frontend</h1>
+    </main>
   );
 }
