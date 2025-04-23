@@ -15,8 +15,7 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "biome lint --write --unsafe",
-      "biome format --write"
+      "biome check --write --unsafe"
     ],
     "package.json": "sort-package-json"
   },
