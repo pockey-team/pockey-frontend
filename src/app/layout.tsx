@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import { cn } from "@/lib/utils";
 import { TanstackQueryProvider } from "@/lib/tanstack-provider";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -14,7 +14,7 @@ const pretendard = localFont({
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter"
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -29,14 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(
-        pretendard.variable,
-        inter.variable,
-        pretendard.className
-      )}>
-        <TanstackQueryProvider>
-          {children}
-        </TanstackQueryProvider>
+      <body
+        className={cn(
+          pretendard.variable,
+          inter.variable,
+          pretendard.className,
+        )}
+      >
+        <TanstackQueryProvider>{children}</TanstackQueryProvider>
       </body>
     </html>
   );
