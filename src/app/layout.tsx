@@ -36,7 +36,13 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={cn(pretendard.variable, inter.variable, pretendard.className)}>
+      <body
+        className={cn(
+          pretendard.variable,
+          inter.variable,
+          pretendard.className
+        )}
+      >
         <div className="mx-auto h-dvh min-h-screen w-full max-w-full p-4 shadow-2xl sm:max-w-[390px]">
           <TanstackQueryProvider>
             <AuthSession>
