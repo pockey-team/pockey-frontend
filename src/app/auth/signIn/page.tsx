@@ -14,7 +14,7 @@ const SignInPage = async () => {
   return (
     <div className="flex h-full flex-col items-center">
       <div className="flex flex-1 flex-col items-center justify-center">
-        <h1 className="font-bold·text-3xl·tracking-tight">Pockey</h1>
+        <h1 className="font-bold text-3xl tracking-tight">Pockey</h1>
       </div>
       <SignInButton />
     </div>

@@ -10,11 +10,11 @@ const ErrorPage = () => {
     <div className="flex h-dvh items-center justify-center px-2">
       <section className="flex flex-col gap-8 break-keep">
         <h1 className="text-center">
-          <span className="font-bold·text-2xl·sm:text-3xl">
+          <span className="font-bold text-2xl sm:text-3xl">
             로그인 한 유저만 접근할 수 있습니다.
           </span>
         </h1>
-        <p className="text-center·font-normal·text-muted-foreground·text-xs/5·sm:text-sm/6">
+        <p className="text-center font-normal text-muted-foreground text-xs/5 sm:text-sm/6">
           이 페이지에 접근하기 위해서는 로그인이 필요합니다.
           <br />
           하단의 버튼을 눌러 로그인을 진행하시거나 메인페이지로 이동해주세요.
