@@ -3,11 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "next build",
     "clean": "rimraf .next",
     "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "lint": "biome check ./src",
+    "prepare": "simple-git-hooks",
+    "start": "next start"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "yarn run lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "biome check --write --unsafe"
+    ],
+    "package.json": "sort-package-json"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.74.3",
@@ -24,16 +34,15 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^4.2.0",
+    "@biomejs/biome": "^2.0.0-beta.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "^15.3.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-tailwindcss": "^3.18.0",
+    "lint-staged": "^15.5.1",
     "postcss": "^8",
     "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.12.1",
+    "sort-package-json": "^3.0.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
