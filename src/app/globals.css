@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: clamp(14px, calc((160/39) * 1vw), 16px);
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -22,8 +26,6 @@
     text-wrap: balance;
   }
 }
-
-
 
 @layer base {
   :root {
