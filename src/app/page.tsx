@@ -6,11 +6,13 @@ import { authOptions } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 
-export const Home = async () => {
+const Home = async () => {
   const session = await getServerSession(authOptions);
   return (
-    <main className="flex flex-col items-center gap-4">
-      <h1 className="text-4xl font-bold tracking-tight">Pockey Frontend</h1>
+    <main className="flex h-full flex-col items-center gap-4">
+      <div className="flex flex-1 items-center">
+        <h1 className="text-4xl font-bold tracking-tight">Pockey Frontend</h1>
+      </div>
 
       {/* 추후 제거 예정입니다. */}
       {!session && (

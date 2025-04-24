@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { Undo2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SignInButton } from "@/components/auth/sign-in-button";
+import { Spinner } from "@/components/ui/spinner";
 
 const ErrorPage = () => {
   return (
@@ -18,7 +20,9 @@ const ErrorPage = () => {
           하단의 버튼을 눌러 로그인을 진행하시거나 메인페이지로 이동해주세요.
         </p>
         <div className="flex items-center justify-center gap-2">
-          <SignInButton />
+          <Suspense fallback={<Spinner />}>
+            <SignInButton />
+          </Suspense>
           <Button variant="outline" className="group" asChild>
             <Link href="/">
               <Undo2 className="mr-2 size-4 group-hover:text-primary" />
