@@ -1,11 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-
-import { useKakaoSignIn } from "@/hooks/useKakaoSignIn";
-
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { useKakaoSignIn } from "@/hooks/useKakaoSignIn";
 
 export const SignInButton = () => {
   const params = useSearchParams();
@@ -17,7 +15,7 @@ export const SignInButton = () => {
     <Button
       onClick={login}
       variant="ghost"
-      className="min-w-40 border-none bg-yellow-300 font-bold tracking-tight text-yellow-900 shadow-sm"
+      className="min-w-40·border-none·bg-yellow-300·font-bold·text-yellow-900·tracking-tight·shadow-sm"
     >
       {isPending ? <Spinner /> : <p>카카오로 시작하기</p>}
     </Button>

@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-
-import { cn } from "@/lib/utils";
 import { AuthSession } from "@/lib/session-provider";
 import { TanstackQueryProvider } from "@/lib/tanstack-provider";
+import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
@@ -40,14 +39,12 @@ export default function RootLayout({
         className={cn(
           pretendard.variable,
           inter.variable,
-          pretendard.className
+          pretendard.className,
         )}
       >
         <div className="mx-auto h-dvh min-h-screen w-full max-w-full p-4 shadow-2xl sm:max-w-[390px]">
           <TanstackQueryProvider>
-            <AuthSession>
-              {children}
-            </AuthSession>
+            <AuthSession>{children}</AuthSession>
           </TanstackQueryProvider>
         </div>
       </body>

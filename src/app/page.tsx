@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-
-import { authOptions } from "@/lib/auth";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 
 import { Button } from "@/components/ui/button";
-import { SignOutButton } from "@/components/auth/sign-out-button";
+import { authOptions } from "@/lib/auth";
 
 const Home = async () => {
   const session = await getServerSession(authOptions);
@@ -22,9 +21,7 @@ const Home = async () => {
       )}
 
       {/* 추후 제거 예정입니다. */}
-      {session && (
-        <SignOutButton />
-      )}
+      {session && <SignOutButton />}
     </main>
   );
 };

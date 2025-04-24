@@ -8,10 +8,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: "consent"
-        }
-      }
-    })
+          prompt: "consent",
+        },
+      },
+    }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
 
@@ -24,11 +24,11 @@ export const authOptions: NextAuthOptions = {
         return url;
       }
       return baseUrl;
-    }
+    },
   },
 
   pages: {
     signIn: "/auth/signIn",
-    error: "/auth/error"
-  }
+    error: "/auth/error",
+  },
 };
