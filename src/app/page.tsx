@@ -11,7 +11,7 @@ const Home = async () => {
   return (
     <main className="flex h-full flex-col items-center gap-4">
       <div className="flex flex-1 items-center">
-        <h1 className="text-4xl font-bold tracking-tight">Pockey Frontend</h1>
+        <h1 className="font-bold text-4xl tracking-tight">Pockey Frontend</h1>
       </div>
 
       {/* 추후 제거 예정입니다. */}

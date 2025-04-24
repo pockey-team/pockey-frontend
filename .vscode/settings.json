@@ -1,6 +1,5 @@
 {
   "css.customData": [".vscode/tailwind.json"],
-  "eslint.format.enable": true,
   "editor.tabSize": 2,
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
@@ -9,9 +8,11 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "[javascript][typescript][javascriptreact][typescriptreact]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit"
+      "source.fixAll": "explicit",
+      "source.organizeImports.biome": "explicit",
+      "quickfix.biome": "explicit"
     },
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
   }
 }
