@@ -17,7 +17,7 @@
     "pre-commit": "yarn run lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    "*.{css,js,ts,jsx,tsx,json}": [
       "biome check --write --unsafe"
     ],
     "package.json": "sort-package-json"

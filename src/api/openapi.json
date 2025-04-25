@@ -20,9 +20,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/token/refresh": {
@@ -34,9 +32,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/v1/auth/password": {
@@ -58,9 +54,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/health": {
@@ -88,9 +82,7 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -105,9 +97,7 @@
                       "example": {},
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -126,9 +116,7 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -162,9 +150,7 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -184,9 +170,7 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -209,9 +193,7 @@
                       },
                       "additionalProperties": {
                         "type": "object",
-                        "required": [
-                          "status"
-                        ],
+                        "required": ["status"],
                         "properties": {
                           "status": {
                             "type": "string"
@@ -226,9 +208,7 @@
             }
           }
         },
-        "tags": [
-          "Health"
-        ]
+        "tags": ["Health"]
       }
     },
     "/api/v1/user/{id}": {
@@ -249,9 +229,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/v1/user": {
@@ -329,9 +307,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/api/v1/user/{userId}/password": {
@@ -362,9 +338,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     }
   },
@@ -397,10 +371,7 @@
             "example": "string"
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "UpdatePasswordCommand": {
         "type": "object",
@@ -414,9 +385,7 @@
             "example": "string"
           }
         },
-        "required": [
-          "newPassword"
-        ]
+        "required": ["newPassword"]
       }
     }
   }
