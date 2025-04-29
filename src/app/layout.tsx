@@ -4,6 +4,15 @@ import localFont from "next/font/local";
 import { TanstackQueryProvider } from "@/lib/tanstack-provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import { MSWProvider } from "@/lib/msw-provider";
+
+if (
+  process.env.NEXT_RUNTIME === "nodejs" &&
+  process.env.NODE_ENV === "development"
+) {
+  const { server } = await import("@/mocks/node");
+  server.listen();
+}
 
 const pretendard = localFont({
   src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
@@ -36,7 +45,9 @@ export default function RootLayout({
           pretendard.className,
         )}
       >
-        <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        <MSWProvider>
+          <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        </MSWProvider>
       </body>
     </html>
   );

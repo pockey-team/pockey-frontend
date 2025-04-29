@@ -2,9 +2,12 @@
   "name": "pockey-frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "clean": "rimraf .next",
+    "codegen:fetch": "tsx scripts/fetch-openapi.ts",
+    "codegen:generate": "orval --config orval.config.ts",
     "dev": "next dev --turbopack",
     "lint": "biome check ./src",
     "prepare": "simple-git-hooks",
@@ -14,7 +17,7 @@
     "pre-commit": "yarn run lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    "*.{css,js,ts,jsx,tsx,json}": [
       "biome check --write --unsafe"
     ],
     "package.json": "sort-package-json"
@@ -35,15 +38,24 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.1",
+    "@faker-js/faker": "^9.7.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "lint-staged": "^15.5.1",
+    "msw": "^2.7.5",
+    "orval": "^7.8.0",
     "postcss": "^8",
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.12.1",
     "sort-package-json": "^3.0.0",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.3",
     "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
