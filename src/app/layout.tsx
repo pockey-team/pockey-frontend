@@ -36,7 +36,9 @@ export default function RootLayout({
           pretendard.className,
         )}
       >
-        <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        <div className="mx-auto h-dvh min-h-screen w-full max-w-full p-4 shadow-2xl sm:max-w-[390px]">
+          <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        </div>
       </body>
     </html>
   );
