@@ -4,6 +4,24 @@ const config: Config = {
   darkMode: ["class"],
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#FFFFFF",
+      gray: {
+        100: "#F9FAFD",
+        200: "#E5E7EB",
+        300: "#D1D5DB",
+        400: "#9CA3AF",
+        500: "#6B7280",
+        600: "#4B5563",
+        700: "#202228",
+        800: "#141214",
+        900: "#030507",
+      },
+      main: "#C9DAFF",
+      error: "#D91B45",
+    },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
