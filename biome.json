@@ -15,7 +15,10 @@
         "noUnusedImports": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": {
+          "level": "error",
+          "fix": "safe"
+        }
       },
       "suspicious": {
         "noExplicitAny": "off"
