@@ -1,16 +1,12 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { getUserControllerGetUserQueryOptions } from "@/api/__generated__";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { prefetchUserControllerGetUser } from "@/api/__generated__";
 import { TestUser } from "@/components/root/test-user";
+import { getQueryClient } from "@/lib/tanstack-query";
 
 export default async function Home() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(
-    getUserControllerGetUserQueryOptions("id:test:server"),
+  const queryClient = await prefetchUserControllerGetUser(
+    getQueryClient(),
+    "id:test:server",
   );
 
   return (
