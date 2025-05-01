@@ -1,10 +1,18 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import { BudgetDrawer } from "@/components/recommendation/setup/budget-drawer";
 
 export default function RecommendationSetupBudgetPage() {
+  return (
+    <Suspense>
+      <RecommendationSetupBudget />
+    </Suspense>
+  );
+}
+
+const RecommendationSetupBudget = () => {
   const router = useRouter();
   const { name } = Object.fromEntries(useSearchParams());
 
@@ -20,4 +28,4 @@ export default function RecommendationSetupBudgetPage() {
   return (
     <BudgetDrawer name={name} onSubmit={handleSubmit} onClose={handleClose} />
   );
-}
+};
