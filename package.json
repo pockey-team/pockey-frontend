@@ -16,12 +16,6 @@
   "simple-git-hooks": {
     "pre-commit": "yarn run lint-staged"
   },
-  "lint-staged": {
-    "*.{css,js,ts,jsx,tsx,json}": [
-      "biome check --write --unsafe"
-    ],
-    "package.json": "sort-package-json"
-  },
   "dependencies": {
     "@tanstack/react-query": "^5.74.3",
     "@tanstack/react-query-devtools": "^5.74.3",
