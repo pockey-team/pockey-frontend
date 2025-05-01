@@ -10,6 +10,7 @@ export default function RecommendationSetupBudgetPage() {
 
   const handleSubmit = (amounts: number[]) => {
     alert("TODO");
+    router.push("/recommendation/questions");
   };
 
   const handleClose = useCallback(() => {

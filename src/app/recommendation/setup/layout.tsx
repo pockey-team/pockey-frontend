@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
 import { RelationForm } from "@/components/recommendation/setup/relation-form";
+import { Button } from "@/components/ui/button";
 import { RelationData } from "@/types/recommendation/setup";
 
 export default function RecommendationSetupLayout({
@@ -20,13 +21,13 @@ export default function RecommendationSetupLayout({
     <div className="flex min-h-screen flex-col bg-black text-white">
       <div className="mx-auto w-full max-w-md">
         <header className="relative px-4 py-4">
-          <button
+          <Button
             type="button"
-            className="rounded bg-gray-800 px-2 py-1 text-sm text-white"
+            className="rounded bg-gray-800 px-2 text-sm text-white hover:bg-gray-700"
             onClick={() => router.back()}
           >
             뒤로
-          </button>
+          </Button>
         </header>
         <div>
           <Image
