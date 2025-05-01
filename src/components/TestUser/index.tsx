@@ -1,6 +1,6 @@
 "use client";
 
-import { useUserControllerGetUser } from "@/api/__generated__/index.query";
+import { useUserControllerGetUser } from "@/api/__generated__";
 
 interface Props {
   id: string;
