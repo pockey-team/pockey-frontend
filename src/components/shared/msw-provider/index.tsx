@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, PropsWithChildren, Suspense, use } from "react";
+import { PropsWithChildren, Suspense, use } from "react";
 
 const setupMSW =
   typeof window === "undefined" || process.env.NODE_ENV === "production"
@@ -18,7 +18,7 @@ const setupMSW =
 
 export const MSWProvider =
   process.env.NODE_ENV === "production"
-    ? Fragment
+    ? ({ children }: PropsWithChildren) => children
     : ({ children }: PropsWithChildren) => {
         return (
           <Suspense fallback={null}>
