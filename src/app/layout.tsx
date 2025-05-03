@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import { TanstackQueryProvider } from "@/lib/tanstack-provider";
+import { MSWProvider } from "@/components/shared/msw-provider";
+import { TanstackQueryProvider } from "@/components/shared/tanstack-query-provider";
 import { cn } from "@/lib/utils";
+
 import "./globals.css";
-import { MSWProvider } from "@/lib/msw-provider";
 
 if (
   process.env.NEXT_RUNTIME === "nodejs" &&
