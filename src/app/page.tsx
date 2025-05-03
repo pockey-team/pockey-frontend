@@ -10,8 +10,8 @@ export default async function Home() {
   );
 
   return (
-    <main>
-      <h1 className="font-bold text-4xl tracking-tight">Pockey Frontend</h1>
+    <main className="h-screen bg-gradient-primary">
+      <h1 className="mb-12px text-display">Pockey Frontend</h1>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TestUser id="id:test:server" />
       </HydrationBoundary>
