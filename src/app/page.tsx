@@ -8,7 +8,7 @@ export default async function Home() {
   });
 
   return (
-    <main>
+    <main className="h-screen bg-gradient-primary">
       <h1 className="font-bold text-4xl tracking-tight">Pockey Frontend</h1>
       <p className="font text-2xl tracking-tight">
         Test User from Server (id: {data.id}, name: {data.name})

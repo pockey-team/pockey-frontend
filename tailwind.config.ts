@@ -7,7 +7,9 @@ const config: Config = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      white: "#FFFFFF",
+      alert: {
+        500: "#D91B45",
+      },
       gray: {
         100: "#F9FAFD",
         200: "#E5E7EB",
@@ -19,14 +21,18 @@ const config: Config = {
         800: "#141214",
         900: "#030507",
       },
-      main: "#C9DAFF",
-      error: "#D91B45",
+      primary: {
+        500: "#C9DAFF",
+      },
+      white: "#FFFFFF",
     },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-primary":
+          "linear-gradient(168deg, #4F76C5 -17.08%, #D7ECFF 95.84%)",
       },
       borderRadius: {
         lg: "var(--radius)",
