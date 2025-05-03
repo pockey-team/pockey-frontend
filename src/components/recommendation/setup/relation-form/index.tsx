@@ -17,8 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { relationSchema } from "@/types/recommendation/setup";
-import { RelationData } from "@/types/recommendation/setup";
+import { RelationData, relationSchema } from "@/types/recommendation/setup";
 
 interface Props {
   onSubmit: (data: RelationData) => Promise<void> | void;
