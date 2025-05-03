@@ -9,8 +9,8 @@ export default async function Home() {
 
   return (
     <main className="h-screen bg-gradient-primary">
-      <h1 className="font-bold text-4xl tracking-tight">Pockey Frontend</h1>
-      <p className="font text-2xl tracking-tight">
+      <h1 className="mb-12px text-display">Pockey Frontend</h1>
+      <p className="text-body-1">
         Test User from Server (id: {data.id}, name: {data.name})
       </p>
       <TestUser id="id:test" />

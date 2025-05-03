@@ -10,7 +10,7 @@ export const TestUser = ({ id }: Props) => {
   const { data } = useUserControllerGetUser(id);
 
   return (
-    <p className="font text-2xl tracking-tight">
+    <p className="text-body-2">
       Test User from Client (id: {data?.data.id}, name: {data?.data.name})
     </p>
   );
