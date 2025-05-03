@@ -1,8 +1,5 @@
-const baseURL = "https://api-dev.pockey.pics";
-
 export const http = async <T>(url: string, init: RequestInit): Promise<T> => {
-  let endpoint = `${baseURL}${url}`;
-  const response = await fetch(endpoint, init);
+  const response = await fetch(url, init);
   const data = handleDate(await response.json());
 
   return {
