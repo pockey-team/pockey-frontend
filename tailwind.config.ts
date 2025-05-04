@@ -38,6 +38,10 @@ const config: Config = {
       "body-3": ["14px", { lineHeight: "20px", fontWeight: "600" }],
       caption: ["12px", { lineHeight: "16px", fontWeight: "500" }],
     },
+    screens: {
+      mobile: "390px",
+      desktop: "1024px",
+    },
     spacing: {
       "0px": "0px",
       "2px": "2px",
@@ -115,4 +119,5 @@ const config: Config = {
   },
   plugins: [require("tailwindcss-animate")],
 };
+
 export default config;
