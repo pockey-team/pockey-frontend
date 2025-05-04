@@ -11,7 +11,9 @@ interface Props extends PropsWithChildren<{ className?: string }> {}
 
 export const Page = ({ children, className }: Props) => {
   return (
-    <div className={cn("flex h-screen flex-col", className)}>{children}</div>
+    <div className={cn("flex h-screen flex-col transition-colors", className)}>
+      {children}
+    </div>
   );
 };
 
