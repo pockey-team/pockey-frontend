@@ -1,5 +1,8 @@
 {
   "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["**", "!src/components/ui"]
+  },
   "linter": {
     "domains": {
       "next": "recommended",
@@ -12,7 +15,10 @@
         "noUnusedImports": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": {
+          "level": "error",
+          "fix": "safe"
+        }
       },
       "suspicious": {
         "noExplicitAny": "off"
