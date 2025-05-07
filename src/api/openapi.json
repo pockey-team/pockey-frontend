@@ -1,344 +1,432 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/auth/login": {
+    "/api/v1/auth/login/social": {
       "post": {
-        "operationId": "AuthController_login",
+        "operationId": "AuthController_loginSocial",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginCommand"
+                "$ref": "#/components/schemas/SocialLoginCommand"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
-          }
-        },
-        "tags": ["Auth"]
-      }
-    },
-    "/api/v1/auth/token/refresh": {
-      "post": {
-        "operationId": "AuthController_refreshToken",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": ["Auth"]
-      }
-    },
-    "/api/v1/auth/password": {
-      "patch": {
-        "operationId": "AuthController_updatePassword",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdatePasswordCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["Auth"]
-      }
-    },
-    "/api/health": {
-      "get": {
-        "operationId": "HealthController_readiness",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "The Health Check is successful",
+            "description": "Social login successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "ok"
-                    },
-                    "info": {
-                      "type": "object",
-                      "example": {
-                        "database": {
-                          "status": "up"
-                        }
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      },
-                      "nullable": true
-                    },
-                    "error": {
-                      "type": "object",
-                      "example": {},
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      },
-                      "nullable": true
-                    },
-                    "details": {
-                      "type": "object",
-                      "example": {
-                        "database": {
-                          "status": "up"
-                        }
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      }
-                    }
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/user/me": {
+      "get": {
+        "operationId": "UserController_getMe",
+        "parameters": [],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/user/profile": {
+      "patch": {
+        "operationId": "UserController_updateProfile",
+        "parameters": [],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully"
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/product/ranking": {
+      "get": {
+        "operationId": "ProductController_getRanking",
+        "parameters": [
+          {
+            "name": "type",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "birthday"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product ranking retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RankingProduct"
                   }
                 }
               }
+            }
+          }
+        },
+        "tags": ["Product"]
+      }
+    },
+    "/api/v1/wishlist": {
+      "post": {
+        "operationId": "WishlistController_addToWishlist",
+        "parameters": [],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToWishlistCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added to wishlist successfully"
+          }
+        },
+        "tags": ["Wishlist"]
+      },
+      "get": {
+        "operationId": "WishlistController_getWishlist",
+        "parameters": [],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wishlist retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Wishlist"]
+      }
+    },
+    "/api/v1/wishlist/{wishlistId}": {
+      "delete": {
+        "operationId": "WishlistController_removeFromWishlist",
+        "parameters": [
+          {
+            "name": "wishlistId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed from wishlist successfully"
+          }
+        },
+        "tags": ["Wishlist"]
+      }
+    },
+    "/api/v1/recommend-session": {
+      "post": {
+        "operationId": "RecommendSessionController_startSession",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartRecommendSessionCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session started successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendSessionStep"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["RecommendSession"]
+      },
+      "get": {
+        "operationId": "RecommendSessionController_getSessions",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
-          "503": {
-            "description": "The Health Check is not successful",
+          {
+            "name": "deviceId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sessions retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "info": {
-                      "type": "object",
-                      "example": {
-                        "database": {
-                          "status": "up"
-                        }
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      },
-                      "nullable": true
-                    },
-                    "error": {
-                      "type": "object",
-                      "example": {
-                        "redis": {
-                          "status": "down",
-                          "message": "Could not connect"
-                        }
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      },
-                      "nullable": true
-                    },
-                    "details": {
-                      "type": "object",
-                      "example": {
-                        "database": {
-                          "status": "up"
-                        },
-                        "redis": {
-                          "status": "down",
-                          "message": "Could not connect"
-                        }
-                      },
-                      "additionalProperties": {
-                        "type": "object",
-                        "required": ["status"],
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": true
-                      }
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecommendSession"
                   }
                 }
               }
             }
           }
         },
-        "tags": ["Health"]
+        "tags": ["RecommendSession"]
       }
     },
-    "/api/v1/user/{id}": {
+    "/api/v1/recommend-session/{sessionId}/answer": {
+      "post": {
+        "operationId": "RecommendSessionController_submitAnswer",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitAnswerCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Answer submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RecommendSessionStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RecommendSessionResult"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": ["RecommendSession"]
+      }
+    },
+    "/api/v1/recommend-session/{sessionId}": {
+      "delete": {
+        "operationId": "RecommendSessionController_endSession",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Session ended successfully"
+          }
+        },
+        "tags": ["RecommendSession"]
+      }
+    },
+    "/api/v1/recommend-session/{sessionId}/result": {
       "get": {
-        "operationId": "UserController_getUser",
+        "operationId": "RecommendSessionController_getSessionResult",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session result retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendSessionResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["RecommendSession"]
+      }
+    },
+    "/api/v1/product/{id}": {
+      "get": {
+        "operationId": "ProductController_getProduct",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "/api/v1/user": {
-      "get": {
-        "operationId": "UserController_getUsers",
-        "parameters": [
-          {
-            "name": "cursor",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "example": "string",
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "0",
-              "type": "number"
-            }
-          },
-          {
-            "name": "email",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "example": "example@example.com",
-              "type": "string"
-            }
-          },
-          {
-            "name": "registeredFrom",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "example": "2024-01-01",
-              "type": "string"
-            }
-          },
-          {
-            "name": "registeredTo",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "example": "2024-01-01",
-              "type": "string"
-            }
-          },
-          {
-            "name": "orderBy",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "enum",
-              "type": "string"
-            }
-          },
-          {
-            "name": "order",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "enum",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "/api/v1/user/{userId}/password": {
-      "patch": {
-        "operationId": "UserController_updateUserPassword",
-        "parameters": [
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserPasswordCommand"
+            "description": "Product retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
               }
             }
           }
         },
+        "tags": ["Product"]
+      }
+    },
+    "/api/v1/post": {
+      "get": {
+        "operationId": "PostController_getPosts",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Posts retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                }
+              }
+            }
           }
         },
-        "tags": ["User"]
+        "tags": ["Post"]
+      }
+    },
+    "/api/v1/post/{id}": {
+      "get": {
+        "operationId": "PostController_getPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Post"]
       }
     }
   },
@@ -359,33 +447,352 @@
       }
     },
     "schemas": {
-      "LoginCommand": {
+      "SocialLoginCommand": {
         "type": "object",
         "properties": {
-          "email": {
+          "snsId": {
             "type": "string",
-            "example": "example@example.com"
+            "example": "4246271005"
           },
-          "password": {
+          "nickname": {
             "type": "string",
-            "example": "string"
+            "example": "박혜원"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "example": "http://k.kakaocdn.net/...jpg"
           }
         },
-        "required": ["email", "password"]
+        "required": ["snsId", "nickname", "profileImageUrl"]
       },
-      "UpdatePasswordCommand": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateUserPasswordCommand": {
+      "LoginResponse": {
         "type": "object",
         "properties": {
-          "newPassword": {
+          "accessToken": {
             "type": "string",
-            "example": "string"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
           }
         },
-        "required": ["newPassword"]
+        "required": ["accessToken", "refreshToken"]
+      },
+      "UserProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "nickname": {
+            "type": "string",
+            "example": "혜원"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "example": "http://k.kakaocdn.net/...jpg"
+          }
+        },
+        "required": ["id", "nickname", "profileImageUrl"]
+      },
+      "UpdateProfileCommand": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "example": "혜원"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "example": "http://k.kakaocdn.net/...jpg"
+          }
+        }
+      },
+      "RankingProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "DYVLINGE 뒤블링에 회전 이지체어 - 셸링에 그린"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/p/dyvlinge-swivel-easy-chair-kelinge-green-70570836"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/images/products/dyvlinge-swivel-easy-chair-kelinge-green__1205904_pe907276_s5.jpg"
+          },
+          "priceRange": {
+            "type": "string",
+            "example": "20만원대"
+          }
+        },
+        "required": ["id", "name", "url", "imageUrl", "priceRange"]
+      },
+      "NextPickProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "url": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/p/dyvlinge-swivel-easy-chair-kelinge-green-70570836"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/images/products/dyvlinge-swivel-easy-chair-kelinge-green__1205904_pe907276_s5.jpg"
+          }
+        },
+        "required": ["id", "url", "imageUrl"]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "DYVLINGE 뒤블링에 회전 이지체어 - 셸링에 그린"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/p/dyvlinge-swivel-easy-chair-kelinge-green-70570836"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://www.ikea.com/kr/ko/images/products/dyvlinge-swivel-easy-chair-kelinge-green__1205904_pe907276_s5.jpg"
+          },
+          "category": {
+            "type": "string",
+            "example": "가구/의자"
+          },
+          "brand": {
+            "type": "string",
+            "example": "이케아"
+          },
+          "price": {
+            "type": "integer",
+            "example": 249000
+          },
+          "priceRange": {
+            "type": "string",
+            "example": "20만원대"
+          },
+          "ageRange": {
+            "type": "string",
+            "example": "20~40대"
+          },
+          "situation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["신혼 선물", "이사 선물", "자취 시작", "생일/집들이"]
+          },
+          "intention": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "편안한 휴식과 공간의 분위기를 동시에 선물하고 싶을 때",
+              "감성 있는 인테리어를 완성할 수 있도록 도와주고 싶을 때"
+            ]
+          },
+          "friendshipLevel": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "가장 소중한 사람",
+              "동거 중인 연인",
+              "인테리어에 관심 있는 친구"
+            ]
+          },
+          "targetGender": {
+            "type": "string",
+            "example": "ALL"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "감성적",
+              "모던",
+              "편안함",
+              "인테리어 포인트",
+              "회전 기능",
+              "홈카페 분위기"
+            ]
+          },
+          "nextPickProductIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NextPickProduct"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "url",
+          "imageUrl",
+          "category",
+          "brand",
+          "price",
+          "priceRange"
+        ]
+      },
+      "AddToWishlistCommand": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "example": 101
+          }
+        },
+        "required": ["productId"]
+      },
+      "StartRecommendSessionCommand": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "example": "deviceId"
+          }
+        }
+      },
+      "SubmitAnswerCommand": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string",
+            "example": "1"
+          }
+        },
+        "required": ["answer"]
+      },
+      "RecommendSessionStep": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "sessionId": {
+            "type": "string",
+            "example": "recommend-session-uuid-v7"
+          },
+          "step": {
+            "type": "integer",
+            "example": 1
+          },
+          "question": {
+            "type": "string",
+            "example": "질문"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["옵션1", "옵션2", "옵션3", "옵션4"]
+          },
+          "answer": {
+            "type": "string",
+            "example": "옵션1",
+            "nullable": true
+          }
+        },
+        "required": ["id", "sessionId", "step", "question", "options"]
+      },
+      "RecommendSessionResult": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "example": "recommend-session-uuid-v7"
+          },
+          "recommendProductIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "example": [1, 2, 3]
+          },
+          "recommendText": {
+            "type": "string",
+            "example": "추천 결과"
+          }
+        },
+        "required": ["sessionId", "recommendProductIds", "recommendText"]
+      },
+      "RecommendSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "recommend-session-uuid-v7"
+          },
+          "receiverName": {
+            "type": "string",
+            "example": "선물받는사람이름"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecommendSessionStep"
+            }
+          },
+          "result": {
+            "$ref": "#/components/schemas/RecommendSessionResult",
+            "nullable": true
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-04-29T14:00:00.000Z",
+            "nullable": true
+          }
+        },
+        "required": ["id", "receiverName", "steps"]
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "제목"
+          },
+          "content": {
+            "type": "string",
+            "example": "내용"
+          },
+          "postedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-04-29T14:00:00.000Z"
+          }
+        },
+        "required": ["id", "title", "content", "postedAt"]
       }
     }
   }

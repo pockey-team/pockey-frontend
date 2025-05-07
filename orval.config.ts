@@ -16,6 +16,7 @@ export default defineConfig({
       mode: "split",
       mock: { type: "msw", delay: 500 },
       override: {
+        mock: { arrayMin: 4, arrayMax: 4 },
         mutator: { path: "./src/api/http.ts", name: "http" },
         query: { usePrefetch: true },
         useDates: true,
