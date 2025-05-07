@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,10 @@ export const FooterToggle = () => {
   return (
     <div className="relative flex h-[60px] w-[128px] items-center rounded-full bg-white/20 p-8px">
       <motion.div
-        className="absolute z-0 h-[80%] rounded-3xl bg-white shadow-md"
+        className="absolute z-0 h-[80%] rounded-3xl bg-white/40 shadow-md"
         initial={false}
         animate={{
-          x: active ? "4%" : "120%",
+          x: active ? "4%" : "115%",
           width: "40%",
         }}
         transition={{
@@ -56,7 +57,12 @@ export const FooterToggle = () => {
         onClick={() => handleToggle(true, "/")}
         disabled={isAnimating}
       >
-        메인
+        <Image
+          src="footer-navigation/home.svg"
+          alt="logo"
+          width={35}
+          height={35}
+        />
       </Button>
 
       <Button
@@ -68,7 +74,12 @@ export const FooterToggle = () => {
         onClick={() => handleToggle(false, "/recommendation/result")}
         disabled={isAnimating}
       >
-        보관함
+        <Image
+          src="footer-navigation/result.svg"
+          alt="logo"
+          width={35}
+          height={35}
+        />
       </Button>
     </div>
   );
