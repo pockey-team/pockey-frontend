@@ -41,7 +41,7 @@ export const getUserControllerGetMeResponseMock = (
 export const getProductControllerGetRankingResponseMock =
   (): RankingProduct[] =>
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => ({
       id: faker.number.int({ min: undefined, max: undefined }),
@@ -53,7 +53,7 @@ export const getProductControllerGetRankingResponseMock =
 
 export const getWishlistControllerGetWishlistResponseMock = (): Product[] =>
   Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
+    { length: faker.number.int({ min: 4, max: 4 }) },
     (_, i) => i + 1,
   ).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
@@ -67,21 +67,21 @@ export const getWishlistControllerGetWishlistResponseMock = (): Product[] =>
     ageRange: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
     situation: faker.helpers.arrayElement([
       Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.string.alpha(20)),
       undefined,
     ]),
     intention: faker.helpers.arrayElement([
       Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.string.alpha(20)),
       undefined,
     ]),
     friendshipLevel: faker.helpers.arrayElement([
       Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.string.alpha(20)),
       undefined,
@@ -92,14 +92,14 @@ export const getWishlistControllerGetWishlistResponseMock = (): Product[] =>
     ]),
     tags: faker.helpers.arrayElement([
       Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.string.alpha(20)),
       undefined,
     ]),
     nextPickProductIds: faker.helpers.arrayElement([
       Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => ({
         id: faker.number.int({ min: undefined, max: undefined }),
@@ -118,7 +118,7 @@ export const getRecommendSessionControllerStartSessionResponseMock = (
   step: faker.number.int({ min: undefined, max: undefined }),
   question: faker.string.alpha(20),
   options: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
+    { length: faker.number.int({ min: 4, max: 4 }) },
     (_, i) => i + 1,
   ).map(() => faker.string.alpha(20)),
   answer: faker.helpers.arrayElement([
@@ -131,13 +131,13 @@ export const getRecommendSessionControllerStartSessionResponseMock = (
 export const getRecommendSessionControllerGetSessionsResponseMock =
   (): RecommendSession[] =>
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => ({
       id: faker.string.alpha(20),
       receiverName: faker.string.alpha(20),
       steps: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => ({
         id: faker.number.int({ min: undefined, max: undefined }),
@@ -145,7 +145,7 @@ export const getRecommendSessionControllerGetSessionsResponseMock =
         step: faker.number.int({ min: undefined, max: undefined }),
         question: faker.string.alpha(20),
         options: Array.from(
-          { length: faker.number.int({ min: 1, max: 10 }) },
+          { length: faker.number.int({ min: 4, max: 4 }) },
           (_, i) => i + 1,
         ).map(() => faker.string.alpha(20)),
         answer: faker.helpers.arrayElement([
@@ -157,7 +157,7 @@ export const getRecommendSessionControllerGetSessionsResponseMock =
         {
           sessionId: faker.string.alpha(20),
           recommendProductIds: Array.from(
-            { length: faker.number.int({ min: 1, max: 10 }) },
+            { length: faker.number.int({ min: 4, max: 4 }) },
             (_, i) => i + 1,
           ).map(() => faker.number.int({ min: undefined, max: undefined })),
           recommendText: faker.string.alpha(20),
@@ -183,7 +183,7 @@ export const getRecommendSessionControllerSubmitAnswerResponseRecommendSessionSt
       step: faker.number.int({ min: undefined, max: undefined }),
       question: faker.string.alpha(20),
       options: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.string.alpha(20)),
       answer: faker.helpers.arrayElement([
@@ -201,7 +201,7 @@ export const getRecommendSessionControllerSubmitAnswerResponseRecommendSessionRe
     ...{
       sessionId: faker.string.alpha(20),
       recommendProductIds: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
+        { length: faker.number.int({ min: 4, max: 4 }) },
         (_, i) => i + 1,
       ).map(() => faker.number.int({ min: undefined, max: undefined })),
       recommendText: faker.string.alpha(20),
@@ -225,7 +225,7 @@ export const getRecommendSessionControllerGetSessionResultResponseMock = (
 ): RecommendSessionResult => ({
   sessionId: faker.string.alpha(20),
   recommendProductIds: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
+    { length: faker.number.int({ min: 4, max: 4 }) },
     (_, i) => i + 1,
   ).map(() => faker.number.int({ min: undefined, max: undefined })),
   recommendText: faker.string.alpha(20),
@@ -246,21 +246,21 @@ export const getProductControllerGetProductResponseMock = (
   ageRange: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
   situation: faker.helpers.arrayElement([
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => faker.string.alpha(20)),
     undefined,
   ]),
   intention: faker.helpers.arrayElement([
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => faker.string.alpha(20)),
     undefined,
   ]),
   friendshipLevel: faker.helpers.arrayElement([
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => faker.string.alpha(20)),
     undefined,
@@ -268,14 +268,14 @@ export const getProductControllerGetProductResponseMock = (
   targetGender: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
   tags: faker.helpers.arrayElement([
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => faker.string.alpha(20)),
     undefined,
   ]),
   nextPickProductIds: faker.helpers.arrayElement([
     Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
+      { length: faker.number.int({ min: 4, max: 4 }) },
       (_, i) => i + 1,
     ).map(() => ({
       id: faker.number.int({ min: undefined, max: undefined }),
@@ -289,7 +289,7 @@ export const getProductControllerGetProductResponseMock = (
 
 export const getPostControllerGetPostsResponseMock = (): Post[] =>
   Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
+    { length: faker.number.int({ min: 4, max: 4 }) },
     (_, i) => i + 1,
   ).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
