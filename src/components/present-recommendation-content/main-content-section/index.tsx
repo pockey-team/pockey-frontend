@@ -31,11 +31,7 @@ export const MainContentSection = ({
         stiffness: 100,
       }}
     >
-      {hasPresents ? (
-        <RecommendationSection dehydratedState={dehydratedState} />
-      ) : (
-        <PresentBoxSection />
-      )}
+      {hasPresents ? <RecommendationSection /> : <PresentBoxSection />}
     </motion.div>
   );
 };
