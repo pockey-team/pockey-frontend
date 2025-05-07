@@ -7,7 +7,9 @@ import {
 } from "react";
 import { cn } from "@/lib/utils";
 
-interface Props extends PropsWithChildren<{ className?: string }> {}
+interface Props extends PropsWithChildren<{ className?: string }> {
+  noPadding?: boolean;
+}
 
 export const Page = ({ children, className }: Props) => {
   return (
@@ -52,9 +54,15 @@ Header.Right = ({ children, className }: Props) => {
 
 Page.Header = Header;
 
-Page.Container = ({ children, className }: Props) => {
+Page.Container = ({ children, className, noPadding }: Props) => {
   return (
-    <div className={cn("mx-auto w-full max-w-[390px] px-16px", className)}>
+    <div
+      className={cn(
+        "mx-auto w-full max-w-[390px]",
+        noPadding ? "px-0px" : "px-16px",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -62,6 +70,12 @@ Page.Container = ({ children, className }: Props) => {
 
 Page.Title = ({ children, className }: Props) => {
   return <h1 className={cn("text-center text-h1", className)}>{children}</h1>;
+};
+
+Page.SubTitle = ({ children, className }: Props) => {
+  return (
+    <h2 className={cn("text-center text-body-2", className)}>{children}</h2>
+  );
 };
 
 Page.ActionButton = ({
@@ -80,7 +94,7 @@ Page.ActionButton = ({
   return (
     <div
       className={cn(
-        "mx-auto mt-auto w-full max-w-[390px] px-16px pb-48px",
+        "mx-auto mt-auto mb-48px w-full max-w-[390px] px-16px",
         className,
       )}
       {...props}
