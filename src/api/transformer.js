@@ -5,20 +5,5 @@
  * @return {import("openapi3-ts/oas30").OpenAPIObject}
  */
 export default (schema) => {
-  schema.paths["/api/v1/user/{id}"].get.responses["200"] = {
-    ...schema.paths["/api/v1/user/{id}"].get.responses["200"],
-    content: {
-      "application/json": {
-        schema: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-            name: { type: "string" },
-          },
-        },
-      },
-    },
-  };
-
   return schema;
 };
