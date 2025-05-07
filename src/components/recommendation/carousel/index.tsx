@@ -63,7 +63,7 @@ export const RecommendationCarousel = () => {
               className="flex flex-col items-center gap-32px"
             >
               <div className="pl-32px">
-                <div className="flex h-40px min-w-[125px] items-center justify-center rounded-full bg-white px-16px py-12px font-bold text-[#4C90FE] text-body-1">
+                <div className="flex h-40px min-w-[125px] items-center justify-center rounded-full bg-white px-16px py-12px font-bold text-[#4C90FE] text-body-16-bold">
                   {present.receiver} | 3개 선물
                 </div>
               </div>

@@ -58,14 +58,16 @@ export const RecommendationCard = ({
           transition={{ duration: 0.3 }}
           className="mt-16px flex flex-col"
         >
-          <p className="text-subtitle-1">{present.content}</p>
+          <p className="text-subtitle-18-bold">{present.content}</p>
           <p className="py-4px font-semibold text-[#4DA6FF]">
             {present.receiver}님의 꼼꼼한 성격과 적합해요
           </p>
           <div className="w-fit rounded-md bg-[#6D8FFF] px-4px py-[3px] font-bold text-white">
             인기 TOP 10
           </div>
-          <p className="self-end pt-12px text-subtitle-2">{present.price}</p>
+          <p className="self-end pt-12px text-subtitle-18-semibold">
+            {present.price}
+          </p>
         </motion.div>
       </motion.div>
     </div>
