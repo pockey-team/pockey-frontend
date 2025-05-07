@@ -439,7 +439,7 @@ export const getWishlistControllerRemoveFromWishlistMockHandler = (
         info: Parameters<Parameters<typeof http.delete>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.delete("*/api/v1/wishlist/:productId", async (info) => {
+  return http.delete("*/api/v1/wishlist/:wishlistId", async (info) => {
     await delay(500);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);

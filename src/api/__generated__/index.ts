@@ -967,17 +967,17 @@ export type wishlistControllerRemoveFromWishlistResponse =
   };
 
 export const getWishlistControllerRemoveFromWishlistUrl = (
-  productId: number,
+  wishlistId: number,
 ) => {
-  return `https://api-dev.pockey.pics/api/v1/wishlist/${productId}`;
+  return `https://api-dev.pockey.pics/api/v1/wishlist/${wishlistId}`;
 };
 
 export const wishlistControllerRemoveFromWishlist = async (
-  productId: number,
+  wishlistId: number,
   options?: RequestInit,
 ): Promise<wishlistControllerRemoveFromWishlistResponse> => {
   return http<wishlistControllerRemoveFromWishlistResponse>(
-    getWishlistControllerRemoveFromWishlistUrl(productId),
+    getWishlistControllerRemoveFromWishlistUrl(wishlistId),
     {
       ...options,
       method: "DELETE",
@@ -992,14 +992,14 @@ export const getWishlistControllerRemoveFromWishlistMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
     TError,
-    { productId: number },
+    { wishlistId: number },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
   TError,
-  { productId: number },
+  { wishlistId: number },
   TContext
 > => {
   const mutationKey = ["wishlistControllerRemoveFromWishlist"];
@@ -1013,11 +1013,11 @@ export const getWishlistControllerRemoveFromWishlistMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-    { productId: number }
+    { wishlistId: number }
   > = (props) => {
-    const { productId } = props ?? {};
+    const { wishlistId } = props ?? {};
 
-    return wishlistControllerRemoveFromWishlist(productId, requestOptions);
+    return wishlistControllerRemoveFromWishlist(wishlistId, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1037,7 +1037,7 @@ export const useWishlistControllerRemoveFromWishlist = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
       TError,
-      { productId: number },
+      { wishlistId: number },
       TContext
     >;
     request?: SecondParameter<typeof http>;
@@ -1046,7 +1046,7 @@ export const useWishlistControllerRemoveFromWishlist = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
   TError,
-  { productId: number },
+  { wishlistId: number },
   TContext
 > => {
   const mutationOptions =

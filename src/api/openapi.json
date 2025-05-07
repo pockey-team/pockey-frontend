@@ -165,12 +165,12 @@
         "tags": ["Wishlist"]
       }
     },
-    "/api/v1/wishlist/{productId}": {
+    "/api/v1/wishlist/{wishlistId}": {
       "delete": {
         "operationId": "WishlistController_removeFromWishlist",
         "parameters": [
           {
-            "name": "productId",
+            "name": "wishlistId",
             "required": true,
             "in": "path",
             "schema": {
