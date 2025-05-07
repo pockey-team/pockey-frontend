@@ -25,7 +25,7 @@ export default function RecommendationSetupWhenPage() {
 
       <Page.ActionButton>
         {(props) => (
-          <Button {...props} size="large" aria-selected={true}>
+          <Button {...props} size="x-large" aria-selected={true}>
             선물 고르기
           </Button>
         )}
