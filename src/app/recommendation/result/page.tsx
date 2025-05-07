@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
 import { getPresents } from "@/api/Present/get-presents";
 import { RecommendationCard } from "@/components/recommendation/card";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,8 @@ const ResultPage = async () => {
     "result",
   ]);
   const resultPresent = cachedPresents?.[0];
+
+  redirect("/");
 
   return (
     <main className="relative flex h-dvh flex-col items-center justify-center gap-8">
