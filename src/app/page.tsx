@@ -1,5 +1,9 @@
-import { dehydrate, QueryClient } from "@tanstack/react-query";
-import { Search, Star, UserRound } from "lucide-react";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPresents } from "@/api/Present/get-presents";
@@ -55,29 +59,30 @@ export default async function Home() {
       </Page.Header>
 
       <Page.Container className="flex-1" noPadding>
-        <PresentRecommendationContent
-          hasPresents={hasPresents}
-          dehydratedState={dehydratedState}
-        />
+        <HydrationBoundary state={dehydratedState}>
+          <PresentRecommendationContent />
+        </HydrationBoundary>
       </Page.Container>
 
       <Page.ActionButton>
         {(props) => (
           <div className="flex w-full items-center justify-between gap-2">
-            <Button
-              {...props}
-              variant="ghost"
-              className="text-black hover:bg-transparent"
-            >
-              <Star fill="#d1d5db" stroke="#d1d5db" strokeWidth={1.5} />
+            <Button variant="ghost" className="text-black hover:bg-transparent">
+              <Image
+                src="footer-navigation/star.svg"
+                alt="logo"
+                width={25}
+                height={25}
+              />
             </Button>
             <FooterToggle />
-            <Button
-              {...props}
-              variant="ghost"
-              className="text-black hover:bg-transparent"
-            >
-              <UserRound fill="#d1d5db" stroke="#d1d5db" strokeWidth={1.5} />
+            <Button variant="ghost" className="text-black hover:bg-transparent">
+              <Image
+                src="footer-navigation/user.svg"
+                alt="logo"
+                width={35}
+                height={35}
+              />
             </Button>
           </div>
         )}

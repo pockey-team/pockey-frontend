@@ -1,21 +1,27 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { getPresents } from "@/api/Present/get-presents";
 import { HeaderSection } from "@/components/present-recommendation-content/header-section";
 import { PresentBoxSection } from "@/components/present-recommendation-content/present-box-section";
 import { RecommendationSection } from "@/components/present-recommendation-content/recommendation-section";
 
-interface PresentRecommendationContentProps {
-  hasPresents?: boolean;
-  dehydratedState: any;
-}
+export const PresentRecommendationContent = () => {
+  const { data: presents } = useQuery({
+    queryKey: ["presents"],
+    queryFn: () =>
+      getPresents({
+        delay: 1000,
+        empty: false,
+        error: false,
+      }),
+  });
 
-export const PresentRecommendationContent = ({
-  hasPresents,
-  dehydratedState,
-}: PresentRecommendationContentProps) => {
+  const hasPresents = presents && presents.length > 0;
+
   const [animationState, setAnimationState] = useState<"initial" | "animating">(
     "initial",
   );
@@ -71,11 +77,7 @@ export const PresentRecommendationContent = ({
           stiffness: 100,
         }}
       >
-        {hasPresents ? (
-          <RecommendationSection dehydratedState={dehydratedState} />
-        ) : (
-          <PresentBoxSection />
-        )}
+        {hasPresents ? <RecommendationSection /> : <PresentBoxSection />}
       </motion.div>
     </div>
   );
