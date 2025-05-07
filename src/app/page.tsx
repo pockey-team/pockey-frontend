@@ -7,7 +7,7 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPresents } from "@/api/Present/get-presents";
-import { FooterToggle } from "@/components/Layout/footer-toggle";
+import { FooterToggle } from "@/components/layout/footer-toggle";
 import { PresentRecommendationContent } from "@/components/present-recommendation-content";
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
@@ -37,56 +37,64 @@ export default async function Home() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Page
-      className={cn(
-        !hasPresents
-          ? "from-[#121133] to-[#6077A9]"
-          : "from-[#4F76C5] to-[#D7ECFF]",
-        "bg-gradient-to-b",
-      )}
-    >
-      <Page.Header>
-        <Page.Header.Left>
-          <Link href="/">
-            <Image src="/logo.svg" alt="logo" width={100} height={100} />
-          </Link>
-        </Page.Header.Left>
-        <Page.Header.Right>
-          <Link href="/">
-            <Search className="text-white" />
-          </Link>
-        </Page.Header.Right>
-      </Page.Header>
-
-      <Page.Container className="flex-1" noPadding>
-        <HydrationBoundary state={dehydratedState}>
-          <PresentRecommendationContent />
-        </HydrationBoundary>
-      </Page.Container>
-
-      <Page.ActionButton>
-        {(props) => (
-          <div className="flex w-full items-center justify-between gap-2">
-            <Button variant="ghost" className="text-black hover:bg-transparent">
-              <Image
-                src="footer-navigation/star.svg"
-                alt="logo"
-                width={25}
-                height={25}
-              />
-            </Button>
-            <FooterToggle />
-            <Button variant="ghost" className="text-black hover:bg-transparent">
-              <Image
-                src="footer-navigation/user.svg"
-                alt="logo"
-                width={35}
-                height={35}
-              />
-            </Button>
-          </div>
+    <div className="overflow-hidden">
+      <Page
+        className={cn(
+          !hasPresents
+            ? "from-[#121133] to-[#6077A9]"
+            : "from-[#4F76C5] to-[#D7ECFF]",
+          "bg-gradient-to-b",
         )}
-      </Page.ActionButton>
-    </Page>
+      >
+        <Page.Header>
+          <Page.Header.Left>
+            <Link href="/">
+              <Image src="/logo.svg" alt="logo" width={100} height={100} />
+            </Link>
+          </Page.Header.Left>
+          <Page.Header.Right>
+            <Link href="/">
+              <Search className="text-white" />
+            </Link>
+          </Page.Header.Right>
+        </Page.Header>
+
+        <Page.Container className="flex-1" noPadding>
+          <HydrationBoundary state={dehydratedState}>
+            <PresentRecommendationContent />
+          </HydrationBoundary>
+        </Page.Container>
+
+        <Page.ActionButton>
+          {(props) => (
+            <div className="flex w-full items-center justify-between gap-2">
+              <Button
+                variant="ghost"
+                className="text-black hover:bg-transparent"
+              >
+                <Image
+                  src="footer-navigation/star.svg"
+                  alt="logo"
+                  width={25}
+                  height={25}
+                />
+              </Button>
+              <FooterToggle />
+              <Button
+                variant="ghost"
+                className="text-black hover:bg-transparent"
+              >
+                <Image
+                  src="footer-navigation/user.svg"
+                  alt="logo"
+                  width={35}
+                  height={35}
+                />
+              </Button>
+            </div>
+          )}
+        </Page.ActionButton>
+      </Page>
+    </div>
   );
 }
