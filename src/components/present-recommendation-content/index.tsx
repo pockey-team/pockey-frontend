@@ -41,15 +41,15 @@ export const PresentRecommendationContent = () => {
   return (
     <div className="relative flex h-full flex-col">
       <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: isAnimating ? 0 : -100, opacity: isAnimating ? 1 : 0 }}
+        initial={{ y: -150 }}
+        animate={{ y: isAnimating ? 150 : -150 }}
         transition={{
           duration: 1.2,
           type: "spring",
           damping: 20,
           stiffness: 80,
         }}
-        className="pointer-events-none absolute top-0 left-0 z-0 h-full w-full"
+        className="-left-16px pointer-events-none absolute top-0px z-0 h-full w-full"
       >
         <Image
           src="/background-cloud.svg"
