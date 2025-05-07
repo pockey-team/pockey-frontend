@@ -1,10 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 390px : 16px = 100vw : x */
-html {
-  font-size: clamp(14px, calc((160 / 39) * 1vw), 16px);
-}
 
 :root {
   --foreground-rgb: 0, 0, 0;
