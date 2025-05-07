@@ -11,14 +11,16 @@ export default function RecommendationSetupStepPage() {
           <Back />
         </Page.Header.Left>
         <Page.Header.Right>
-          <Link href="/" className="text-body-2 text-gray-500">
+          <Link href="/" className="text-body-16-regular text-gray-500">
             닫기
           </Link>
         </Page.Header.Right>
       </Page.Header>
 
       <Page.Container className="mt-[104px]">
-        <p className="mb-16px text-center text-gray-500 text-subtitle-2">1/4</p>
+        <p className="mb-16px text-center text-gray-500 text-subtitle-18-semibold">
+          1/4
+        </p>
         <Page.Title className="text-gray-100">성별을 알려주세요</Page.Title>
       </Page.Container>
 

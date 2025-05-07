@@ -17,13 +17,19 @@ export const Button = ({
 
   switch (size) {
     case "medium":
-      styles = cn(styles, "rounded-[8px] px-56px py-16px text-subtitle-3");
+      styles = cn(
+        styles,
+        "rounded-[8px] px-56px py-16px text-subtitle-18-medium",
+      );
       break;
     case "x-large":
-      styles = cn(styles, "rounded-[12px] px-56px py-16px text-subtitle-1");
+      styles = cn(
+        styles,
+        "rounded-[12px] px-56px py-16px text-subtitle-18-bold",
+      );
       break;
     case "keyboard":
-      styles = cn(styles, "px-56px py-16px text-subtitle-1");
+      styles = cn(styles, "px-56px py-16px text-subtitle-18-bold");
       break;
   }
 
