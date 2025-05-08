@@ -11,7 +11,7 @@ export default function RecommendationSetupWhenPage() {
           <Back />
         </Page.Header.Left>
         <Page.Header.Right>
-          <Link href="/" className="text-body-2 text-gray-500">
+          <Link href="/" className="text-body-16-regular text-gray-500">
             닫기
           </Link>
         </Page.Header.Right>
@@ -25,7 +25,7 @@ export default function RecommendationSetupWhenPage() {
 
       <Page.ActionButton>
         {(props) => (
-          <Button {...props} size="large" aria-selected={true}>
+          <Button {...props} size="x-large" aria-selected={true}>
             선물 고르기
           </Button>
         )}

@@ -69,7 +69,19 @@ Page.Container = ({ children, className, noPadding }: Props) => {
 };
 
 Page.Title = ({ children, className }: Props) => {
-  return <h1 className={cn("text-center text-h1", className)}>{children}</h1>;
+  return (
+    <h1 className={cn("text-center text-heading-24-semibold", className)}>
+      {children}
+    </h1>
+  );
+};
+
+Page.SubTitle = ({ children, className }: Props) => {
+  return (
+    <h2 className={cn("text-center text-body-16-regular", className)}>
+      {children}
+    </h2>
+  );
 };
 
 Page.SubTitle = ({ children, className }: Props) => {

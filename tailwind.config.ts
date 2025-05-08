@@ -27,16 +27,28 @@ const config: Config = {
       white: "#FFFFFF",
     },
     fontSize: {
-      display: ["32px", { lineHeight: "36px", fontWeight: "600" }],
-      h1: ["24px", { lineHeight: "32px", fontWeight: "600" }],
-      h2: ["20px", { lineHeight: "28px", fontWeight: "600" }],
-      "subtitle-1": ["18px", { lineHeight: "24px", fontWeight: "700" }],
-      "subtitle-2": ["18px", { lineHeight: "24px", fontWeight: "600" }],
-      "subtitle-3": ["18px", { lineHeight: "24px", fontWeight: "500" }],
-      "body-1": ["16px", { lineHeight: "24px", fontWeight: "700" }],
-      "body-2": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-      "body-3": ["14px", { lineHeight: "20px", fontWeight: "600" }],
-      caption: ["12px", { lineHeight: "16px", fontWeight: "500" }],
+      "display-32-semibold": [
+        "32px",
+        { lineHeight: "36px", fontWeight: "600" },
+      ],
+      "heading-24-semibold": [
+        "24px",
+        { lineHeight: "32px", fontWeight: "600" },
+      ],
+      "heading-20-semibold": [
+        "20px",
+        { lineHeight: "28px", fontWeight: "600" },
+      ],
+      "subtitle-18-bold": ["18px", { lineHeight: "24px", fontWeight: "700" }],
+      "subtitle-18-semibold": [
+        "18px",
+        { lineHeight: "24px", fontWeight: "600" },
+      ],
+      "subtitle-18-medium": ["18px", { lineHeight: "24px", fontWeight: "500" }],
+      "body-16-bold": ["16px", { lineHeight: "24px", fontWeight: "700" }],
+      "body-16-regular": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+      "body-14-semibold": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+      "caption-12-medium": ["12px", { lineHeight: "16px", fontWeight: "500" }],
     },
     screens: {
       mobile: "390px",
