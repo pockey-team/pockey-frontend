@@ -1,10 +1,13 @@
 import { z } from "zod";
 
-export const relationSchema = z.object({
-  name: z.string().min(1, { message: "이름을 입력해 주세요." }),
-  gender: z.string({ message: "성별을 선택해 주세요." }),
-  relationship: z.string({ message: "누구에게 줄지 선택해 주세요." }),
-  occasion: z.string({ message: "언제 줄지 선택해 주세요." }),
+export const recommendationSetupFormSchema = z.object({
+  name: z.string(),
+  gender: z.string(),
+  age: z.string(),
+  relation: z.string(),
+  priceRange: z.string(),
 });
 
-export type RelationData = z.infer<typeof relationSchema>;
+export type RecommendationSetupFormData = z.infer<
+  typeof recommendationSetupFormSchema
+>;
