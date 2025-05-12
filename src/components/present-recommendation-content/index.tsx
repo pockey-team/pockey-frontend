@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getPresents } from "@/api/Present/get-presents";
@@ -9,13 +9,24 @@ import { HeaderSection } from "@/components/present-recommendation-content/heade
 import { PresentBoxSection } from "@/components/present-recommendation-content/present-box-section";
 import { RecommendationSection } from "@/components/present-recommendation-content/recommendation-section";
 
-export const PresentRecommendationContent = () => {
+interface PresentRecommendationContentProps {
+  isMobile: boolean;
+}
+
+export const PresentRecommendationContent = ({
+  isMobile,
+}: PresentRecommendationContentProps) => {
+  const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
+  const handleClickNextStepButton = () => {
+    setIsNextStepButtonClicked(true);
+  };
+
   const { data: presents } = useQuery({
     queryKey: ["presents"],
     queryFn: () =>
       getPresents({
         delay: 1000,
-        empty: false,
+        empty: true,
         error: false,
       }),
   });
@@ -37,30 +48,75 @@ export const PresentRecommendationContent = () => {
   }, []);
 
   const isAnimating = animationState === "animating";
+  const cloverControl = useAnimation();
+
+  useEffect(() => {
+    const animateSequence = async () => {
+      await cloverControl.start({
+        scale: 3,
+        x: -180,
+        y: -150,
+        opacity: 1,
+        transition: {
+          duration: 0.5,
+          delay: 0.8,
+        },
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
+      await cloverControl.start({
+        y: -190,
+        transition: {
+          duration: 0.5,
+          ease: "easeInOut",
+        },
+      });
+    };
+
+    animateSequence();
+  }, [cloverControl]);
 
   return (
     <div className="relative flex h-full flex-col">
       <motion.div
-        initial={{ y: -150 }}
-        animate={{ y: isAnimating ? 150 : -150 }}
-        transition={{
-          duration: 1.2,
-          type: "spring",
-          damping: 20,
-          stiffness: 80,
-        }}
-        className="-left-16px pointer-events-none absolute top-0px z-0 h-full w-full"
+        initial={{ scale: 8, x: 0, y: 0, opacity: 0 }}
+        animate={cloverControl}
+        className="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2"
       >
         <Image
-          src="/background-cloud.svg"
-          alt="background-cloud"
-          fill
-          className="object-cover"
+          src="/background-clover.png"
+          alt="background-clover"
+          width={100}
+          height={100}
           priority
         />
       </motion.div>
 
-      {!hasPresents && <HeaderSection isAnimating={isAnimating} />}
+      <motion.div
+        initial={{ scale: 8, x: 0, y: 0, opacity: 0 }}
+        animate={{ scale: 3, x: 150, y: 150, opacity: 1 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.8,
+        }}
+        className="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2"
+      >
+        <Image
+          src="/background-clover.png"
+          alt="background-clover"
+          width={100}
+          height={100}
+          priority
+        />
+      </motion.div>
+
+      {!hasPresents && (
+        <HeaderSection
+          isAnimating={isAnimating}
+          isNextStepButtonClicked={isNextStepButtonClicked}
+        />
+      )}
 
       <motion.div
         className="flex min-h-[50vh] flex-1 items-center justify-center overflow-y-auto"
@@ -71,13 +127,21 @@ export const PresentRecommendationContent = () => {
         }}
         transition={{
           duration: 1,
-          delay: 0.3,
+          delay: 1.2,
           type: "spring",
           damping: 24,
           stiffness: 100,
         }}
       >
-        {hasPresents ? <RecommendationSection /> : <PresentBoxSection />}
+        {hasPresents ? (
+          <RecommendationSection />
+        ) : (
+          <PresentBoxSection
+            onClickNextStepButton={handleClickNextStepButton}
+            isNextStepButtonClicked={isNextStepButtonClicked}
+            isMobile={isMobile}
+          />
+        )}
       </motion.div>
     </div>
   );

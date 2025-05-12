@@ -84,6 +84,12 @@ Page.SubTitle = ({ children, className }: Props) => {
   );
 };
 
+Page.SubTitle = ({ children, className }: Props) => {
+  return (
+    <h2 className={cn("text-center text-body-2", className)}>{children}</h2>
+  );
+};
+
 Page.ActionButton = ({
   children,
   className,

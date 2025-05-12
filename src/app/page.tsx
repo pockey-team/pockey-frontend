@@ -12,9 +12,11 @@ import { PresentRecommendationContent } from "@/components/present-recommendatio
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
 import type { Present } from "@/constants/Presents";
+import { isMobileDevice } from "@/lib/user-agent";
 import { cn } from "@/lib/utils";
 
 export default async function Home() {
+  const isMobile = await isMobileDevice();
   // const queryClient = await prefetchUserControllerGetUser(
   //   getQueryClient(),
   //   "id:test:server",
@@ -40,10 +42,7 @@ export default async function Home() {
     <div className="overflow-hidden">
       <Page
         className={cn(
-          !hasPresents
-            ? "from-[#121133] to-[#6077A9]"
-            : "from-[#4F76C5] to-[#D7ECFF]",
-          "bg-gradient-to-b",
+          !hasPresents ? "bg-gradient-secondary" : "bg-gradient-primary",
         )}
       >
         <Page.Header>
@@ -61,7 +60,7 @@ export default async function Home() {
 
         <Page.Container className="flex-1" noPadding>
           <HydrationBoundary state={dehydratedState}>
-            <PresentRecommendationContent />
+            <PresentRecommendationContent isMobile={isMobile} />
           </HydrationBoundary>
         </Page.Container>
 
