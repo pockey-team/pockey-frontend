@@ -41,7 +41,7 @@ export default async function Home() {
       <Page
         className={cn(
           !hasPresents
-            ? "from-[#121133] to-[#6077A9]"
+            ? "from-[#1A90E0] to-[#5ECBFF]"
             : "from-[#4F76C5] to-[#D7ECFF]",
           "bg-gradient-to-b",
         )}
