@@ -32,7 +32,7 @@ export const HeaderSection = ({ isAnimating }: HeaderSectionProps) => (
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
     >
-      <Page.SubTitle className="mt-16px font-medium text-gray-400 text-heading-20-semibold">
+      <Page.SubTitle className="mt-16px font-medium text-heading-20-semibold text-white">
         질문을 풀며 원하는 선물을 찾아가요
       </Page.SubTitle>
     </motion.div>

@@ -43,7 +43,7 @@ export const PresentBoxSection = () => {
         whileTap={{ scale: 0.98 }}
         className="w-full"
       >
-        <Button className="min-h-48px w-full rounded-[20px] bg-black p-16px font-bold text-foreground text-xl tracking-tight">
+        <Button className="min-h-48px w-full rounded-[21px] bg-black p-16px font-bold text-foreground text-xl tracking-tight">
           지금 선물하기
         </Button>
       </motion.div>
