@@ -3,9 +3,8 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { FooterToggle } from "@/components/layout/footer-toggle";
+import { BottomBar } from "@/components/layout/bottom-bar";
 import { Page } from "@/components/shared/page";
-import { Button } from "@/components/ui/button";
 
 export default function RecommendationSetupNamePage() {
   return (
@@ -38,27 +37,7 @@ export default function RecommendationSetupNamePage() {
       </Page.Container>
 
       <Page.ActionButton>
-        {(props) => (
-          <div className="flex w-full items-center justify-between gap-2">
-            <Button variant="ghost" className="text-black hover:bg-transparent">
-              <Image
-                src="/footer-navigation/star.svg"
-                alt="logo"
-                width={25}
-                height={25}
-              />
-            </Button>
-            <FooterToggle />
-            <Button variant="ghost" className="text-black hover:bg-transparent">
-              <Image
-                src="/footer-navigation/user.svg"
-                alt="logo"
-                width={35}
-                height={35}
-              />
-            </Button>
-          </div>
-        )}
+        {(props) => <BottomBar {...props} />}
       </Page.ActionButton>
     </Page>
   );
