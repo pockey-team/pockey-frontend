@@ -5,30 +5,61 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
+const CARD_WIDTH = 274;
+const CARD_HEIGHT = 399;
+const CARD_BORDER_RADIUS = 24;
+const IMAGE_CONTAINER_SIZE = 280;
+const IMAGE_INITIAL_Y_OFFSET = 25;
+
+const ANIMATION_STATE = {
+  INITIAL: 0,
+  MOVE_UP: 1,
+  FADE_OUT: 2,
+};
+
+const ANIMATION_TIMING = {
+  MOVE_DELAY: 100, // ms
+  FADE_DELAY: 800,
+  CONTENT_FADE_DURATION: 0.3,
+  IMAGE_OPACITY_DURATION: 0.8,
+  IMAGE_SCALE_DURATION: 0.5,
+  Y_SPRING_STIFFNESS: 70,
+  Y_SPRING_DAMPING: 13,
+};
+
 interface PresentBoxSectionProps {
   onClickNextStepButton: () => void;
   isNextStepButtonClicked: boolean;
+  isMobile: boolean;
 }
 
 export const PresentBoxSection = ({
   onClickNextStepButton,
   isNextStepButtonClicked,
+  isMobile,
 }: PresentBoxSectionProps) => {
   const [scaleRatio, setScaleRatio] = useState(1);
-  const [animationPhase, setAnimationPhase] = useState(0);
+  const [imageAnimationStage, setImageAnimationStage] = useState(
+    ANIMATION_STATE.INITIAL,
+  );
 
   useEffect(() => {
     document.body.style.overflow = isNextStepButtonClicked ? "hidden" : "";
 
     if (isNextStepButtonClicked) {
-      const moveTimer = setTimeout(() => setAnimationPhase(1), 100);
-
-      const fadeTimer = setTimeout(() => setAnimationPhase(2), 800);
+      const moveTimer = setTimeout(
+        () => setImageAnimationStage(ANIMATION_STATE.MOVE_UP),
+        ANIMATION_TIMING.MOVE_DELAY,
+      );
+      const fadeTimer = setTimeout(
+        () => setImageAnimationStage(ANIMATION_STATE.FADE_OUT),
+        ANIMATION_TIMING.FADE_DELAY,
+      );
 
       return () => {
         clearTimeout(moveTimer);
         clearTimeout(fadeTimer);
-        setAnimationPhase(0);
+        setImageAnimationStage(ANIMATION_STATE.INITIAL);
       };
     }
   }, [isNextStepButtonClicked]);
@@ -36,59 +67,70 @@ export const PresentBoxSection = ({
   useEffect(() => {
     const calculateRatio = () => {
       const screenDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
-      const cardDiagonal = Math.hypot(274, 399);
+      const cardDiagonal = Math.hypot(CARD_WIDTH, CARD_HEIGHT);
       return (screenDiagonal / cardDiagonal) * 1.2;
     };
-    const update = () => setScaleRatio(calculateRatio());
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+
+    const updateScaleRatio = () => setScaleRatio(calculateRatio());
+
+    updateScaleRatio();
+    window.addEventListener("resize", updateScaleRatio);
+    return () => window.removeEventListener("resize", updateScaleRatio);
   }, []);
+
+  const mobileExpandedStyles = {
+    scale: scaleRatio,
+    borderRadius: 35,
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    x: "-50%",
+    y: "-50%",
+  };
+
+  const desktopExpandedStyles = {
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    scale: 1,
+    borderRadius: 0,
+    x: 0,
+    y: 0,
+  };
 
   const containerVariants = {
     normal: {
       scale: 1,
-      borderRadius: 24,
+      borderRadius: CARD_BORDER_RADIUS,
       zIndex: 10,
       backgroundColor: "white",
     },
     expanded: {
-      scale: scaleRatio,
-      borderRadius: 35,
+      ...(isMobile ? mobileExpandedStyles : desktopExpandedStyles),
       zIndex: 999,
-      position: "absolute" as const,
-      top: "50%",
-      left: "50%",
-      x: "-50%",
-      y: "-50%",
       backgroundColor: "black",
     },
   };
 
   const contentVariants = {
     normal: { opacity: 1, y: 0 },
-    expanded: { opacity: 0, y: 20, transition: { duration: 0.3 } },
+    expanded: {
+      opacity: 0,
+      y: 20,
+      transition: { duration: ANIMATION_TIMING.CONTENT_FADE_DURATION },
+    },
   };
 
-  const getImageStyle = () => {
-    if (animationPhase === 0) {
-      return {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      };
-    } else if (animationPhase === 1) {
-      return {
-        opacity: 1,
-        y: 70,
-        scale: 1.1,
-      };
-    } else {
-      return {
-        opacity: 0,
-        y: 70,
-        scale: 0.6,
-      };
+  const getImageAnimationStyles = () => {
+    switch (imageAnimationStage) {
+      case ANIMATION_STATE.MOVE_UP:
+        return { opacity: 1, y: 70, scale: 1.1 };
+      case ANIMATION_STATE.FADE_OUT:
+        return { opacity: 0, y: 70, scale: 0.6 };
+      default:
+        return { opacity: 1, y: 0, scale: 1 };
     }
   };
 
@@ -102,15 +144,21 @@ export const PresentBoxSection = ({
           scale: { type: "spring", stiffness: 100, damping: 10, delay: 0.1 },
           default: { duration: 0 },
         }}
-        className="flex flex-col items-center justify-start overflow-hidden rounded-3xl bg-white text-center"
+        className="flex flex-col items-center justify-start overflow-hidden text-center"
         style={{
-          width: 274,
-          height: 399,
+          width: CARD_WIDTH,
+          height: CARD_HEIGHT,
           transformOrigin: "center center",
           padding: "20px",
         }}
       >
-        <div className="mb-6 h-[280px] w-[280px]"></div>
+        <div
+          style={{
+            height: `${IMAGE_CONTAINER_SIZE}px`,
+            width: `${IMAGE_CONTAINER_SIZE}px`,
+          }}
+          className="mb-6"
+        />
 
         <motion.div
           variants={contentVariants}
@@ -130,19 +178,31 @@ export const PresentBoxSection = ({
 
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={getImageStyle()}
+        animate={getImageAnimationStyles()}
         transition={{
-          opacity: { duration: 0.8, ease: "easeInOut" },
-          y: { type: "spring", stiffness: 70, damping: 13 },
-          scale: { duration: 0.5, ease: "easeOut" },
+          opacity: {
+            duration: ANIMATION_TIMING.IMAGE_OPACITY_DURATION,
+            ease: "easeInOut",
+          },
+          y: {
+            type: "spring",
+            stiffness: ANIMATION_TIMING.Y_SPRING_STIFFNESS,
+            damping: ANIMATION_TIMING.Y_SPRING_DAMPING,
+          },
+          scale: {
+            duration: ANIMATION_TIMING.IMAGE_SCALE_DURATION,
+            ease: "easeOut",
+          },
         }}
         style={{
           position: "fixed",
-          width: 280,
-          height: 280,
+          width: IMAGE_CONTAINER_SIZE,
+          height: IMAGE_CONTAINER_SIZE,
           left: "50%",
-          marginTop: -140 - (isNextStepButtonClicked ? 0 : 25),
-          marginLeft: -140,
+          marginTop:
+            -IMAGE_CONTAINER_SIZE / 2 -
+            (isNextStepButtonClicked ? 0 : IMAGE_INITIAL_Y_OFFSET),
+          marginLeft: -IMAGE_CONTAINER_SIZE / 2,
           zIndex: isNextStepButtonClicked ? 1000 : 11,
           pointerEvents: "none",
         }}
@@ -170,7 +230,7 @@ export const PresentBoxSection = ({
             src="/present.svg"
             alt="선물 이미지"
             fill
-            sizes="280px"
+            sizes={`${IMAGE_CONTAINER_SIZE}px`}
             className="object-contain"
             priority
           />

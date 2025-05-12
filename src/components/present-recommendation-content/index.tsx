@@ -9,7 +9,13 @@ import { HeaderSection } from "@/components/present-recommendation-content/heade
 import { PresentBoxSection } from "@/components/present-recommendation-content/present-box-section";
 import { RecommendationSection } from "@/components/present-recommendation-content/recommendation-section";
 
-export const PresentRecommendationContent = () => {
+interface PresentRecommendationContentProps {
+  isMobile: boolean;
+}
+
+export const PresentRecommendationContent = ({
+  isMobile,
+}: PresentRecommendationContentProps) => {
   const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
   const handleClickNextStepButton = () => {
     setIsNextStepButtonClicked(true);
@@ -133,6 +139,7 @@ export const PresentRecommendationContent = () => {
           <PresentBoxSection
             onClickNextStepButton={handleClickNextStepButton}
             isNextStepButtonClicked={isNextStepButtonClicked}
+            isMobile={isMobile}
           />
         )}
       </motion.div>
