@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shared/button";
 
 const CARD_WIDTH = 274;
 const CARD_HEIGHT = 399;
@@ -105,7 +105,7 @@ export const PresentBoxSection = ({
       scale: 1,
       borderRadius: CARD_BORDER_RADIUS,
       zIndex: 10,
-      backgroundColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
     },
     expanded: {
       ...(isMobile ? mobileExpandedStyles : desktopExpandedStyles),
@@ -157,7 +157,7 @@ export const PresentBoxSection = ({
             height: `${IMAGE_CONTAINER_SIZE}px`,
             width: `${IMAGE_CONTAINER_SIZE}px`,
           }}
-          className="mb-6"
+          className="mb-12px"
         />
 
         <motion.div
@@ -165,13 +165,16 @@ export const PresentBoxSection = ({
           animate={isNextStepButtonClicked ? "expanded" : "normal"}
           className="w-full"
         >
-          <p className="mb-4 font-bold text-black">오늘의 선물 꾸러미</p>
+          <p className="mb-[18px] text-body-16-bold text-gray-600">
+            오늘의 선물 꾸러미
+          </p>
           <Button
+            size="large"
+            className="w-full"
             onClick={onClickNextStepButton}
             disabled={isNextStepButtonClicked}
-            className="min-h-[48px] w-full rounded-[21px] bg-black py-4 font-bold text-foreground text-xl"
           >
-            지금 선물하기
+            <span className="text-gray-100">지금 선물하기</span>
           </Button>
         </motion.div>
       </motion.div>
