@@ -10,6 +10,11 @@ import { PresentBoxSection } from "@/components/present-recommendation-content/p
 import { RecommendationSection } from "@/components/present-recommendation-content/recommendation-section";
 
 export const PresentRecommendationContent = () => {
+  const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
+  const handleClickNextStepButton = () => {
+    setIsNextStepButtonClicked(true);
+  };
+
   const { data: presents } = useQuery({
     queryKey: ["presents"],
     queryFn: () =>
@@ -100,7 +105,12 @@ export const PresentRecommendationContent = () => {
         />
       </motion.div>
 
-      {!hasPresents && <HeaderSection isAnimating={isAnimating} />}
+      {!hasPresents && (
+        <HeaderSection
+          isAnimating={isAnimating}
+          isNextStepButtonClicked={isNextStepButtonClicked}
+        />
+      )}
 
       <motion.div
         className="flex min-h-[50vh] flex-1 items-center justify-center overflow-y-auto"
@@ -117,7 +127,14 @@ export const PresentRecommendationContent = () => {
           stiffness: 100,
         }}
       >
-        {hasPresents ? <RecommendationSection /> : <PresentBoxSection />}
+        {hasPresents ? (
+          <RecommendationSection />
+        ) : (
+          <PresentBoxSection
+            onClickNextStepButton={handleClickNextStepButton}
+            isNextStepButtonClicked={isNextStepButtonClicked}
+          />
+        )}
       </motion.div>
     </div>
   );

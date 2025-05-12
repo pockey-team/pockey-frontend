@@ -40,10 +40,7 @@ export default async function Home() {
     <div className="overflow-hidden">
       <Page
         className={cn(
-          !hasPresents
-            ? "from-[#1A90E0] to-[#5ECBFF]"
-            : "from-[#4F76C5] to-[#D7ECFF]",
-          "bg-gradient-to-b",
+          !hasPresents ? "bg-gradient-secondary" : "bg-gradient-primary",
         )}
       >
         <Page.Header>
