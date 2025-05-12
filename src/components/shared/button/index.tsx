@@ -2,7 +2,7 @@ import { ComponentProps, PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
 
 interface Props extends ComponentProps<"button"> {
-  size?: "medium" | "x-large" | "keyboard";
+  size?: "medium" | "large" | "x-large" | "keyboard";
   variant?: "contained";
 }
 
@@ -21,6 +21,9 @@ export const Button = ({
         styles,
         "rounded-[8px] px-48px py-16px text-subtitle-18-medium",
       );
+      break;
+    case "large":
+      styles = cn(styles, "rounded-[12px] px-48px py-[17px] text-body-16-bold");
       break;
     case "x-large":
       styles = cn(

@@ -32,7 +32,7 @@ export const HeaderSection = ({
         ease: "easeInOut",
       }}
     >
-      <Page.Title className="mt-48px font-bold text-gray-100 text-heading-24-semibold">
+      <Page.Title className="mt-[60px] text-gray-100">
         딱 맞는 선물, 함께 골라볼까요?
       </Page.Title>
     </motion.div>
@@ -49,7 +49,7 @@ export const HeaderSection = ({
         ease: "easeInOut",
       }}
     >
-      <Page.SubTitle className="mt-16px font-medium text-heading-20-semibold text-white">
+      <Page.SubTitle className="mt-8px text-white">
         질문을 풀며 원하는 선물을 찾아가요
       </Page.SubTitle>
     </motion.div>

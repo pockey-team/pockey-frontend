@@ -78,15 +78,9 @@ Page.Title = ({ children, className }: Props) => {
 
 Page.SubTitle = ({ children, className }: Props) => {
   return (
-    <h2 className={cn("text-center text-body-16-regular", className)}>
+    <h2 className={cn("text-center text-subtitle-18-medium", className)}>
       {children}
     </h2>
-  );
-};
-
-Page.SubTitle = ({ children, className }: Props) => {
-  return (
-    <h2 className={cn("text-center text-body-2", className)}>{children}</h2>
   );
 };
 
