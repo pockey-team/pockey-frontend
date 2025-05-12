@@ -8,7 +8,8 @@ export const isMobileDevice = async () => {
     throw new Error("서버 환경에서만 사용할 수 있습니다.");
   }
 
-  const ua = headers().get("user-agent");
+  const headerList = await headers();
+  const ua = headerList.get("user-agent");
   const device = new UAParser(ua || "").getDevice();
 
   return device.type === "mobile";
