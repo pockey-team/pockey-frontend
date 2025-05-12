@@ -72,7 +72,7 @@ export default async function Home() {
                 className="text-black hover:bg-transparent"
               >
                 <Image
-                  src="footer-navigation/star.svg"
+                  src="/footer-navigation/star.svg"
                   alt="logo"
                   width={25}
                   height={25}
@@ -84,7 +84,7 @@ export default async function Home() {
                 className="text-black hover:bg-transparent"
               >
                 <Image
-                  src="footer-navigation/user.svg"
+                  src="/footer-navigation/user.svg"
                   alt="logo"
                   width={35}
                   height={35}

@@ -58,7 +58,7 @@ export const FooterToggle = () => {
         disabled={isAnimating}
       >
         <Image
-          src="footer-navigation/home.svg"
+          src="/footer-navigation/home.svg"
           alt="logo"
           width={35}
           height={35}
@@ -75,7 +75,7 @@ export const FooterToggle = () => {
         disabled={isAnimating}
       >
         <Image
-          src="footer-navigation/result.svg"
+          src="/footer-navigation/result.svg"
           alt="logo"
           width={35}
           height={35}
