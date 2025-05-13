@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const FooterToggle = () => {
+export const BottomBarTabs = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [active, setActive] = useState(
@@ -57,12 +57,7 @@ export const FooterToggle = () => {
         onClick={() => handleToggle(true, "/")}
         disabled={isAnimating}
       >
-        <Image
-          src="footer-navigation/home.svg"
-          alt="logo"
-          width={35}
-          height={35}
-        />
+        <HomeIcon width={35} height={35} />
       </Button>
 
       <Button
@@ -74,13 +69,18 @@ export const FooterToggle = () => {
         onClick={() => handleToggle(false, "/recommendation/result")}
         disabled={isAnimating}
       >
-        <Image
-          src="footer-navigation/result.svg"
-          alt="logo"
-          width={35}
-          height={35}
-        />
+        <ResultIcon width={35} height={35} />
       </Button>
     </div>
+  );
+};
+
+const HomeIcon = ({ ...props }: Omit<ImageProps, "alt" | "src">) => {
+  return <Image src="/footer-navigation/home.svg" alt="home-icon" {...props} />;
+};
+
+const ResultIcon = ({ ...props }: Omit<ImageProps, "alt" | "src">) => {
+  return (
+    <Image src="/footer-navigation/result.svg" alt="result-icon" {...props} />
   );
 };

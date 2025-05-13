@@ -7,14 +7,15 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPresents } from "@/api/Present/get-presents";
-import { FooterToggle } from "@/components/layout/footer-toggle";
+import { BottomBar } from "@/components/layout/bottom-bar";
 import { PresentRecommendationContent } from "@/components/present-recommendation-content";
 import { Page } from "@/components/shared/page";
-import { Button } from "@/components/ui/button";
 import type { Present } from "@/constants/Presents";
+import { isMobileDevice } from "@/lib/user-agent";
 import { cn } from "@/lib/utils";
 
 export default async function Home() {
+  const isMobile = await isMobileDevice();
   // const queryClient = await prefetchUserControllerGetUser(
   //   getQueryClient(),
   //   "id:test:server",
@@ -40,10 +41,7 @@ export default async function Home() {
     <div className="overflow-hidden">
       <Page
         className={cn(
-          !hasPresents
-            ? "from-[#121133] to-[#6077A9]"
-            : "from-[#4F76C5] to-[#D7ECFF]",
-          "bg-gradient-to-b",
+          !hasPresents ? "bg-gradient-secondary" : "bg-gradient-primary",
         )}
       >
         <Page.Header>
@@ -61,38 +59,12 @@ export default async function Home() {
 
         <Page.Container className="flex-1" noPadding>
           <HydrationBoundary state={dehydratedState}>
-            <PresentRecommendationContent />
+            <PresentRecommendationContent isMobile={isMobile} />
           </HydrationBoundary>
         </Page.Container>
 
         <Page.ActionButton>
-          {(props) => (
-            <div className="flex w-full items-center justify-between gap-2">
-              <Button
-                variant="ghost"
-                className="text-black hover:bg-transparent"
-              >
-                <Image
-                  src="footer-navigation/star.svg"
-                  alt="logo"
-                  width={25}
-                  height={25}
-                />
-              </Button>
-              <FooterToggle />
-              <Button
-                variant="ghost"
-                className="text-black hover:bg-transparent"
-              >
-                <Image
-                  src="footer-navigation/user.svg"
-                  alt="logo"
-                  width={35}
-                  height={35}
-                />
-              </Button>
-            </div>
-          )}
+          {(props) => <BottomBar {...props} />}
         </Page.ActionButton>
       </Page>
     </div>
