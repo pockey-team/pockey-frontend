@@ -1,96 +1,195 @@
 import {
   ComponentProps,
+  ComponentPropsWithoutRef,
   cloneElement,
-  PropsWithChildren,
+  ElementType,
+  JSXElementConstructor,
   ReactElement,
   useMemo,
 } from "react";
 import { cn } from "@/lib/utils";
 
-interface Props extends PropsWithChildren<{ className?: string }> {
-  noPadding?: boolean;
-}
+type AnyComponent = ElementType | JSXElementConstructor<any>;
 
-export const Page = ({ children, className }: Props) => {
+type PropsOf<C extends AnyComponent> = ComponentPropsWithoutRef<C>;
+
+type PolymorphicComponentProps<
+  DefaultComponent extends AnyComponent,
+  OwnProps = Record<string, unknown>,
+> = OwnProps & {
+  as?: AnyComponent;
+} & Omit<PropsOf<DefaultComponent>, "as" | keyof OwnProps>;
+
+export const Page = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"div"> &
+  PropsOf<C extends AnyComponent ? C : "div">) => {
+  const Component = as || "div";
   return (
-    <div className={cn("flex h-screen flex-col transition-colors", className)}>
+    <Component
+      className={cn("flex h-screen flex-col transition-colors", className)}
+      {...props}
+    >
       {children}
-    </div>
+    </Component>
   );
 };
 
-const Header = ({ children, className }: Props) => {
+// Header component with proper type inference
+const Header = <C extends AnyComponent = "header">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"header"> &
+  PropsOf<C extends AnyComponent ? C : "header">) => {
+  const Component = as || "header";
   return (
-    <header className={cn("relative w-full px-16px", className)}>
+    <Component className={cn("relative w-full px-16px", className)} {...props}>
       <div className="mx-auto flex h-[56px] w-full max-w-[1024px] items-center justify-start">
         {children}
       </div>
-    </header>
+    </Component>
   );
 };
 
-Header.Left = ({ children, className }: Props) => {
-  return <div className={cn("flex items-center", className)}>{children}</div>;
+// Header.Left with proper type inference
+Header.Left = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"div"> &
+  PropsOf<C extends AnyComponent ? C : "div">) => {
+  const Component = as || "div";
+  return (
+    <Component className={cn("flex items-center", className)} {...props}>
+      {children}
+    </Component>
+  );
 };
 
-Header.Center = ({ children, className }: Props) => {
+// Header.Center with proper type inference
+Header.Center = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"div"> &
+  PropsOf<C extends AnyComponent ? C : "div">) => {
+  const Component = as || "div";
   return (
-    <div
+    <Component
       className={cn(
         "-translate-x-1/2 absolute left-1/2 flex items-center",
         className,
       )}
+      {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 };
 
-Header.Right = ({ children, className }: Props) => {
+// Header.Right with proper type inference
+Header.Right = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"div"> &
+  PropsOf<C extends AnyComponent ? C : "div">) => {
+  const Component = as || "div";
   return (
-    <div className={cn("ml-auto flex items-center", className)}>{children}</div>
+    <Component
+      className={cn("ml-auto flex items-center", className)}
+      {...props}
+    >
+      {children}
+    </Component>
   );
 };
 
 Page.Header = Header;
 
-Page.Container = ({ children, className, noPadding }: Props) => {
+// Container component with proper type inference
+Page.Container = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  noPadding,
+  ...props
+}: PolymorphicComponentProps<"div", { noPadding?: boolean }> &
+  PropsOf<C extends AnyComponent ? C : "div">) => {
+  const Component = as || "div";
   return (
-    <div
+    <Component
       className={cn(
         "mx-auto w-full max-w-[390px]",
         noPadding ? "px-0px" : "px-16px",
         className,
       )}
+      {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 };
 
-Page.Title = ({ children, className }: Props) => {
-  return (
-    <h1 className={cn("text-center text-heading-24-semibold", className)}>
-      {children}
-    </h1>
-  );
-};
-
-Page.SubTitle = ({ children, className }: Props) => {
-  return (
-    <h2 className={cn("text-center text-subtitle-18-medium", className)}>
-      {children}
-    </h2>
-  );
-};
-
-Page.ActionButton = ({
+// Title component with proper type inference
+Page.Title = <C extends AnyComponent = "h1">({
+  as,
   children,
   className,
   ...props
-}: Omit<ComponentProps<"div">, "children"> & {
+}: PolymorphicComponentProps<"h1"> &
+  PropsOf<C extends AnyComponent ? C : "h1">) => {
+  const Component = as || "h1";
+  return (
+    <Component
+      className={cn("text-center text-heading-24-semibold", className)}
+      {...props}
+    >
+      {children}
+    </Component>
+  );
+};
+
+// SubTitle component with proper type inference
+Page.SubTitle = <C extends AnyComponent = "h2">({
+  as,
+  children,
+  className,
+  ...props
+}: PolymorphicComponentProps<"h2"> &
+  PropsOf<C extends AnyComponent ? C : "h2">) => {
+  const Component = as || "h2";
+  return (
+    <Component
+      className={cn("text-center text-subtitle-18-medium", className)}
+      {...props}
+    >
+      {children}
+    </Component>
+  );
+};
+
+Page.ActionButton = <C extends AnyComponent = "div">({
+  as,
+  children,
+  className,
+  ...props
+}: Omit<
+  PolymorphicComponentProps<"div"> &
+    PropsOf<C extends AnyComponent ? C : "div">,
+  "children"
+> & {
   children: (props: ComponentProps<"button">) => ReactElement<any>;
 }) => {
+  const Component = (as || "div") as AnyComponent;
   const button = useMemo(() => {
     const elem = children({});
     const className = cn(elem.props.className, "w-full");
@@ -98,7 +197,7 @@ Page.ActionButton = ({
   }, [children]);
 
   return (
-    <div
+    <Component
       className={cn(
         "mx-auto mt-auto mb-48px w-full max-w-[390px] px-16px",
         className,
@@ -106,6 +205,6 @@ Page.ActionButton = ({
       {...props}
     >
       {button}
-    </div>
+    </Component>
   );
 };
