@@ -11,9 +11,6 @@ export default function RecommendationSetupLayout({
 }: PropsWithChildren) {
   const form = useForm({
     mode: "onChange",
-    defaultValues: {
-      name: "지혜",
-    },
     resolver: zodResolver(recommendationSetupFormSchema),
   });
 

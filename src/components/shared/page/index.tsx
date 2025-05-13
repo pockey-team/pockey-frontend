@@ -1,86 +1,163 @@
 import {
   ComponentProps,
+  ComponentPropsWithoutRef,
   cloneElement,
+  ElementType,
   PropsWithChildren,
   ReactElement,
   useMemo,
 } from "react";
 import { cn } from "@/lib/utils";
 
+type PolymorphicProps<E extends ElementType> = PropsWithChildren<
+  ComponentPropsWithoutRef<E> & {
+    as?: E;
+  }
+>;
+
 interface Props extends PropsWithChildren<{ className?: string }> {
   noPadding?: boolean;
 }
 
-export const Page = ({ children, className }: Props) => {
+export const Page = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"div">) => {
+  const Component = as || "div";
   return (
-    <div className={cn("flex h-screen flex-col transition-colors", className)}>
+    <Component
+      className={cn("flex h-screen flex-col transition-colors", className)}
+      {...props}
+    >
       {children}
-    </div>
+    </Component>
   );
 };
 
-const Header = ({ children, className }: Props) => {
+const Header = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"header">) => {
+  const Component = as || "header";
   return (
-    <header className={cn("relative w-full px-16px", className)}>
+    <Component className={cn("relative w-full px-16px", className)} {...props}>
       <div className="mx-auto flex h-[56px] w-full max-w-[1024px] items-center justify-start">
         {children}
       </div>
-    </header>
+    </Component>
   );
 };
 
-Header.Left = ({ children, className }: Props) => {
-  return <div className={cn("flex items-center", className)}>{children}</div>;
+Header.Left = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"div">) => {
+  const Component = as || "div";
+  return (
+    <Component className={cn("flex items-center", className)} {...props}>
+      {children}
+    </Component>
+  );
 };
 
-Header.Center = ({ children, className }: Props) => {
+Header.Center = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"div">) => {
+  const Component = as || "div";
   return (
-    <div
+    <Component
       className={cn(
         "-translate-x-1/2 absolute left-1/2 flex items-center",
         className,
       )}
+      {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 };
 
-Header.Right = ({ children, className }: Props) => {
+Header.Right = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"div">) => {
+  const Component = as || "div";
   return (
-    <div className={cn("ml-auto flex items-center", className)}>{children}</div>
+    <Component
+      className={cn("ml-auto flex items-center", className)}
+      {...props}
+    >
+      {children}
+    </Component>
   );
 };
 
 Page.Header = Header;
 
-Page.Container = ({ children, className, noPadding }: Props) => {
+Page.Container = ({
+  as,
+  children,
+  className,
+  noPadding,
+  ...props
+}: Props & PolymorphicProps<"div">) => {
+  const Component = as || "div";
   return (
-    <div
+    <Component
       className={cn(
         "mx-auto w-full max-w-[390px]",
         noPadding ? "px-0px" : "px-16px",
         className,
       )}
+      {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 };
 
-Page.Title = ({ children, className }: Props) => {
+Page.Title = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"h1">) => {
+  const Component = as || "h1";
   return (
-    <h1 className={cn("text-center text-heading-24-semibold", className)}>
+    <Component
+      className={cn("text-center text-heading-24-semibold", className)}
+      {...props}
+    >
       {children}
-    </h1>
+    </Component>
   );
 };
 
-Page.SubTitle = ({ children, className }: Props) => {
+Page.SubTitle = ({
+  as,
+  children,
+  className,
+  ...props
+}: Props & PolymorphicProps<"h2">) => {
+  const Component = as || "h2";
   return (
-    <h2 className={cn("text-center text-subtitle-18-medium", className)}>
+    <Component
+      className={cn("text-center text-subtitle-18-medium", className)}
+      {...props}
+    >
       {children}
-    </h2>
+    </Component>
   );
 };
 

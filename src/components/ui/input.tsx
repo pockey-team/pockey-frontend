@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
   cn(
-    "w-full px-16px py-[15px] rounded-[12px] bg-gray-700 text-gray-100 text-subtitle-18-bold",
+    "w-full px-16px py-[15px] rounded-[12px] bg-gray-700 text-gray-100 text-subtitle-18-bold border border-transparent",
     "transition-colors",
     "disabled:cursor-not-allowed",
-    "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+    "focus:outline-none focus:border focus:border-gray-500 focus-visible:ring-1 focus-visible:ring-ring",
     "placeholder-gray-500 placeholder:text-subtitle-18-medium",
   ),
 );
