@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-
-import { Inter } from "next/font/google";
+import "@/app/globals.css";
 import localFont from "next/font/local";
 import { AuthSession } from "@/lib/session-provider";
-import { TanstackQueryProvider } from "@/lib/tanstack-provider";
+import { PropsWithChildren } from "react";
+import { Providers } from "@/components/shared/providers";
 import { cn } from "@/lib/utils";
 
-import "./globals.css";
+if (
+  process.env.NEXT_RUNTIME === "nodejs" &&
+  process.env.NODE_ENV !== "production"
+) {
+  const { server } = await import("@/mocks/node");
+  server.listen();
+}
 
-const pretendard = localFont({
+const Pretendard = localFont({
   src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
   display: "swap",
   weight: "45 920",
+  fallback: ["Pretendard"],
+  adjustFontFallback: false,
   variable: "--font-pretendard",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -25,28 +28,11 @@ export const metadata: Metadata = {
   description: "Pockey",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
-      <body
-        className={cn(
-          pretendard.variable,
-          inter.variable,
-          pretendard.className,
-        )}
-      >
-        <div className="mx-auto h-dvh min-h-screen w-full max-w-full p-4 shadow-2xl sm:max-w-[390px]">
-          <TanstackQueryProvider>
-            <AuthSession>{children}</AuthSession>
-          </TanstackQueryProvider>
-        </div>
+      <body className={cn(Pretendard.variable)}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

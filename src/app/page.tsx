@@ -1,28 +1,73 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { SignOutButton } from "@/components/auth/sign-out-button";
+import { getPresents } from "@/api/Present/get-presents";
+import { BottomBar } from "@/components/layout/bottom-bar";
+import { PresentRecommendationContent } from "@/components/present-recommendation-content";
+import { Page } from "@/components/shared/page";
+import type { Present } from "@/constants/Presents";
+import { isMobileDevice } from "@/lib/user-agent";
+import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { authOptions } from "@/lib/auth";
+export default async function Home() {
+  const isMobile = await isMobileDevice();
+  // const queryClient = await prefetchUserControllerGetUser(
+  //   getQueryClient(),
+  //   "id:test:server",
+  // );
 
-const Home = async () => {
-  const session = await getServerSession(authOptions);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["presents"],
+    queryFn: () =>
+      getPresents({
+        delay: 1000,
+        empty: true,
+        error: false,
+      }),
+  });
+
+  const cachedPresents = queryClient.getQueryData<Present[]>(["presents"]);
+  const hasPresents = cachedPresents && cachedPresents.length > 0;
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <main className="flex h-full flex-col items-center gap-4">
-      <div className="flex flex-1 items-center">
-        <h1 className="font-bold text-4xl tracking-tight">Pockey Frontend</h1>
-      </div>
+    <div className="overflow-hidden">
+      <Page
+        className={cn(
+          !hasPresents ? "bg-gradient-secondary" : "bg-gradient-primary",
+        )}
+      >
+        <Page.Header>
+          <Page.Header.Left>
+            <Link href="/">
+              <Image src="/logo.svg" alt="logo" width={100} height={100} />
+            </Link>
+          </Page.Header.Left>
+          <Page.Header.Right>
+            <Link href="/">
+              <Search className="text-white" />
+            </Link>
+          </Page.Header.Right>
+        </Page.Header>
 
-      {/* 추후 제거 예정입니다. */}
-      {!session && (
-        <Button asChild>
-          <Link href="/auth/signIn">로그인 페이지로 이동</Link>
-        </Button>
-      )}
+        <Page.Container className="flex-1" noPadding>
+          <HydrationBoundary state={dehydratedState}>
+            <PresentRecommendationContent isMobile={isMobile} />
+          </HydrationBoundary>
+        </Page.Container>
 
-      {/* 추후 제거 예정입니다. */}
-      {session && <SignOutButton />}
-    </main>
+        <Page.ActionButton>
+          {(props) => <BottomBar {...props} />}
+        </Page.ActionButton>
+      </Page>
+    </div>
   );
 };
 
