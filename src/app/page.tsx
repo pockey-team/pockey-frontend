@@ -13,7 +13,6 @@ import { Page } from "@/components/shared/page";
 import type { Present } from "@/constants/Presents";
 import { isMobileDevice } from "@/lib/user-agent";
 import { cn } from "@/lib/utils";
-
 export default async function Home() {
   const isMobile = await isMobileDevice();
   // const queryClient = await prefetchUserControllerGetUser(
