@@ -15,7 +15,7 @@ export const SignInButton = () => {
     <Button
       onClick={login}
       variant="ghost"
-      className="min-w-40 border-none bg-yellow-300 font-bold text-yellow-900 tracking-tight shadow-sm"
+      className="h-56px w-full min-w-40 border-none bg-kakao font-bold text-subtitle-18-bold text-yellow-900 tracking-tight shadow-sm transition-all duration-300 focus:scale-95"
     >
       {isPending ? <Spinner /> : <p>카카오로 시작하기</p>}
     </Button>
