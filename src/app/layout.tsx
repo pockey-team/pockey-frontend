@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import localFont from "next/font/local";
 import { PropsWithChildren } from "react";
+import { Toaster } from "sonner";
 import { Providers } from "@/components/shared/providers";
 import { cn } from "@/lib/utils";
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={cn(Pretendard.variable)}>
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );
