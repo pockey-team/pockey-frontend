@@ -20,7 +20,6 @@ export default async function Home() {
   //   getQueryClient(),
   //   "id:test:server",
   // );
-
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
