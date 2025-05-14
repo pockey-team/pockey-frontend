@@ -23,76 +23,63 @@ import type {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { http } from "../http";
 import type {
-  AddToWishlistCommand,
-  LoginResponse,
-  Post,
-  Product,
-  ProductControllerGetRankingParams,
-  RankingProduct,
-  RecommendSession,
-  RecommendSessionControllerGetSessionsParams,
-  RecommendSessionControllerSubmitAnswer200,
-  RecommendSessionResult,
-  RecommendSessionStep,
-  SocialLoginCommand,
-  StartRecommendSessionCommand,
-  SubmitAnswerCommand,
-  UpdateProfileCommand,
-  UserProfile,
+  LoginCommand,
+  PostControllerGetPostsParams,
+  SubmitAnswerRequest,
+  UpdatePasswordCommand,
+  UpdateUserPasswordCommand,
+  UserControllerGetUsersParams,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export type authControllerLoginSocialResponse201 = {
-  data: LoginResponse;
+export type authControllerLoginResponse201 = {
+  data: undefined;
   status: 201;
 };
 
-export type authControllerLoginSocialResponseComposite =
-  authControllerLoginSocialResponse201;
+export type authControllerLoginResponseComposite =
+  authControllerLoginResponse201;
 
-export type authControllerLoginSocialResponse =
-  authControllerLoginSocialResponseComposite & {
+export type authControllerLoginResponse =
+  authControllerLoginResponseComposite & {
     headers: Headers;
   };
 
-export const getAuthControllerLoginSocialUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/auth/login/social`;
+export const getAuthControllerLoginUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/auth/login`;
 };
 
-export const authControllerLoginSocial = async (
-  socialLoginCommand: SocialLoginCommand,
+export const authControllerLogin = async (
+  loginCommand: LoginCommand,
   options?: RequestInit,
-): Promise<authControllerLoginSocialResponse> => {
-  return http<authControllerLoginSocialResponse>(
-    getAuthControllerLoginSocialUrl(),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(socialLoginCommand),
-    },
-  );
+): Promise<authControllerLoginResponse> => {
+  return http<authControllerLoginResponse>(getAuthControllerLoginUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(loginCommand),
+  });
 };
 
-export const getAuthControllerLoginSocialMutationOptions = <
+export const getAuthControllerLoginMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerLoginSocial>>,
+    Awaited<ReturnType<typeof authControllerLogin>>,
     TError,
-    { data: SocialLoginCommand },
+    { data: LoginCommand },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof authControllerLoginSocial>>,
+  Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
-  { data: SocialLoginCommand },
+  { data: LoginCommand },
   TContext
 > => {
-  const mutationKey = ["authControllerLoginSocial"];
+  const mutationKey = ["authControllerLogin"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -102,285 +89,191 @@ export const getAuthControllerLoginSocialMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authControllerLoginSocial>>,
-    { data: SocialLoginCommand }
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    { data: LoginCommand }
   > = (props) => {
     const { data } = props ?? {};
 
-    return authControllerLoginSocial(data, requestOptions);
+    return authControllerLogin(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type AuthControllerLoginSocialMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerLoginSocial>>
+export type AuthControllerLoginMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogin>>
 >;
-export type AuthControllerLoginSocialMutationBody = SocialLoginCommand;
-export type AuthControllerLoginSocialMutationError = unknown;
+export type AuthControllerLoginMutationBody = LoginCommand;
+export type AuthControllerLoginMutationError = unknown;
 
-export const useAuthControllerLoginSocial = <
-  TError = unknown,
-  TContext = unknown,
->(
+export const useAuthControllerLogin = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authControllerLoginSocial>>,
+      Awaited<ReturnType<typeof authControllerLogin>>,
       TError,
-      { data: SocialLoginCommand },
+      { data: LoginCommand },
       TContext
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof authControllerLoginSocial>>,
+  Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
-  { data: SocialLoginCommand },
+  { data: LoginCommand },
   TContext
 > => {
-  const mutationOptions = getAuthControllerLoginSocialMutationOptions(options);
+  const mutationOptions = getAuthControllerLoginMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
 
-export type userControllerGetMeResponse200 = {
-  data: UserProfile;
-  status: 200;
+export type authControllerRefreshTokenResponse201 = {
+  data: undefined;
+  status: 201;
 };
 
-export type userControllerGetMeResponseComposite =
-  userControllerGetMeResponse200;
+export type authControllerRefreshTokenResponseComposite =
+  authControllerRefreshTokenResponse201;
 
-export type userControllerGetMeResponse =
-  userControllerGetMeResponseComposite & {
+export type authControllerRefreshTokenResponse =
+  authControllerRefreshTokenResponseComposite & {
     headers: Headers;
   };
 
-export const getUserControllerGetMeUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/user/me`;
+export const getAuthControllerRefreshTokenUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/auth/token/refresh`;
 };
 
-export const userControllerGetMe = async (
+export const authControllerRefreshToken = async (
   options?: RequestInit,
-): Promise<userControllerGetMeResponse> => {
-  return http<userControllerGetMeResponse>(getUserControllerGetMeUrl(), {
-    ...options,
-    method: "GET",
-  });
+): Promise<authControllerRefreshTokenResponse> => {
+  return http<authControllerRefreshTokenResponse>(
+    getAuthControllerRefreshTokenUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
 };
 
-export const getUserControllerGetMeQueryKey = () => {
-  return [`https://api-dev.pockey.pics/api/v1/user/me`] as const;
-};
-
-export const getUserControllerGetMeQueryOptions = <
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
+export const getAuthControllerRefreshTokenMutationOptions = <
   TError = unknown,
+  TContext = unknown,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof userControllerGetMe>>,
-      TError,
-      TData
-    >
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    TError,
+    void,
+    TContext
   >;
   request?: SecondParameter<typeof http>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["authControllerRefreshToken"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-  const queryKey = queryOptions?.queryKey ?? getUserControllerGetMeQueryKey();
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    void
+  > = () => {
+    return authControllerRefreshToken(requestOptions);
+  };
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof userControllerGetMe>>
-  > = ({ signal }) => userControllerGetMe({ signal, ...requestOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof userControllerGetMe>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  return { mutationFn, ...mutationOptions };
 };
 
-export type UserControllerGetMeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof userControllerGetMe>>
+export type AuthControllerRefreshTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>
 >;
-export type UserControllerGetMeQueryError = unknown;
 
-export function useUserControllerGetMe<
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
+export type AuthControllerRefreshTokenMutationError = unknown;
+
+export const useAuthControllerRefreshToken = <
   TError = unknown,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof userControllerGetMe>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof userControllerGetMe>>,
-          TError,
-          Awaited<ReturnType<typeof userControllerGetMe>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUserControllerGetMe<
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
-  TError = unknown,
+  TContext = unknown,
 >(
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof userControllerGetMe>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof userControllerGetMe>>,
-          TError,
-          Awaited<ReturnType<typeof userControllerGetMe>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUserControllerGetMe<
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof userControllerGetMe>>,
-        TError,
-        TData
-      >
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof authControllerRefreshToken>>,
+      TError,
+      void,
+      TContext
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerRefreshTokenMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
 };
 
-export function useUserControllerGetMe<
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof userControllerGetMe>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getUserControllerGetMeQueryOptions(options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const prefetchUserControllerGetMe = async <
-  TData = Awaited<ReturnType<typeof userControllerGetMe>>,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof userControllerGetMe>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions = getUserControllerGetMeQueryOptions(options);
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export type userControllerUpdateProfileResponse200 = {
+export type authControllerUpdatePasswordResponse200 = {
   data: undefined;
   status: 200;
 };
 
-export type userControllerUpdateProfileResponseComposite =
-  userControllerUpdateProfileResponse200;
+export type authControllerUpdatePasswordResponseComposite =
+  authControllerUpdatePasswordResponse200;
 
-export type userControllerUpdateProfileResponse =
-  userControllerUpdateProfileResponseComposite & {
+export type authControllerUpdatePasswordResponse =
+  authControllerUpdatePasswordResponseComposite & {
     headers: Headers;
   };
 
-export const getUserControllerUpdateProfileUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/user/profile`;
+export const getAuthControllerUpdatePasswordUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/auth/password`;
 };
 
-export const userControllerUpdateProfile = async (
-  updateProfileCommand: UpdateProfileCommand,
+export const authControllerUpdatePassword = async (
+  updatePasswordCommand: UpdatePasswordCommand,
   options?: RequestInit,
-): Promise<userControllerUpdateProfileResponse> => {
-  return http<userControllerUpdateProfileResponse>(
-    getUserControllerUpdateProfileUrl(),
+): Promise<authControllerUpdatePasswordResponse> => {
+  return http<authControllerUpdatePasswordResponse>(
+    getAuthControllerUpdatePasswordUrl(),
     {
       ...options,
       method: "PATCH",
       headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(updateProfileCommand),
+      body: JSON.stringify(updatePasswordCommand),
     },
   );
 };
 
-export const getUserControllerUpdateProfileMutationOptions = <
+export const getAuthControllerUpdatePasswordMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof userControllerUpdateProfile>>,
+    Awaited<ReturnType<typeof authControllerUpdatePassword>>,
     TError,
-    { data: UpdateProfileCommand },
+    { data: UpdatePasswordCommand },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof userControllerUpdateProfile>>,
+  Awaited<ReturnType<typeof authControllerUpdatePassword>>,
   TError,
-  { data: UpdateProfileCommand },
+  { data: UpdatePasswordCommand },
   TContext
 > => {
-  const mutationKey = ["userControllerUpdateProfile"];
+  const mutationKey = ["authControllerUpdatePassword"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -390,64 +283,64 @@ export const getUserControllerUpdateProfileMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof userControllerUpdateProfile>>,
-    { data: UpdateProfileCommand }
+    Awaited<ReturnType<typeof authControllerUpdatePassword>>,
+    { data: UpdatePasswordCommand }
   > = (props) => {
     const { data } = props ?? {};
 
-    return userControllerUpdateProfile(data, requestOptions);
+    return authControllerUpdatePassword(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type UserControllerUpdateProfileMutationResult = NonNullable<
-  Awaited<ReturnType<typeof userControllerUpdateProfile>>
+export type AuthControllerUpdatePasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerUpdatePassword>>
 >;
-export type UserControllerUpdateProfileMutationBody = UpdateProfileCommand;
-export type UserControllerUpdateProfileMutationError = unknown;
+export type AuthControllerUpdatePasswordMutationBody = UpdatePasswordCommand;
+export type AuthControllerUpdatePasswordMutationError = unknown;
 
-export const useUserControllerUpdateProfile = <
+export const useAuthControllerUpdatePassword = <
   TError = unknown,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof userControllerUpdateProfile>>,
+      Awaited<ReturnType<typeof authControllerUpdatePassword>>,
       TError,
-      { data: UpdateProfileCommand },
+      { data: UpdatePasswordCommand },
       TContext
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof userControllerUpdateProfile>>,
+  Awaited<ReturnType<typeof authControllerUpdatePassword>>,
   TError,
-  { data: UpdateProfileCommand },
+  { data: UpdatePasswordCommand },
   TContext
 > => {
   const mutationOptions =
-    getUserControllerUpdateProfileMutationOptions(options);
+    getAuthControllerUpdatePasswordMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
 
-export type productControllerGetRankingResponse200 = {
-  data: RankingProduct[];
+export type postControllerGetPostsResponse200 = {
+  data: undefined;
   status: 200;
 };
 
-export type productControllerGetRankingResponseComposite =
-  productControllerGetRankingResponse200;
+export type postControllerGetPostsResponseComposite =
+  postControllerGetPostsResponse200;
 
-export type productControllerGetRankingResponse =
-  productControllerGetRankingResponseComposite & {
+export type postControllerGetPostsResponse =
+  postControllerGetPostsResponseComposite & {
     headers: Headers;
   };
 
-export const getProductControllerGetRankingUrl = (
-  params: ProductControllerGetRankingParams,
+export const getPostControllerGetPostsUrl = (
+  params: PostControllerGetPostsParams,
 ) => {
   const normalizedParams = new URLSearchParams();
 
@@ -460,16 +353,16 @@ export const getProductControllerGetRankingUrl = (
   const stringifiedParams = normalizedParams.toString();
 
   return stringifiedParams.length > 0
-    ? `https://api-dev.pockey.pics/api/v1/product/ranking?${stringifiedParams}`
-    : `https://api-dev.pockey.pics/api/v1/product/ranking`;
+    ? `https://api-dev.pockey.pics/api/v1/post?${stringifiedParams}`
+    : `https://api-dev.pockey.pics/api/v1/post`;
 };
 
-export const productControllerGetRanking = async (
-  params: ProductControllerGetRankingParams,
+export const postControllerGetPosts = async (
+  params: PostControllerGetPostsParams,
   options?: RequestInit,
-): Promise<productControllerGetRankingResponse> => {
-  return http<productControllerGetRankingResponse>(
-    getProductControllerGetRankingUrl(params),
+): Promise<postControllerGetPostsResponse> => {
+  return http<postControllerGetPostsResponse>(
+    getPostControllerGetPostsUrl(params),
     {
       ...options,
       method: "GET",
@@ -477,24 +370,24 @@ export const productControllerGetRanking = async (
   );
 };
 
-export const getProductControllerGetRankingQueryKey = (
-  params: ProductControllerGetRankingParams,
+export const getPostControllerGetPostsQueryKey = (
+  params: PostControllerGetPostsParams,
 ) => {
   return [
-    `https://api-dev.pockey.pics/api/v1/product/ranking`,
+    `https://api-dev.pockey.pics/api/v1/post`,
     ...(params ? [params] : []),
   ] as const;
 };
 
-export const getProductControllerGetRankingQueryOptions = <
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export const getPostControllerGetPostsQueryOptions = <
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
@@ -505,43 +398,43 @@ export const getProductControllerGetRankingQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getProductControllerGetRankingQueryKey(params);
+    queryOptions?.queryKey ?? getPostControllerGetPostsQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof productControllerGetRanking>>
+    Awaited<ReturnType<typeof postControllerGetPosts>>
   > = ({ signal }) =>
-    productControllerGetRanking(params, { signal, ...requestOptions });
+    postControllerGetPosts(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof productControllerGetRanking>>,
+    Awaited<ReturnType<typeof postControllerGetPosts>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type ProductControllerGetRankingQueryResult = NonNullable<
-  Awaited<ReturnType<typeof productControllerGetRanking>>
+export type PostControllerGetPostsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof postControllerGetPosts>>
 >;
-export type ProductControllerGetRankingQueryError = unknown;
+export type PostControllerGetPostsQueryError = unknown;
 
-export function useProductControllerGetRanking<
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export function usePostControllerGetPosts<
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof productControllerGetRanking>>,
+          Awaited<ReturnType<typeof postControllerGetPosts>>,
           TError,
-          Awaited<ReturnType<typeof productControllerGetRanking>>
+          Awaited<ReturnType<typeof postControllerGetPosts>>
         >,
         "initialData"
       >;
@@ -551,24 +444,24 @@ export function useProductControllerGetRanking<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useProductControllerGetRanking<
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export function usePostControllerGetPosts<
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof productControllerGetRanking>>,
+          Awaited<ReturnType<typeof postControllerGetPosts>>,
           TError,
-          Awaited<ReturnType<typeof productControllerGetRanking>>
+          Awaited<ReturnType<typeof postControllerGetPosts>>
         >,
         "initialData"
       >;
@@ -578,15 +471,15 @@ export function useProductControllerGetRanking<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function useProductControllerGetRanking<
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export function usePostControllerGetPosts<
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
@@ -598,15 +491,15 @@ export function useProductControllerGetRanking<
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 
-export function useProductControllerGetRanking<
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export function usePostControllerGetPosts<
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
@@ -617,10 +510,7 @@ export function useProductControllerGetRanking<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getProductControllerGetRankingQueryOptions(
-    params,
-    options,
-  );
+  const queryOptions = getPostControllerGetPostsQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -632,16 +522,16 @@ export function useProductControllerGetRanking<
   return query;
 }
 
-export const prefetchProductControllerGetRanking = async <
-  TData = Awaited<ReturnType<typeof productControllerGetRanking>>,
+export const prefetchPostControllerGetPosts = async <
+  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  params: ProductControllerGetRankingParams,
+  params: PostControllerGetPostsParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerGetRanking>>,
+        Awaited<ReturnType<typeof postControllerGetPosts>>,
         TError,
         TData
       >
@@ -649,1191 +539,7 @@ export const prefetchProductControllerGetRanking = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getProductControllerGetRankingQueryOptions(
-    params,
-    options,
-  );
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export type wishlistControllerAddToWishlistResponse201 = {
-  data: undefined;
-  status: 201;
-};
-
-export type wishlistControllerAddToWishlistResponseComposite =
-  wishlistControllerAddToWishlistResponse201;
-
-export type wishlistControllerAddToWishlistResponse =
-  wishlistControllerAddToWishlistResponseComposite & {
-    headers: Headers;
-  };
-
-export const getWishlistControllerAddToWishlistUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/wishlist`;
-};
-
-export const wishlistControllerAddToWishlist = async (
-  addToWishlistCommand: AddToWishlistCommand,
-  options?: RequestInit,
-): Promise<wishlistControllerAddToWishlistResponse> => {
-  return http<wishlistControllerAddToWishlistResponse>(
-    getWishlistControllerAddToWishlistUrl(),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(addToWishlistCommand),
-    },
-  );
-};
-
-export const getWishlistControllerAddToWishlistMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>,
-    TError,
-    { data: AddToWishlistCommand },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>,
-  TError,
-  { data: AddToWishlistCommand },
-  TContext
-> => {
-  const mutationKey = ["wishlistControllerAddToWishlist"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>,
-    { data: AddToWishlistCommand }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return wishlistControllerAddToWishlist(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type WishlistControllerAddToWishlistMutationResult = NonNullable<
-  Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>
->;
-export type WishlistControllerAddToWishlistMutationBody = AddToWishlistCommand;
-export type WishlistControllerAddToWishlistMutationError = unknown;
-
-export const useWishlistControllerAddToWishlist = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>,
-      TError,
-      { data: AddToWishlistCommand },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof wishlistControllerAddToWishlist>>,
-  TError,
-  { data: AddToWishlistCommand },
-  TContext
-> => {
-  const mutationOptions =
-    getWishlistControllerAddToWishlistMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export type wishlistControllerGetWishlistResponse200 = {
-  data: Product[];
-  status: 200;
-};
-
-export type wishlistControllerGetWishlistResponseComposite =
-  wishlistControllerGetWishlistResponse200;
-
-export type wishlistControllerGetWishlistResponse =
-  wishlistControllerGetWishlistResponseComposite & {
-    headers: Headers;
-  };
-
-export const getWishlistControllerGetWishlistUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/wishlist`;
-};
-
-export const wishlistControllerGetWishlist = async (
-  options?: RequestInit,
-): Promise<wishlistControllerGetWishlistResponse> => {
-  return http<wishlistControllerGetWishlistResponse>(
-    getWishlistControllerGetWishlistUrl(),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
-};
-
-export const getWishlistControllerGetWishlistQueryKey = () => {
-  return [`https://api-dev.pockey.pics/api/v1/wishlist`] as const;
-};
-
-export const getWishlistControllerGetWishlistQueryOptions = <
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getWishlistControllerGetWishlistQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof wishlistControllerGetWishlist>>
-  > = ({ signal }) =>
-    wishlistControllerGetWishlist({ signal, ...requestOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type WishlistControllerGetWishlistQueryResult = NonNullable<
-  Awaited<ReturnType<typeof wishlistControllerGetWishlist>>
->;
-export type WishlistControllerGetWishlistQueryError = unknown;
-
-export function useWishlistControllerGetWishlist<
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-          TError,
-          Awaited<ReturnType<typeof wishlistControllerGetWishlist>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useWishlistControllerGetWishlist<
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-          TError,
-          Awaited<ReturnType<typeof wishlistControllerGetWishlist>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useWishlistControllerGetWishlist<
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useWishlistControllerGetWishlist<
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getWishlistControllerGetWishlistQueryOptions(options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const prefetchWishlistControllerGetWishlist = async <
-  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishlistControllerGetWishlist>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions = getWishlistControllerGetWishlistQueryOptions(options);
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export type wishlistControllerRemoveFromWishlistResponse204 = {
-  data: undefined;
-  status: 204;
-};
-
-export type wishlistControllerRemoveFromWishlistResponseComposite =
-  wishlistControllerRemoveFromWishlistResponse204;
-
-export type wishlistControllerRemoveFromWishlistResponse =
-  wishlistControllerRemoveFromWishlistResponseComposite & {
-    headers: Headers;
-  };
-
-export const getWishlistControllerRemoveFromWishlistUrl = (
-  wishlistId: number,
-) => {
-  return `https://api-dev.pockey.pics/api/v1/wishlist/${wishlistId}`;
-};
-
-export const wishlistControllerRemoveFromWishlist = async (
-  wishlistId: number,
-  options?: RequestInit,
-): Promise<wishlistControllerRemoveFromWishlistResponse> => {
-  return http<wishlistControllerRemoveFromWishlistResponse>(
-    getWishlistControllerRemoveFromWishlistUrl(wishlistId),
-    {
-      ...options,
-      method: "DELETE",
-    },
-  );
-};
-
-export const getWishlistControllerRemoveFromWishlistMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-    TError,
-    { wishlistId: number },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-  TError,
-  { wishlistId: number },
-  TContext
-> => {
-  const mutationKey = ["wishlistControllerRemoveFromWishlist"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-    { wishlistId: number }
-  > = (props) => {
-    const { wishlistId } = props ?? {};
-
-    return wishlistControllerRemoveFromWishlist(wishlistId, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type WishlistControllerRemoveFromWishlistMutationResult = NonNullable<
-  Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>
->;
-
-export type WishlistControllerRemoveFromWishlistMutationError = unknown;
-
-export const useWishlistControllerRemoveFromWishlist = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-      TError,
-      { wishlistId: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof wishlistControllerRemoveFromWishlist>>,
-  TError,
-  { wishlistId: number },
-  TContext
-> => {
-  const mutationOptions =
-    getWishlistControllerRemoveFromWishlistMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export type recommendSessionControllerStartSessionResponse201 = {
-  data: RecommendSessionStep;
-  status: 201;
-};
-
-export type recommendSessionControllerStartSessionResponseComposite =
-  recommendSessionControllerStartSessionResponse201;
-
-export type recommendSessionControllerStartSessionResponse =
-  recommendSessionControllerStartSessionResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRecommendSessionControllerStartSessionUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/recommend-session`;
-};
-
-export const recommendSessionControllerStartSession = async (
-  startRecommendSessionCommand: StartRecommendSessionCommand,
-  options?: RequestInit,
-): Promise<recommendSessionControllerStartSessionResponse> => {
-  return http<recommendSessionControllerStartSessionResponse>(
-    getRecommendSessionControllerStartSessionUrl(),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(startRecommendSessionCommand),
-    },
-  );
-};
-
-export const getRecommendSessionControllerStartSessionMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-    TError,
-    { data: StartRecommendSessionCommand },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-  TError,
-  { data: StartRecommendSessionCommand },
-  TContext
-> => {
-  const mutationKey = ["recommendSessionControllerStartSession"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-    { data: StartRecommendSessionCommand }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return recommendSessionControllerStartSession(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RecommendSessionControllerStartSessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>
->;
-export type RecommendSessionControllerStartSessionMutationBody =
-  StartRecommendSessionCommand;
-export type RecommendSessionControllerStartSessionMutationError = unknown;
-
-export const useRecommendSessionControllerStartSession = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-      TError,
-      { data: StartRecommendSessionCommand },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-  TError,
-  { data: StartRecommendSessionCommand },
-  TContext
-> => {
-  const mutationOptions =
-    getRecommendSessionControllerStartSessionMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export type recommendSessionControllerGetSessionsResponse200 = {
-  data: RecommendSession[];
-  status: 200;
-};
-
-export type recommendSessionControllerGetSessionsResponseComposite =
-  recommendSessionControllerGetSessionsResponse200;
-
-export type recommendSessionControllerGetSessionsResponse =
-  recommendSessionControllerGetSessionsResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRecommendSessionControllerGetSessionsUrl = (
-  params?: RecommendSessionControllerGetSessionsParams,
-) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0
-    ? `https://api-dev.pockey.pics/api/v1/recommend-session?${stringifiedParams}`
-    : `https://api-dev.pockey.pics/api/v1/recommend-session`;
-};
-
-export const recommendSessionControllerGetSessions = async (
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: RequestInit,
-): Promise<recommendSessionControllerGetSessionsResponse> => {
-  return http<recommendSessionControllerGetSessionsResponse>(
-    getRecommendSessionControllerGetSessionsUrl(params),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
-};
-
-export const getRecommendSessionControllerGetSessionsQueryKey = (
-  params?: RecommendSessionControllerGetSessionsParams,
-) => {
-  return [
-    `https://api-dev.pockey.pics/api/v1/recommend-session`,
-    ...(params ? [params] : []),
-  ] as const;
-};
-
-export const getRecommendSessionControllerGetSessionsQueryOptions = <
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getRecommendSessionControllerGetSessionsQueryKey(params);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>
-  > = ({ signal }) =>
-    recommendSessionControllerGetSessions(params, {
-      signal,
-      ...requestOptions,
-    });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type RecommendSessionControllerGetSessionsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>
->;
-export type RecommendSessionControllerGetSessionsQueryError = unknown;
-
-export function useRecommendSessionControllerGetSessions<
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  params: undefined | RecommendSessionControllerGetSessionsParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-          TError,
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useRecommendSessionControllerGetSessions<
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-          TError,
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useRecommendSessionControllerGetSessions<
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useRecommendSessionControllerGetSessions<
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getRecommendSessionControllerGetSessionsQueryOptions(
-    params,
-    options,
-  );
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const prefetchRecommendSessionControllerGetSessions = async <
-  TData = Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  params?: RecommendSessionControllerGetSessionsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessions>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions = getRecommendSessionControllerGetSessionsQueryOptions(
-    params,
-    options,
-  );
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export type recommendSessionControllerSubmitAnswerResponse200 = {
-  data: RecommendSessionControllerSubmitAnswer200;
-  status: 200;
-};
-
-export type recommendSessionControllerSubmitAnswerResponseComposite =
-  recommendSessionControllerSubmitAnswerResponse200;
-
-export type recommendSessionControllerSubmitAnswerResponse =
-  recommendSessionControllerSubmitAnswerResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRecommendSessionControllerSubmitAnswerUrl = (
-  sessionId: string,
-) => {
-  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/answer`;
-};
-
-export const recommendSessionControllerSubmitAnswer = async (
-  sessionId: string,
-  submitAnswerCommand: SubmitAnswerCommand,
-  options?: RequestInit,
-): Promise<recommendSessionControllerSubmitAnswerResponse> => {
-  return http<recommendSessionControllerSubmitAnswerResponse>(
-    getRecommendSessionControllerSubmitAnswerUrl(sessionId),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(submitAnswerCommand),
-    },
-  );
-};
-
-export const getRecommendSessionControllerSubmitAnswerMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
-    TError,
-    { sessionId: string; data: SubmitAnswerCommand },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
-  TError,
-  { sessionId: string; data: SubmitAnswerCommand },
-  TContext
-> => {
-  const mutationKey = ["recommendSessionControllerSubmitAnswer"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
-    { sessionId: string; data: SubmitAnswerCommand }
-  > = (props) => {
-    const { sessionId, data } = props ?? {};
-
-    return recommendSessionControllerSubmitAnswer(
-      sessionId,
-      data,
-      requestOptions,
-    );
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RecommendSessionControllerSubmitAnswerMutationResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>
->;
-export type RecommendSessionControllerSubmitAnswerMutationBody =
-  SubmitAnswerCommand;
-export type RecommendSessionControllerSubmitAnswerMutationError = unknown;
-
-export const useRecommendSessionControllerSubmitAnswer = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
-      TError,
-      { sessionId: string; data: SubmitAnswerCommand },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
-  TError,
-  { sessionId: string; data: SubmitAnswerCommand },
-  TContext
-> => {
-  const mutationOptions =
-    getRecommendSessionControllerSubmitAnswerMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export type recommendSessionControllerEndSessionResponse204 = {
-  data: undefined;
-  status: 204;
-};
-
-export type recommendSessionControllerEndSessionResponseComposite =
-  recommendSessionControllerEndSessionResponse204;
-
-export type recommendSessionControllerEndSessionResponse =
-  recommendSessionControllerEndSessionResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRecommendSessionControllerEndSessionUrl = (
-  sessionId: string,
-) => {
-  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}`;
-};
-
-export const recommendSessionControllerEndSession = async (
-  sessionId: string,
-  options?: RequestInit,
-): Promise<recommendSessionControllerEndSessionResponse> => {
-  return http<recommendSessionControllerEndSessionResponse>(
-    getRecommendSessionControllerEndSessionUrl(sessionId),
-    {
-      ...options,
-      method: "DELETE",
-    },
-  );
-};
-
-export const getRecommendSessionControllerEndSessionMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
-    TError,
-    { sessionId: string },
-    TContext
-  >;
-  request?: SecondParameter<typeof http>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
-  TError,
-  { sessionId: string },
-  TContext
-> => {
-  const mutationKey = ["recommendSessionControllerEndSession"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
-    { sessionId: string }
-  > = (props) => {
-    const { sessionId } = props ?? {};
-
-    return recommendSessionControllerEndSession(sessionId, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RecommendSessionControllerEndSessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>
->;
-
-export type RecommendSessionControllerEndSessionMutationError = unknown;
-
-export const useRecommendSessionControllerEndSession = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
-      TError,
-      { sessionId: string },
-      TContext
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
-  TError,
-  { sessionId: string },
-  TContext
-> => {
-  const mutationOptions =
-    getRecommendSessionControllerEndSessionMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export type recommendSessionControllerGetSessionResultResponse200 = {
-  data: RecommendSessionResult;
-  status: 200;
-};
-
-export type recommendSessionControllerGetSessionResultResponseComposite =
-  recommendSessionControllerGetSessionResultResponse200;
-
-export type recommendSessionControllerGetSessionResultResponse =
-  recommendSessionControllerGetSessionResultResponseComposite & {
-    headers: Headers;
-  };
-
-export const getRecommendSessionControllerGetSessionResultUrl = (
-  sessionId: string,
-) => {
-  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result`;
-};
-
-export const recommendSessionControllerGetSessionResult = async (
-  sessionId: string,
-  options?: RequestInit,
-): Promise<recommendSessionControllerGetSessionResultResponse> => {
-  return http<recommendSessionControllerGetSessionResultResponse>(
-    getRecommendSessionControllerGetSessionResultUrl(sessionId),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
-};
-
-export const getRecommendSessionControllerGetSessionResultQueryKey = (
-  sessionId: string,
-) => {
-  return [
-    `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result`,
-  ] as const;
-};
-
-export const getRecommendSessionControllerGetSessionResultQueryOptions = <
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  sessionId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getRecommendSessionControllerGetSessionResultQueryKey(sessionId);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>
-  > = ({ signal }) =>
-    recommendSessionControllerGetSessionResult(sessionId, {
-      signal,
-      ...requestOptions,
-    });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!sessionId,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type RecommendSessionControllerGetSessionResultQueryResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>
->;
-export type RecommendSessionControllerGetSessionResultQueryError = unknown;
-
-export function useRecommendSessionControllerGetSessionResult<
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  sessionId: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<
-            ReturnType<typeof recommendSessionControllerGetSessionResult>
-          >,
-          TError,
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useRecommendSessionControllerGetSessionResult<
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  sessionId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<
-            ReturnType<typeof recommendSessionControllerGetSessionResult>
-          >,
-          TError,
-          Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useRecommendSessionControllerGetSessionResult<
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  sessionId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useRecommendSessionControllerGetSessionResult<
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  sessionId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions =
-    getRecommendSessionControllerGetSessionResultQueryOptions(
-      sessionId,
-      options,
-    );
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const prefetchRecommendSessionControllerGetSessionResult = async <
-  TData = Awaited<
-    ReturnType<typeof recommendSessionControllerGetSessionResult>
-  >,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  sessionId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof recommendSessionControllerGetSessionResult>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions =
-    getRecommendSessionControllerGetSessionResultQueryOptions(
-      sessionId,
-      options,
-    );
+  const queryOptions = getPostControllerGetPostsQueryOptions(params, options);
 
   await queryClient.prefetchQuery(queryOptions);
 
@@ -1841,7 +547,7 @@ export const prefetchRecommendSessionControllerGetSessionResult = async <
 };
 
 export type productControllerGetProductResponse200 = {
-  data: Product;
+  data: undefined;
   status: 200;
 };
 
@@ -2046,234 +752,46 @@ export const prefetchProductControllerGetProduct = async <
   return queryClient;
 };
 
-export type postControllerGetPostsResponse200 = {
-  data: Post[];
+export type userControllerGetUserResponse200 = {
+  data: undefined;
   status: 200;
 };
 
-export type postControllerGetPostsResponseComposite =
-  postControllerGetPostsResponse200;
+export type userControllerGetUserResponseComposite =
+  userControllerGetUserResponse200;
 
-export type postControllerGetPostsResponse =
-  postControllerGetPostsResponseComposite & {
+export type userControllerGetUserResponse =
+  userControllerGetUserResponseComposite & {
     headers: Headers;
   };
 
-export const getPostControllerGetPostsUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/post`;
+export const getUserControllerGetUserUrl = (id: string) => {
+  return `https://api-dev.pockey.pics/api/v1/user/${id}`;
 };
 
-export const postControllerGetPosts = async (
+export const userControllerGetUser = async (
+  id: string,
   options?: RequestInit,
-): Promise<postControllerGetPostsResponse> => {
-  return http<postControllerGetPostsResponse>(getPostControllerGetPostsUrl(), {
+): Promise<userControllerGetUserResponse> => {
+  return http<userControllerGetUserResponse>(getUserControllerGetUserUrl(id), {
     ...options,
     method: "GET",
   });
 };
 
-export const getPostControllerGetPostsQueryKey = () => {
-  return [`https://api-dev.pockey.pics/api/v1/post`] as const;
+export const getUserControllerGetUserQueryKey = (id: string) => {
+  return [`https://api-dev.pockey.pics/api/v1/user/${id}`] as const;
 };
 
-export const getPostControllerGetPostsQueryOptions = <
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
-  TError = unknown,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof postControllerGetPosts>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof http>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getPostControllerGetPostsQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof postControllerGetPosts>>
-  > = ({ signal }) => postControllerGetPosts({ signal, ...requestOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof postControllerGetPosts>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type PostControllerGetPostsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof postControllerGetPosts>>
->;
-export type PostControllerGetPostsQueryError = unknown;
-
-export function usePostControllerGetPosts<
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
+export const getUserControllerGetUserQueryOptions = <
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPosts>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof postControllerGetPosts>>,
-          TError,
-          Awaited<ReturnType<typeof postControllerGetPosts>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function usePostControllerGetPosts<
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
-  TError = unknown,
->(
+  id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPosts>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof postControllerGetPosts>>,
-          TError,
-          Awaited<ReturnType<typeof postControllerGetPosts>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function usePostControllerGetPosts<
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPosts>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function usePostControllerGetPosts<
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
-  TError = unknown,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPosts>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getPostControllerGetPostsQueryOptions(options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const prefetchPostControllerGetPosts = async <
-  TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
-  TError = unknown,
->(
-  queryClient: QueryClient,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPosts>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof http>;
-  },
-): Promise<QueryClient> => {
-  const queryOptions = getPostControllerGetPostsQueryOptions(options);
-
-  await queryClient.prefetchQuery(queryOptions);
-
-  return queryClient;
-};
-
-export type postControllerGetPostResponse200 = {
-  data: Post;
-  status: 200;
-};
-
-export type postControllerGetPostResponseComposite =
-  postControllerGetPostResponse200;
-
-export type postControllerGetPostResponse =
-  postControllerGetPostResponseComposite & {
-    headers: Headers;
-  };
-
-export const getPostControllerGetPostUrl = (id: number) => {
-  return `https://api-dev.pockey.pics/api/v1/post/${id}`;
-};
-
-export const postControllerGetPost = async (
-  id: number,
-  options?: RequestInit,
-): Promise<postControllerGetPostResponse> => {
-  return http<postControllerGetPostResponse>(getPostControllerGetPostUrl(id), {
-    ...options,
-    method: "GET",
-  });
-};
-
-export const getPostControllerGetPostQueryKey = (id: number) => {
-  return [`https://api-dev.pockey.pics/api/v1/post/${id}`] as const;
-};
-
-export const getPostControllerGetPostQueryOptions = <
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
-  TError = unknown,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
@@ -2284,11 +802,11 @@ export const getPostControllerGetPostQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getPostControllerGetPostQueryKey(id);
+    queryOptions?.queryKey ?? getUserControllerGetUserQueryKey(id);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof postControllerGetPost>>
-  > = ({ signal }) => postControllerGetPost(id, { signal, ...requestOptions });
+    Awaited<ReturnType<typeof userControllerGetUser>>
+  > = ({ signal }) => userControllerGetUser(id, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -2296,35 +814,35 @@ export const getPostControllerGetPostQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof postControllerGetPost>>,
+    Awaited<ReturnType<typeof userControllerGetUser>>,
     TError,
     TData
   > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type PostControllerGetPostQueryResult = NonNullable<
-  Awaited<ReturnType<typeof postControllerGetPost>>
+export type UserControllerGetUserQueryResult = NonNullable<
+  Awaited<ReturnType<typeof userControllerGetUser>>
 >;
-export type PostControllerGetPostQueryError = unknown;
+export type UserControllerGetUserQueryError = unknown;
 
-export function usePostControllerGetPost<
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
+export function useUserControllerGetUser<
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
-  id: number,
+  id: string,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof postControllerGetPost>>,
+          Awaited<ReturnType<typeof userControllerGetUser>>,
           TError,
-          Awaited<ReturnType<typeof postControllerGetPost>>
+          Awaited<ReturnType<typeof userControllerGetUser>>
         >,
         "initialData"
       >;
@@ -2334,24 +852,24 @@ export function usePostControllerGetPost<
 ): DefinedUseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function usePostControllerGetPost<
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
+export function useUserControllerGetUser<
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
-  id: number,
+  id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof postControllerGetPost>>,
+          Awaited<ReturnType<typeof userControllerGetUser>>,
           TError,
-          Awaited<ReturnType<typeof postControllerGetPost>>
+          Awaited<ReturnType<typeof userControllerGetUser>>
         >,
         "initialData"
       >;
@@ -2361,15 +879,15 @@ export function usePostControllerGetPost<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 };
-export function usePostControllerGetPost<
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
+export function useUserControllerGetUser<
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
-  id: number,
+  id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
@@ -2381,15 +899,15 @@ export function usePostControllerGetPost<
   queryKey: DataTag<QueryKey, TData, TError>;
 };
 
-export function usePostControllerGetPost<
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
+export function useUserControllerGetUser<
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
-  id: number,
+  id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
@@ -2400,7 +918,7 @@ export function usePostControllerGetPost<
 ): UseQueryResult<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getPostControllerGetPostQueryOptions(id, options);
+  const queryOptions = getUserControllerGetUserQueryOptions(id, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,
@@ -2412,16 +930,16 @@ export function usePostControllerGetPost<
   return query;
 }
 
-export const prefetchPostControllerGetPost = async <
-  TData = Awaited<ReturnType<typeof postControllerGetPost>>,
+export const prefetchUserControllerGetUser = async <
+  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
   TError = unknown,
 >(
   queryClient: QueryClient,
-  id: number,
+  id: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof postControllerGetPost>>,
+        Awaited<ReturnType<typeof userControllerGetUser>>,
         TError,
         TData
       >
@@ -2429,9 +947,642 @@ export const prefetchPostControllerGetPost = async <
     request?: SecondParameter<typeof http>;
   },
 ): Promise<QueryClient> => {
-  const queryOptions = getPostControllerGetPostQueryOptions(id, options);
+  const queryOptions = getUserControllerGetUserQueryOptions(id, options);
 
   await queryClient.prefetchQuery(queryOptions);
 
   return queryClient;
+};
+
+export type userControllerGetUsersResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type userControllerGetUsersResponseComposite =
+  userControllerGetUsersResponse200;
+
+export type userControllerGetUsersResponse =
+  userControllerGetUsersResponseComposite & {
+    headers: Headers;
+  };
+
+export const getUserControllerGetUsersUrl = (
+  params: UserControllerGetUsersParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api-dev.pockey.pics/api/v1/user?${stringifiedParams}`
+    : `https://api-dev.pockey.pics/api/v1/user`;
+};
+
+export const userControllerGetUsers = async (
+  params: UserControllerGetUsersParams,
+  options?: RequestInit,
+): Promise<userControllerGetUsersResponse> => {
+  return http<userControllerGetUsersResponse>(
+    getUserControllerGetUsersUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getUserControllerGetUsersQueryKey = (
+  params: UserControllerGetUsersParams,
+) => {
+  return [
+    `https://api-dev.pockey.pics/api/v1/user`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getUserControllerGetUsersQueryOptions = <
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  params: UserControllerGetUsersParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getUserControllerGetUsersQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof userControllerGetUsers>>
+  > = ({ signal }) =>
+    userControllerGetUsers(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof userControllerGetUsers>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type UserControllerGetUsersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof userControllerGetUsers>>
+>;
+export type UserControllerGetUsersQueryError = unknown;
+
+export function useUserControllerGetUsers<
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  params: UserControllerGetUsersParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetUsers>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetUsers>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useUserControllerGetUsers<
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  params: UserControllerGetUsersParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetUsers>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetUsers>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useUserControllerGetUsers<
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  params: UserControllerGetUsersParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useUserControllerGetUsers<
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  params: UserControllerGetUsersParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getUserControllerGetUsersQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchUserControllerGetUsers = async <
+  TData = Awaited<ReturnType<typeof userControllerGetUsers>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  params: UserControllerGetUsersParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof userControllerGetUsers>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getUserControllerGetUsersQueryOptions(params, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export type userControllerUpdateUserPasswordResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type userControllerUpdateUserPasswordResponseComposite =
+  userControllerUpdateUserPasswordResponse200;
+
+export type userControllerUpdateUserPasswordResponse =
+  userControllerUpdateUserPasswordResponseComposite & {
+    headers: Headers;
+  };
+
+export const getUserControllerUpdateUserPasswordUrl = (userId: string) => {
+  return `https://api-dev.pockey.pics/api/v1/user/${userId}/password`;
+};
+
+export const userControllerUpdateUserPassword = async (
+  userId: string,
+  updateUserPasswordCommand: UpdateUserPasswordCommand,
+  options?: RequestInit,
+): Promise<userControllerUpdateUserPasswordResponse> => {
+  return http<userControllerUpdateUserPasswordResponse>(
+    getUserControllerUpdateUserPasswordUrl(userId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateUserPasswordCommand),
+    },
+  );
+};
+
+export const getUserControllerUpdateUserPasswordMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+    TError,
+    { userId: string; data: UpdateUserPasswordCommand },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+  TError,
+  { userId: string; data: UpdateUserPasswordCommand },
+  TContext
+> => {
+  const mutationKey = ["userControllerUpdateUserPassword"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+    { userId: string; data: UpdateUserPasswordCommand }
+  > = (props) => {
+    const { userId, data } = props ?? {};
+
+    return userControllerUpdateUserPassword(userId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UserControllerUpdateUserPasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>
+>;
+export type UserControllerUpdateUserPasswordMutationBody =
+  UpdateUserPasswordCommand;
+export type UserControllerUpdateUserPasswordMutationError = unknown;
+
+export const useUserControllerUpdateUserPassword = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+      TError,
+      { userId: string; data: UpdateUserPasswordCommand },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+  TError,
+  { userId: string; data: UpdateUserPasswordCommand },
+  TContext
+> => {
+  const mutationOptions =
+    getUserControllerUpdateUserPasswordMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type recommendSessionControllerStartSessionResponse201 = {
+  data: undefined;
+  status: 201;
+};
+
+export type recommendSessionControllerStartSessionResponseComposite =
+  recommendSessionControllerStartSessionResponse201;
+
+export type recommendSessionControllerStartSessionResponse =
+  recommendSessionControllerStartSessionResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRecommendSessionControllerStartSessionUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session`;
+};
+
+export const recommendSessionControllerStartSession = async (
+  options?: RequestInit,
+): Promise<recommendSessionControllerStartSessionResponse> => {
+  return http<recommendSessionControllerStartSessionResponse>(
+    getRecommendSessionControllerStartSessionUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getRecommendSessionControllerStartSessionMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["recommendSessionControllerStartSession"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+    void
+  > = () => {
+    return recommendSessionControllerStartSession(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RecommendSessionControllerStartSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>
+>;
+
+export type RecommendSessionControllerStartSessionMutationError = unknown;
+
+export const useRecommendSessionControllerStartSession = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions =
+    getRecommendSessionControllerStartSessionMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type recommendSessionControllerSubmitAnswerResponse201 = {
+  data: undefined;
+  status: 201;
+};
+
+export type recommendSessionControllerSubmitAnswerResponseComposite =
+  recommendSessionControllerSubmitAnswerResponse201;
+
+export type recommendSessionControllerSubmitAnswerResponse =
+  recommendSessionControllerSubmitAnswerResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRecommendSessionControllerSubmitAnswerUrl = (
+  sessionId: string,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/answer`;
+};
+
+export const recommendSessionControllerSubmitAnswer = async (
+  sessionId: string,
+  submitAnswerRequest: SubmitAnswerRequest,
+  options?: RequestInit,
+): Promise<recommendSessionControllerSubmitAnswerResponse> => {
+  return http<recommendSessionControllerSubmitAnswerResponse>(
+    getRecommendSessionControllerSubmitAnswerUrl(sessionId),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(submitAnswerRequest),
+    },
+  );
+};
+
+export const getRecommendSessionControllerSubmitAnswerMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
+    TError,
+    { sessionId: string; data: SubmitAnswerRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
+  TError,
+  { sessionId: string; data: SubmitAnswerRequest },
+  TContext
+> => {
+  const mutationKey = ["recommendSessionControllerSubmitAnswer"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
+    { sessionId: string; data: SubmitAnswerRequest }
+  > = (props) => {
+    const { sessionId, data } = props ?? {};
+
+    return recommendSessionControllerSubmitAnswer(
+      sessionId,
+      data,
+      requestOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RecommendSessionControllerSubmitAnswerMutationResult = NonNullable<
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>
+>;
+export type RecommendSessionControllerSubmitAnswerMutationBody =
+  SubmitAnswerRequest;
+export type RecommendSessionControllerSubmitAnswerMutationError = unknown;
+
+export const useRecommendSessionControllerSubmitAnswer = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
+      TError,
+      { sessionId: string; data: SubmitAnswerRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
+  TError,
+  { sessionId: string; data: SubmitAnswerRequest },
+  TContext
+> => {
+  const mutationOptions =
+    getRecommendSessionControllerSubmitAnswerMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type recommendSessionControllerEndSessionResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type recommendSessionControllerEndSessionResponseComposite =
+  recommendSessionControllerEndSessionResponse200;
+
+export type recommendSessionControllerEndSessionResponse =
+  recommendSessionControllerEndSessionResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRecommendSessionControllerEndSessionUrl = (
+  sessionId: string,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}`;
+};
+
+export const recommendSessionControllerEndSession = async (
+  sessionId: string,
+  options?: RequestInit,
+): Promise<recommendSessionControllerEndSessionResponse> => {
+  return http<recommendSessionControllerEndSessionResponse>(
+    getRecommendSessionControllerEndSessionUrl(sessionId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getRecommendSessionControllerEndSessionMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+    TError,
+    { sessionId: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+  TError,
+  { sessionId: string },
+  TContext
+> => {
+  const mutationKey = ["recommendSessionControllerEndSession"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+    { sessionId: string }
+  > = (props) => {
+    const { sessionId } = props ?? {};
+
+    return recommendSessionControllerEndSession(sessionId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RecommendSessionControllerEndSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>
+>;
+
+export type RecommendSessionControllerEndSessionMutationError = unknown;
+
+export const useRecommendSessionControllerEndSession = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+      TError,
+      { sessionId: string },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+  TError,
+  { sessionId: string },
+  TContext
+> => {
+  const mutationOptions =
+    getRecommendSessionControllerEndSessionMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
 };
