@@ -1,7 +1,7 @@
 {
   "css.customData": [".vscode/tailwind.json"],
   "editor.tabSize": 2,
-  "tailwindCSS.classFunctions": ["tw", "clsx", "cn"],
+  "tailwindCSS.classFunctions": ["tw", "clsx", "cn", "cva"],
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]

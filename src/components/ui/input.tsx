@@ -1,22 +1,49 @@
-import * as React from "react"
+import { cva, VariantProps } from "class-variance-authority";
+import Image from "next/image";
+import { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+const inputVariants = cva(
+  cn(
+    "w-full px-16px py-[15px] rounded-[12px] bg-gray-700 text-gray-100 text-subtitle-18-bold border border-transparent",
+    "transition-colors",
+    "disabled:cursor-not-allowed",
+    "focus:outline-none focus:border focus:border-gray-500 focus-visible:ring-1 focus-visible:ring-ring",
+    "placeholder-gray-500 placeholder:text-subtitle-18-medium",
+  ),
+);
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Input.displayName = "Input"
+export interface InputProps
+  extends ComponentProps<"input">,
+    VariantProps<typeof inputVariants> {
+  onClear?: () => void;
+}
 
-export { Input }
+const Input = ({ className, onClear, ...props }: InputProps) => {
+  return (
+    <div className="relative">
+      <input className={cn(inputVariants(), className)} {...props} />
+      {!!onClear && (
+        <button
+          type="button"
+          className="-translate-y-1/2 absolute top-1/2 right-16px h-24px w-24px"
+        >
+          <ClearIcon />
+        </button>
+      )}
+    </div>
+  );
+};
+
+const ClearIcon = () => {
+  return (
+    <Image
+      src="/static/images/clear-icon.svg"
+      alt="clear"
+      width={24}
+      height={24}
+    />
+  );
+};
+
+export { Input };
