@@ -69,6 +69,4 @@ export default async function Home() {
       </Page>
     </div>
   );
-};
-
-export default Home;
+}

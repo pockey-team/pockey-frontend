@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import localFont from "next/font/local";
-import { AuthSession } from "@/lib/session-provider";
 import { PropsWithChildren } from "react";
 import { Providers } from "@/components/shared/providers";
 import { cn } from "@/lib/utils";
