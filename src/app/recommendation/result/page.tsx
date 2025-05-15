@@ -19,9 +19,8 @@ const ResultPage = async () => {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Page className="bg-gray-900">
+    <Page>
       <Page.Header>
-        <Page.Header.Left></Page.Header.Left>
         <Page.Header.Right>
           <Button variant="ghost" className="text-gray-400">
             닫기
@@ -29,7 +28,7 @@ const ResultPage = async () => {
         </Page.Header.Right>
       </Page.Header>
 
-      <Page.Container className="overflow-y-auto">
+      <Page.Container className="flex-1">
         <HydrationBoundary state={dehydratedState}>
           <ResultContent />
         </HydrationBoundary>
