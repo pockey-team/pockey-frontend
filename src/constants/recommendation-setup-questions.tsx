@@ -1,9 +1,10 @@
+import { ReactNode } from "react";
 import { RecommendationSetupFormData } from "@/types/recommendation/setup";
 
 export type RecommendationSetupQuestion = {
   id: number;
   name: keyof RecommendationSetupFormData;
-  title: (name: string) => string;
+  title: (name: string) => ReactNode;
   options: {
     label: string;
     value: string;
@@ -14,7 +15,13 @@ export const QUESTIONS: RecommendationSetupQuestion[] = [
   {
     id: 1,
     name: "gender",
-    title: (name: string) => `${name}님의 성별은 어떻게 되나요?`,
+    title: (name: string) => (
+      <>
+        <span className="text-primary-500">{name}</span>님의
+        <br />
+        성별은 어떻게 되나요?
+      </>
+    ),
     options: [
       { label: "남자", value: "male" },
       { label: "여자", value: "female" },
@@ -23,7 +30,13 @@ export const QUESTIONS: RecommendationSetupQuestion[] = [
   {
     id: 2,
     name: "age",
-    title: (name: string) => `${name}님의 연령대를 알려주세요`,
+    title: (name: string) => (
+      <>
+        <span className="text-primary-500">{name}</span>님의
+        <br />
+        연령대를 알려주세요
+      </>
+    ),
     options: [
       { label: "10대", value: "10s" },
       { label: "20대", value: "20s" },
@@ -36,7 +49,13 @@ export const QUESTIONS: RecommendationSetupQuestion[] = [
   {
     id: 3,
     name: "relation",
-    title: (name: string) => `${name}님과 어떤 사이인가요?`,
+    title: (name: string) => (
+      <>
+        <span className="text-primary-500">{name}</span>님과
+        <br />
+        어떤 사이인가요?
+      </>
+    ),
     options: [
       { label: "부모님", value: "parent" },
       { label: "친구", value: "friend" },
@@ -49,7 +68,13 @@ export const QUESTIONS: RecommendationSetupQuestion[] = [
   {
     id: 4,
     name: "priceRange",
-    title: () => `어떤 가격대의 선물을 준비할까요?`,
+    title: () => (
+      <>
+        어떤 가격대의
+        <br />
+        선물을 준비할까요?
+      </>
+    ),
     options: [
       { label: "1만 원", value: "10000" },
       { label: "2만 원", value: "20000" },
