@@ -1,52 +1,57 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getResult } from "@/api/recommendation/result/get-result";
-import { RecommendationCard } from "@/components/recommendation/card";
-import { SatisfiedButton } from "@/components/recommendation/next-pick/satisfied-button";
+import { FlipCard } from "@/components/recommendation/flip-card";
+import { SatisfiedButton } from "@/components/recommendation/satisfied-button";
+import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
-import { Present } from "@/constants/Presents";
+import type { Present } from "@/constants/presents";
+import {
+  AVAILABLE_NEXT_PICK_COUNT,
+  TOAST_STYLE,
+} from "@/constants/recommendation-result";
+import { cn } from "@/lib/utils";
 
 interface ResultResponse {
   result: Present;
   nextPick: Present[];
 }
 
-const AVAILABLE_NEXT_PICK_COUNT = 3;
-const TOAST_STYLE = {
-  backgroundColor: "#202328",
-  color: "#fff",
-  borderRadius: "32px",
-  fontWeight: 700,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  border: "none",
-  fontSize: "16px",
-};
-
 export const ResultContent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextPickCount, setNextPickCount] = useState(AVAILABLE_NEXT_PICK_COUNT);
   const [showToast, setShowToast] = useState(false);
+  const [isDisappearing, setIsDisappearing] = useState(false);
+  const [cardKey, setCardKey] = useState(0);
+  const [isFloating, setIsFloating] = useState(false);
 
-  // 추후 백엔드 api 연동 시 스웨거 파싱으로 생성된 훅으로 대체될 예정입니다.
+  // TODO.선물 추천 API 연동
   const { data: resultPresents } = useQuery<ResultResponse[]>({
     queryKey: ["presents", "recommendation", "result"],
     queryFn: getResult,
   });
 
   const displayPresent = resultPresents?.[currentIndex]?.result;
-  const displayNextPick = resultPresents?.[currentIndex]?.nextPick;
 
   const handleNextResult = () => {
-    if (resultPresents && currentIndex < resultPresents.length - 1) {
-      setCurrentIndex((prev) => (prev + 1) % resultPresents.length);
-    }
+    setIsDisappearing(true);
     setNextPickCount((prev) => Math.max(0, prev - 1));
+
+    setTimeout(() => {
+      if (resultPresents && currentIndex < resultPresents.length - 1) {
+        setCurrentIndex((prev) => (prev + 1) % resultPresents.length);
+      }
+
+      setTimeout(() => {
+        setCardKey((prev) => prev + 1);
+        setIsDisappearing(false);
+      }, 100);
+    }, 500);
+
     setShowToast(true);
   };
 
@@ -55,9 +60,9 @@ export const ResultContent = () => {
       toast.success(
         nextPickCount > 0
           ? `결과를 볼 수 있는 기회가 ${nextPickCount}번 남았어요.`
-          : `결과를 볼 수 있는 기회가 없어요.`,
+          : "결과를 볼 수 있는 기회가 없어요.",
         {
-          duration: Infinity,
+          duration: 2000,
           id: "next-pick-toast",
           icon: null,
           style: TOAST_STYLE,
@@ -68,59 +73,63 @@ export const ResultContent = () => {
   }, [showToast, nextPickCount]);
 
   return (
-    <>
-      <div className="flex flex-col gap-40px">
-        <div className="text-center">
-          <h1 className="font-bold text-heading-24-semibold">
-            <span className="text-primary-500">
-              {displayPresent?.receiver}님이
-            </span>
-            <span className="mt-8px block text-white">
-              좋아할 선물을 추천해요
-            </span>
-          </h1>
-        </div>
+    <div className="relative flex h-full flex-col">
+      {/* 카드 flip 될 때 overlay */}
+      <motion.div
+        className={cn(
+          "fixed inset-0px bg-gray-900/95 backdrop-blur-md",
+          isFloating ? "pointer-events-auto touch-none" : "hidden",
+        )}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        transition={{ duration: 0.1 }}
+      />
 
-        <div className="flex items-center justify-center">
-          {displayPresent && (
-            <RecommendationCard
-              present={displayPresent}
-              isCurrent={true}
-              isResult={true}
-            />
-          )}
-        </div>
+      <Page.Title className="desktop:mt-[60px]">
+        <span className="text-primary-500">포키님이</span>
+        <span className="mt-8px block text-white">좋아할 선물을 추천해요</span>
+      </Page.Title>
 
-        <div className="flex flex-col items-center gap-16px pt-16px pb-52px">
-          <div className="flex max-w-[302px] flex-col items-center justify-center gap-4px rounded-2xl bg-[#202228] p-16px">
-            <p className="self-start text-body-16-bold text-white">NEXT PICK</p>
-            <div className="grid w-full grid-cols-3 gap-[7px]">
-              {displayNextPick?.map((item) => (
-                <Image
-                  key={item.id}
-                  src={item.image ?? ""}
-                  alt={item.title}
-                  width={85}
-                  height={85}
-                  className="h-[85px] w-[85px] rounded-md object-cover"
-                />
-              ))}
-            </div>
-          </div>
+      <div className="flex flex-1 items-center justify-center">
+        {displayPresent && (
+          <FlipCard
+            key={cardKey}
+            cardContent={displayPresent}
+            flipDelay={500}
+            isDisappearing={isDisappearing}
+            isFloating={isFloating}
+            setIsFloating={setIsFloating}
+          />
+        )}
+      </div>
 
-          <div className="flex w-full items-center gap-2 gap-8px">
+      <Page.ActionButton
+        as={motion.div}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeIn",
+          delay: 0.9,
+          type: "spring",
+          stiffness: 100,
+          damping: 10,
+        }}
+      >
+        {() => (
+          <div className="flex w-full justify-between gap-8px">
             <SatisfiedButton />
             <Button
               disabled={nextPickCount === 0}
               onClick={handleNextResult}
               variant="ghost"
-              className="w-1/2 rounded-xl bg-gray-700 py-20px text-gray-500 text-subtitle-18-bold text-xl tracking-tight hover:bg-gray-700 hover:text-gray-500 focus:bg-gray-700 focus:text-gray-500 active:bg-gray-700 active:text-gray-500"
+              className="w-1/2 rounded-xl bg-gray-700 py-16px text-gray-500 text-subtitle-18-bold text-xl tracking-tight hover:bg-gray-700 hover:text-gray-500 focus:bg-gray-700 focus:text-gray-500 active:bg-gray-700 active:text-gray-500"
             >
               별로예요
             </Button>
           </div>
-        </div>
-      </div>
-    </>
+        )}
+      </Page.ActionButton>
+    </div>
   );
 };
