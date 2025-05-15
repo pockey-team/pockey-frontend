@@ -20,12 +20,12 @@ export const SatisfiedButton = () => {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-1/2 rounded-xl bg-primary-500 py-20px text-subtitle-18-bold text-xl tracking-tight hover:bg-[#C0DAFF]/80 focus:bg-primary-500 focus-visible:bg-primary-500 active:bg-primary-500"
+          className="w-1/2 rounded-xl bg-primary-500 py-16px text-subtitle-18-bold text-xl tracking-tight hover:bg-[#C0DAFF]/80 focus:bg-primary-500 focus-visible:bg-primary-500 active:bg-primary-500"
         >
           마음에 들어요
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-h-[258px] w-full max-w-[325px] rounded-xl border-none bg-gray-700 text-white">
+      <DialogContent className="min-h-[258px] w-full max-w-[295px] rounded-xl border-none bg-gray-700 text-white">
         <DialogHeader>
           <DialogTitle className="sr-only">
             로그인 하고 추천 이유를 확인하세요
@@ -36,6 +36,7 @@ export const SatisfiedButton = () => {
           <span>추천 이유를 확인하세요</span>
         </h2>
         <DialogFooter className="flex flex-row items-center justify-center">
+          {/* TODO. signIn 버튼 컴포넌트로 변경 */}
           <Button className="bg-[#4c4c4c] p-16px text-white" asChild>
             <Link href="/login">카카오 로그인하러 가기</Link>
           </Button>
