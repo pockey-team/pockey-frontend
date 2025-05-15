@@ -5,402 +5,16 @@
  * API documentation for the Pockey application
  * OpenAPI spec version: 1.0
  */
-import { faker } from "@faker-js/faker";
-
 import { delay, HttpResponse, http } from "msw";
 
-import type {
-  LoginResponse,
-  Post,
-  Product,
-  RankingProduct,
-  RecommendSession,
-  RecommendSessionControllerSubmitAnswer200,
-  RecommendSessionResult,
-  RecommendSessionStep,
-  UserProfile,
-} from "./index.schemas";
-
-export const getAuthControllerLoginSocialResponseMock = (
-  overrideResponse: Partial<LoginResponse> = {},
-): LoginResponse => ({
-  accessToken: faker.string.alpha(20),
-  refreshToken: faker.string.alpha(20),
-  ...overrideResponse,
-});
-
-export const getUserControllerGetMeResponseMock = (
-  overrideResponse: Partial<UserProfile> = {},
-): UserProfile => ({
-  id: faker.number.int({ min: undefined, max: undefined }),
-  nickname: faker.string.alpha(20),
-  profileImageUrl: faker.string.alpha(20),
-  ...overrideResponse,
-});
-
-export const getProductControllerGetRankingResponseMock =
-  (): RankingProduct[] =>
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => ({
-      id: faker.number.int({ min: undefined, max: undefined }),
-      name: faker.string.alpha(20),
-      url: faker.string.alpha(20),
-      imageUrl: faker.string.alpha(20),
-      priceRange: faker.string.alpha(20),
-    }));
-
-export const getWishlistControllerGetWishlistResponseMock = (): Product[] =>
-  Array.from(
-    { length: faker.number.int({ min: 4, max: 4 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    id: faker.number.int({ min: undefined, max: undefined }),
-    name: faker.string.alpha(20),
-    url: faker.string.alpha(20),
-    imageUrl: faker.string.alpha(20),
-    category: faker.string.alpha(20),
-    brand: faker.string.alpha(20),
-    price: faker.number.int({ min: undefined, max: undefined }),
-    priceRange: faker.string.alpha(20),
-    ageRange: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-    situation: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha(20)),
-      undefined,
-    ]),
-    intention: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha(20)),
-      undefined,
-    ]),
-    friendshipLevel: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha(20)),
-      undefined,
-    ]),
-    targetGender: faker.helpers.arrayElement([
-      faker.string.alpha(20),
-      undefined,
-    ]),
-    tags: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha(20)),
-      undefined,
-    ]),
-    nextPickProductIds: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        id: faker.number.int({ min: undefined, max: undefined }),
-        url: faker.string.alpha(20),
-        imageUrl: faker.string.alpha(20),
-      })),
-      undefined,
-    ]),
-  }));
-
-export const getRecommendSessionControllerStartSessionResponseMock = (
-  overrideResponse: Partial<RecommendSessionStep> = {},
-): RecommendSessionStep => ({
-  id: faker.number.int({ min: undefined, max: undefined }),
-  sessionId: faker.string.alpha(20),
-  step: faker.number.int({ min: undefined, max: undefined }),
-  question: faker.string.alpha(20),
-  options: Array.from(
-    { length: faker.number.int({ min: 4, max: 4 }) },
-    (_, i) => i + 1,
-  ).map(() => faker.string.alpha(20)),
-  answer: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getRecommendSessionControllerGetSessionsResponseMock =
-  (): RecommendSession[] =>
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => ({
-      id: faker.string.alpha(20),
-      receiverName: faker.string.alpha(20),
-      steps: Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        id: faker.number.int({ min: undefined, max: undefined }),
-        sessionId: faker.string.alpha(20),
-        step: faker.number.int({ min: undefined, max: undefined }),
-        question: faker.string.alpha(20),
-        options: Array.from(
-          { length: faker.number.int({ min: 4, max: 4 }) },
-          (_, i) => i + 1,
-        ).map(() => faker.string.alpha(20)),
-        answer: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined,
-        ]),
-      })),
-      result: faker.helpers.arrayElement([
-        {
-          sessionId: faker.string.alpha(20),
-          recommendProductIds: Array.from(
-            { length: faker.number.int({ min: 4, max: 4 }) },
-            (_, i) => i + 1,
-          ).map(() => faker.number.int({ min: undefined, max: undefined })),
-          recommendText: faker.string.alpha(20),
-        },
-        undefined,
-      ]),
-      endedAt: faker.helpers.arrayElement([
-        faker.helpers.arrayElement([
-          new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-          null,
-        ]),
-        undefined,
-      ]),
-    }));
-
-export const getRecommendSessionControllerSubmitAnswerResponseRecommendSessionStepMock =
-  (
-    overrideResponse: Partial<RecommendSessionStep> = {},
-  ): RecommendSessionStep => ({
-    ...{
-      id: faker.number.int({ min: undefined, max: undefined }),
-      sessionId: faker.string.alpha(20),
-      step: faker.number.int({ min: undefined, max: undefined }),
-      question: faker.string.alpha(20),
-      options: Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha(20)),
-      answer: faker.helpers.arrayElement([
-        faker.helpers.arrayElement([faker.string.alpha(20), null]),
-        undefined,
-      ]),
-    },
-    ...overrideResponse,
-  });
-
-export const getRecommendSessionControllerSubmitAnswerResponseRecommendSessionResultMock =
-  (
-    overrideResponse: Partial<RecommendSessionResult> = {},
-  ): RecommendSessionResult => ({
-    ...{
-      sessionId: faker.string.alpha(20),
-      recommendProductIds: Array.from(
-        { length: faker.number.int({ min: 4, max: 4 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.number.int({ min: undefined, max: undefined })),
-      recommendText: faker.string.alpha(20),
-    },
-    ...overrideResponse,
-  });
-
-export const getRecommendSessionControllerSubmitAnswerResponseMock =
-  (): RecommendSessionControllerSubmitAnswer200 =>
-    faker.helpers.arrayElement([
-      {
-        ...getRecommendSessionControllerSubmitAnswerResponseRecommendSessionStepMock(),
-      },
-      {
-        ...getRecommendSessionControllerSubmitAnswerResponseRecommendSessionResultMock(),
-      },
-    ]);
-
-export const getRecommendSessionControllerGetSessionResultResponseMock = (
-  overrideResponse: Partial<RecommendSessionResult> = {},
-): RecommendSessionResult => ({
-  sessionId: faker.string.alpha(20),
-  recommendProductIds: Array.from(
-    { length: faker.number.int({ min: 4, max: 4 }) },
-    (_, i) => i + 1,
-  ).map(() => faker.number.int({ min: undefined, max: undefined })),
-  recommendText: faker.string.alpha(20),
-  ...overrideResponse,
-});
-
-export const getProductControllerGetProductResponseMock = (
-  overrideResponse: Partial<Product> = {},
-): Product => ({
-  id: faker.number.int({ min: undefined, max: undefined }),
-  name: faker.string.alpha(20),
-  url: faker.string.alpha(20),
-  imageUrl: faker.string.alpha(20),
-  category: faker.string.alpha(20),
-  brand: faker.string.alpha(20),
-  price: faker.number.int({ min: undefined, max: undefined }),
-  priceRange: faker.string.alpha(20),
-  ageRange: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  situation: faker.helpers.arrayElement([
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.string.alpha(20)),
-    undefined,
-  ]),
-  intention: faker.helpers.arrayElement([
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.string.alpha(20)),
-    undefined,
-  ]),
-  friendshipLevel: faker.helpers.arrayElement([
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.string.alpha(20)),
-    undefined,
-  ]),
-  targetGender: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  tags: faker.helpers.arrayElement([
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.string.alpha(20)),
-    undefined,
-  ]),
-  nextPickProductIds: faker.helpers.arrayElement([
-    Array.from(
-      { length: faker.number.int({ min: 4, max: 4 }) },
-      (_, i) => i + 1,
-    ).map(() => ({
-      id: faker.number.int({ min: undefined, max: undefined }),
-      url: faker.string.alpha(20),
-      imageUrl: faker.string.alpha(20),
-    })),
-    undefined,
-  ]),
-  ...overrideResponse,
-});
-
-export const getPostControllerGetPostsResponseMock = (): Post[] =>
-  Array.from(
-    { length: faker.number.int({ min: 4, max: 4 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    id: faker.number.int({ min: undefined, max: undefined }),
-    title: faker.string.alpha(20),
-    content: faker.string.alpha(20),
-    postedAt: new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-  }));
-
-export const getPostControllerGetPostResponseMock = (
-  overrideResponse: Partial<Post> = {},
-): Post => ({
-  id: faker.number.int({ min: undefined, max: undefined }),
-  title: faker.string.alpha(20),
-  content: faker.string.alpha(20),
-  postedAt: new Date(`${faker.date.past().toISOString().split(".")[0]}Z`),
-  ...overrideResponse,
-});
-
-export const getAuthControllerLoginSocialMockHandler = (
+export const getAuthControllerLoginWithSocialMockHandler = (
   overrideResponse?:
-    | LoginResponse
+    | void
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<LoginResponse> | LoginResponse),
+      ) => Promise<void> | void),
 ) => {
   return http.post("*/api/v1/auth/login/social", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getAuthControllerLoginSocialResponseMock(),
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getUserControllerGetMeMockHandler = (
-  overrideResponse?:
-    | UserProfile
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<UserProfile> | UserProfile),
-) => {
-  return http.get("*/api/v1/user/me", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getUserControllerGetMeResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getUserControllerUpdateProfileMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.patch("*/api/v1/user/profile", async (info) => {
-    await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getProductControllerGetRankingMockHandler = (
-  overrideResponse?:
-    | RankingProduct[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<RankingProduct[]> | RankingProduct[]),
-) => {
-  return http.get("*/api/v1/product/ranking", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getProductControllerGetRankingResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getWishlistControllerAddToWishlistMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.post("*/api/v1/wishlist", async (info) => {
     await delay(500);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
@@ -409,115 +23,101 @@ export const getWishlistControllerAddToWishlistMockHandler = (
   });
 };
 
-export const getWishlistControllerGetWishlistMockHandler = (
-  overrideResponse?:
-    | Product[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Product[]> | Product[]),
-) => {
-  return http.get("*/api/v1/wishlist", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getWishlistControllerGetWishlistResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getWishlistControllerRemoveFromWishlistMockHandler = (
+export const getAuthControllerRefreshTokenMockHandler = (
   overrideResponse?:
     | void
     | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.delete("*/api/v1/wishlist/:wishlistId", async (info) => {
+  return http.post("*/api/v1/auth/token/refresh", async (info) => {
     await delay(500);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
     }
-    return new HttpResponse(null, { status: 204 });
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getPostControllerGetPostsMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/api/v1/post", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getProductControllerGetProductMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/api/v1/product/:id", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getUserControllerGetMyProfileMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/api/v1/user/me", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
   });
 };
 
 export const getRecommendSessionControllerStartSessionMockHandler = (
   overrideResponse?:
-    | RecommendSessionStep
+    | void
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<RecommendSessionStep> | RecommendSessionStep),
+      ) => Promise<void> | void),
 ) => {
   return http.post("*/api/v1/recommend-session", async (info) => {
     await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getRecommendSessionControllerStartSessionResponseMock(),
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getRecommendSessionControllerGetSessionsMockHandler = (
-  overrideResponse?:
-    | RecommendSession[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<RecommendSession[]> | RecommendSession[]),
-) => {
-  return http.get("*/api/v1/recommend-session", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getRecommendSessionControllerGetSessionsResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
   });
 };
 
 export const getRecommendSessionControllerSubmitAnswerMockHandler = (
   overrideResponse?:
-    | RecommendSessionControllerSubmitAnswer200
+    | void
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) =>
-        | Promise<RecommendSessionControllerSubmitAnswer200>
-        | RecommendSessionControllerSubmitAnswer200),
+      ) => Promise<void> | void),
 ) => {
   return http.post(
     "*/api/v1/recommend-session/:sessionId/answer",
     async (info) => {
       await delay(500);
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getRecommendSessionControllerSubmitAnswerResponseMock(),
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } },
-      );
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 201 });
     },
   );
 };
@@ -534,118 +134,16 @@ export const getRecommendSessionControllerEndSessionMockHandler = (
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
     }
-    return new HttpResponse(null, { status: 204 });
-  });
-};
-
-export const getRecommendSessionControllerGetSessionResultMockHandler = (
-  overrideResponse?:
-    | RecommendSessionResult
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<RecommendSessionResult> | RecommendSessionResult),
-) => {
-  return http.get(
-    "*/api/v1/recommend-session/:sessionId/result",
-    async (info) => {
-      await delay(500);
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getRecommendSessionControllerGetSessionResultResponseMock(),
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } },
-      );
-    },
-  );
-};
-
-export const getProductControllerGetProductMockHandler = (
-  overrideResponse?:
-    | Product
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Product> | Product),
-) => {
-  return http.get("*/api/v1/product/:id", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getProductControllerGetProductResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getPostControllerGetPostsMockHandler = (
-  overrideResponse?:
-    | Post[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Post[]> | Post[]),
-) => {
-  return http.get("*/api/v1/post", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getPostControllerGetPostsResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
-  });
-};
-
-export const getPostControllerGetPostMockHandler = (
-  overrideResponse?:
-    | Post
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Post> | Post),
-) => {
-  return http.get("*/api/v1/post/:id", async (info) => {
-    await delay(500);
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getPostControllerGetPostResponseMock(),
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
+    return new HttpResponse(null, { status: 200 });
   });
 };
 export const getPockeyAPIDocumentationMock = () => [
-  getAuthControllerLoginSocialMockHandler(),
-  getUserControllerGetMeMockHandler(),
-  getUserControllerUpdateProfileMockHandler(),
-  getProductControllerGetRankingMockHandler(),
-  getWishlistControllerAddToWishlistMockHandler(),
-  getWishlistControllerGetWishlistMockHandler(),
-  getWishlistControllerRemoveFromWishlistMockHandler(),
+  getAuthControllerLoginWithSocialMockHandler(),
+  getAuthControllerRefreshTokenMockHandler(),
+  getPostControllerGetPostsMockHandler(),
+  getProductControllerGetProductMockHandler(),
+  getUserControllerGetMyProfileMockHandler(),
   getRecommendSessionControllerStartSessionMockHandler(),
-  getRecommendSessionControllerGetSessionsMockHandler(),
   getRecommendSessionControllerSubmitAnswerMockHandler(),
   getRecommendSessionControllerEndSessionMockHandler(),
-  getRecommendSessionControllerGetSessionResultMockHandler(),
-  getProductControllerGetProductMockHandler(),
-  getPostControllerGetPostsMockHandler(),
-  getPostControllerGetPostMockHandler(),
 ];

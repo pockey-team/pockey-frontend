@@ -11,108 +11,16 @@ export interface SocialLoginCommand {
   profileImageUrl: string;
 }
 
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+export interface StartSessionRequest {
+  deviceId: string;
+  receiverName: string;
 }
 
-export interface UserProfile {
-  id: number;
-  nickname: string;
-  profileImageUrl: string;
-}
-
-export interface UpdateProfileCommand {
-  nickname?: string;
-  profileImageUrl?: string;
-}
-
-export interface RankingProduct {
-  id: number;
-  name: string;
-  url: string;
-  imageUrl: string;
-  priceRange: string;
-}
-
-export interface NextPickProduct {
-  id: number;
-  url: string;
-  imageUrl: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  url: string;
-  imageUrl: string;
-  category: string;
-  brand: string;
-  price: number;
-  priceRange: string;
-  ageRange?: string;
-  situation?: string[];
-  intention?: string[];
-  friendshipLevel?: string[];
-  targetGender?: string;
-  tags?: string[];
-  nextPickProductIds?: NextPickProduct[];
-}
-
-export interface AddToWishlistCommand {
-  productId: number;
-}
-
-export interface StartRecommendSessionCommand {
-  deviceId?: string;
-}
-
-export interface SubmitAnswerCommand {
+export interface SubmitAnswerRequest {
   answer: string;
 }
 
-export interface RecommendSessionStep {
-  id: number;
-  sessionId: string;
-  step: number;
-  question: string;
-  options: string[];
-  /** @nullable */
-  answer?: string | null;
-}
-
-export interface RecommendSessionResult {
-  sessionId: string;
-  recommendProductIds: number[];
-  recommendText: string;
-}
-
-export interface RecommendSession {
-  id: string;
-  receiverName: string;
-  steps: RecommendSessionStep[];
-  /** @nullable */
-  result?: RecommendSessionResult;
-  /** @nullable */
-  endedAt?: Date | null;
-}
-
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  postedAt: Date;
-}
-
-export type ProductControllerGetRankingParams = {
-  type: string;
+export type PostControllerGetPostsParams = {
+  cursor?: string;
+  limit: number;
 };
-
-export type RecommendSessionControllerGetSessionsParams = {
-  userId?: string;
-  deviceId?: string;
-};
-
-export type RecommendSessionControllerSubmitAnswer200 =
-  | RecommendSessionStep
-  | RecommendSessionResult;
