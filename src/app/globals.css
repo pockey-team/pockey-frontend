@@ -20,9 +20,77 @@ html {
   }
 }
 
+@property --gradient-recommendation-setup-name-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #141214;
+}
+
+@property --gradient-recommendation-setup-name-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 155deg;
+}
+
+@property --gradient-recommendation-setup-name-stop {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 48%;
+}
+
+@property --gradient-recommendation-setup-name-color-end {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #12658e;
+}
+
+@keyframes gradient-recommendation-setup-name-angle-animate {
+  0% {
+    --gradient-recommendation-setup-name-angle: 155deg;
+    --gradient-recommendation-setup-name-stop: 48%;
+    --gradient-recommendation-setup-name-color-end: #12658e;
+  }
+  50% {
+    --gradient-recommendation-setup-name-angle: 180deg;
+    --gradient-recommendation-setup-name-stop: 57%;
+    --gradient-recommendation-setup-name-color-end: #134762;
+  }
+  100% {
+    --gradient-recommendation-setup-name-angle: 155deg;
+    --gradient-recommendation-setup-name-stop: 48%;
+    --gradient-recommendation-setup-name-color-end: #12658e;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .bg-recommendation-setup-name {
+    background: linear-gradient(
+      155deg,
+      #141214 22%,
+      #141214 48%,
+      var(--gradient-recommendation-setup-name-color) 100%
+    );
+  }
+
+  .bg-recommendation-setup-name-animate {
+    --gradient-recommendation-setup-name-color: #12658e;
+    transition: --gradient-recommendation-setup-name-color 0.5s ease-in-out;
+  }
+
+  .bg-recommendation-setup-name-complete {
+    animation: gradient-recommendation-setup-name-angle-animate 3s infinite
+      ease-in-out;
+
+    background: linear-gradient(
+      var(--gradient-recommendation-setup-name-angle),
+      #141214 22%,
+      #141214 var(--gradient-recommendation-setup-name-stop),
+      var(--gradient-recommendation-setup-name-color-end) 100%
+    );
   }
 }
 

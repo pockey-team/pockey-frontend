@@ -122,8 +122,8 @@ Page.Container = <C extends AnyComponent = "div">({
   className,
   noPadding,
   ...props
-}: PolymorphicComponentProps<"div", { noPadding?: boolean }> &
-  PropsOf<C extends AnyComponent ? C : "div">) => {
+}: PolymorphicComponentProps<"div"> &
+  PropsOf<C extends AnyComponent ? C : "div"> & { noPadding?: boolean }) => {
   const Component = as || "div";
   return (
     <Component
