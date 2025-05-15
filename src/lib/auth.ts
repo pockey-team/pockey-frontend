@@ -27,7 +27,11 @@ export const authOptions: NextAuthOptions = {
             profileImageUrl: token.picture ?? "",
           };
 
-          const response = await authControllerLoginWithSocial(loginCommand);
+          const response = await authControllerLoginWithSocial(loginCommand, {
+            headers: {
+              Accept: "application/json",
+            },
+          });
 
           if (response.data?.accessToken) {
             token.accessToken = response.data.accessToken;
