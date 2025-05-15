@@ -32,10 +32,8 @@ import type {
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 interface LoginResponse {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 export type authControllerLoginWithSocialResponse201 = {

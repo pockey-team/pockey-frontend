@@ -1,7 +1,7 @@
 import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SignInButton } from "@/components/auth/sign-in-button";
+import { SignInButton } from "@/components/auth/sign-in";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
