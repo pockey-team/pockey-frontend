@@ -5,9 +5,9 @@
  * API documentation for the Pockey application
  * OpenAPI spec version: 1.0
  */
-import { delay, HttpResponse, http } from "msw";
+import { http, HttpResponse, delay } from "msw";
 
-export const getAuthControllerLoginMockHandler = (
+export const getAuthControllerLoginWithSocialMockHandler = (
   overrideResponse?:
     | void
     | ((
@@ -36,22 +36,6 @@ export const getAuthControllerRefreshTokenMockHandler = (
       await overrideResponse(info);
     }
     return new HttpResponse(null, { status: 201 });
-  });
-};
-
-export const getAuthControllerUpdatePasswordMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.patch("*/api/v1/auth/password", async (info) => {
-    await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
   });
 };
 
@@ -87,46 +71,14 @@ export const getProductControllerGetProductMockHandler = (
   });
 };
 
-export const getUserControllerGetUserMockHandler = (
+export const getUserControllerGetMyProfileMockHandler = (
   overrideResponse?:
     | void
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.get("*/api/v1/user/:id", async (info) => {
-    await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getUserControllerGetUsersMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.get("*/api/v1/user", async (info) => {
-    await delay(500);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getUserControllerUpdateUserPasswordMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.patch("*/api/v1/user/:userId/password", async (info) => {
+  return http.get("*/api/v1/user/me", async (info) => {
     await delay(500);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
@@ -186,14 +138,11 @@ export const getRecommendSessionControllerEndSessionMockHandler = (
   });
 };
 export const getPockeyAPIDocumentationMock = () => [
-  getAuthControllerLoginMockHandler(),
+  getAuthControllerLoginWithSocialMockHandler(),
   getAuthControllerRefreshTokenMockHandler(),
-  getAuthControllerUpdatePasswordMockHandler(),
   getPostControllerGetPostsMockHandler(),
   getProductControllerGetProductMockHandler(),
-  getUserControllerGetUserMockHandler(),
-  getUserControllerGetUsersMockHandler(),
-  getUserControllerUpdateUserPasswordMockHandler(),
+  getUserControllerGetMyProfileMockHandler(),
   getRecommendSessionControllerStartSessionMockHandler(),
   getRecommendSessionControllerSubmitAnswerMockHandler(),
   getRecommendSessionControllerEndSessionMockHandler(),

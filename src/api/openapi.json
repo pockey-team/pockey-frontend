@@ -3,7 +3,7 @@
   "paths": {
     "/api/v1/auth/login": {
       "post": {
-        "operationId": "AuthController_login",
+        "operationId": "AuthController_loginWithSocial",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -29,28 +29,6 @@
         "parameters": [],
         "responses": {
           "201": {
-            "description": ""
-          }
-        },
-        "tags": ["Auth"]
-      }
-    },
-    "/api/v1/auth/password": {
-      "patch": {
-        "operationId": "AuthController_updatePassword",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdatePasswordCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
             "description": ""
           }
         },
@@ -263,19 +241,10 @@
         "tags": ["Product"]
       }
     },
-    "/api/v1/user/{id}": {
+    "/api/v1/user/me": {
       "get": {
-        "operationId": "UserController_getUser",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "UserController_getMyProfile",
+        "parameters": [],
         "responses": {
           "200": {
             "description": ""
@@ -284,105 +253,23 @@
         "tags": ["User"]
       }
     },
-    "/api/v1/user": {
-      "get": {
-        "operationId": "UserController_getUsers",
-        "parameters": [
-          {
-            "name": "cursor",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "example": "string",
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "0",
-              "type": "number"
-            }
-          },
-          {
-            "name": "email",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "example": "example@example.com",
-              "type": "string"
-            }
-          },
-          {
-            "name": "registeredFrom",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "example": "2024-01-01",
-              "type": "string"
-            }
-          },
-          {
-            "name": "registeredTo",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "example": "2024-01-01",
-              "type": "string"
-            }
-          },
-          {
-            "name": "orderBy",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "enum",
-              "type": "string"
-            }
-          },
-          {
-            "name": "order",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "example": "enum",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "/api/v1/user/{userId}/password": {
-      "patch": {
-        "operationId": "UserController_updateUserPassword",
-        "parameters": [
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+    "/api/v1/recommend-session": {
+      "post": {
+        "operationId": "RecommendSessionController_startSession",
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserPasswordCommand"
+                "$ref": "#/components/schemas/StartSessionRequest"
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
           }
         },
         "responses": {
@@ -480,28 +367,32 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "example@example.com"
+            "example": "unknown (isNotEmpty)"
           },
           "password": {
             "type": "string",
-            "example": "string"
+            "example": "unknown (isNotEmpty)"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "example": "unknown (isNotEmpty)"
           }
         },
         "required": ["email", "password"]
       },
-      "UpdatePasswordCommand": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateUserPasswordCommand": {
+      "StartSessionRequest": {
         "type": "object",
         "properties": {
-          "newPassword": {
+          "deviceId": {
+            "type": "string",
+            "example": "string"
+          },
+          "receiverName": {
             "type": "string",
             "example": "string"
           }
         },
-        "required": ["newPassword"]
+        "required": ["deviceId", "receiverName"]
       },
       "SubmitAnswerRequest": {
         "type": "object",

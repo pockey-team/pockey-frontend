@@ -1,9 +1,13 @@
 "use client";
 
-import Image, { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 import { useRouter } from "next/navigation";
 
-export const Back = () => {
+interface Props {
+  label?: string;
+}
+
+export const Back = ({ label }: Props) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -12,7 +16,7 @@ export const Back = () => {
 
   return (
     <button onClick={handleClick} type="button">
-      <ArrowLeftIcon width={24} height={24} />
+      {label ? label : <ArrowLeftIcon width={24} height={24} />}
     </button>
   );
 };

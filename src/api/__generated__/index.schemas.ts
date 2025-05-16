@@ -5,17 +5,15 @@
  * API documentation for the Pockey application
  * OpenAPI spec version: 1.0
  */
-export interface LoginCommand {
-  email: string;
-  password: string;
+export interface SocialLoginCommand {
+  snsId: string;
+  nickname: string;
+  profileImageUrl: string;
 }
 
-export interface UpdatePasswordCommand {
-  [key: string]: unknown;
-}
-
-export interface UpdateUserPasswordCommand {
-  newPassword: string;
+export interface StartSessionRequest {
+  deviceId: string;
+  receiverName: string;
 }
 
 export interface SubmitAnswerRequest {
@@ -25,14 +23,4 @@ export interface SubmitAnswerRequest {
 export type PostControllerGetPostsParams = {
   cursor?: string;
   limit: number;
-};
-
-export type UserControllerGetUsersParams = {
-  cursor?: string;
-  limit: number;
-  email?: string;
-  registeredFrom?: Date;
-  registeredTo?: Date;
-  orderBy: string;
-  order: string;
 };
