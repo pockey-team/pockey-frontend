@@ -1,10 +1,10 @@
 import {
-  ComponentProps,
-  ComponentPropsWithoutRef,
+  type ComponentProps,
+  type ComponentPropsWithoutRef,
   cloneElement,
-  ElementType,
-  JSXElementConstructor,
-  ReactElement,
+  type ElementType,
+  type JSXElementConstructor,
+  type ReactElement,
   useMemo,
 } from "react";
 import { cn } from "@/lib/utils";
