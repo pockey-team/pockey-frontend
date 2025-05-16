@@ -6,6 +6,7 @@ export const recommendationSetupFormSchema = z.object({
   age: z.string(),
   relation: z.string(),
   priceRange: z.string(),
+  occasion: z.string(),
 });
 
 export type RecommendationSetupFormData = z.infer<
