@@ -5,7 +5,7 @@
  * API documentation for the Pockey application
  * OpenAPI spec version: 1.0
  */
-import { http, HttpResponse, delay } from "msw";
+import { delay, HttpResponse, http } from "msw";
 
 export const getAuthControllerLoginWithSocialMockHandler = (
   overrideResponse?:
@@ -14,7 +14,7 @@ export const getAuthControllerLoginWithSocialMockHandler = (
         info: Parameters<Parameters<typeof http.post>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.post("*/api/v1/auth/login", async (info) => {
+  return http.post("*/api/v1/auth/login/social", async (info) => {
     await delay(500);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);

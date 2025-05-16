@@ -31,13 +31,8 @@ import type {
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
 export type authControllerLoginWithSocialResponse201 = {
-  data: LoginResponse;
+  data: undefined;
   status: 201;
 };
 
@@ -75,14 +70,14 @@ export const getAuthControllerLoginWithSocialMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authControllerLoginWithSocial>>,
     TError,
-    { data: LoginCommand },
+    { data: SocialLoginCommand },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof authControllerLoginWithSocial>>,
   TError,
-  { data: LoginCommand },
+  { data: SocialLoginCommand },
   TContext
 > => {
   const mutationKey = ["authControllerLoginWithSocial"];
@@ -120,7 +115,7 @@ export const useAuthControllerLoginWithSocial = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof authControllerLoginWithSocial>>,
       TError,
-      { data: LoginCommand },
+      { data: SocialLoginCommand },
       TContext
     >;
     request?: SecondParameter<typeof http>;
@@ -129,7 +124,7 @@ export const useAuthControllerLoginWithSocial = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof authControllerLoginWithSocial>>,
   TError,
-  { data: LoginCommand },
+  { data: SocialLoginCommand },
   TContext
 > => {
   const mutationOptions =
@@ -139,7 +134,7 @@ export const useAuthControllerLoginWithSocial = <
 };
 
 export type authControllerRefreshTokenResponse201 = {
-  data: LoginResponse;
+  data: undefined;
   status: 201;
 };
 
@@ -402,7 +397,6 @@ export function usePostControllerGetPosts<
 export function usePostControllerGetPosts<
   TData = Awaited<ReturnType<typeof postControllerGetPosts>>,
   TError = unknown,
-  TContext = unknown,
 >(
   params: PostControllerGetPostsParams,
   options?: {
@@ -732,7 +726,6 @@ export function useUserControllerGetMyProfile<
   TData = Awaited<ReturnType<typeof userControllerGetMyProfile>>,
   TError = unknown,
 >(
-  id: number,
   options: {
     query: Partial<
       UseQueryOptions<
@@ -759,7 +752,6 @@ export function useUserControllerGetMyProfile<
   TData = Awaited<ReturnType<typeof userControllerGetMyProfile>>,
   TError = unknown,
 >(
-  id: number,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -786,7 +778,6 @@ export function useUserControllerGetMyProfile<
   TData = Awaited<ReturnType<typeof userControllerGetMyProfile>>,
   TError = unknown,
 >(
-  id: number,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -806,7 +797,6 @@ export function useUserControllerGetMyProfile<
   TData = Awaited<ReturnType<typeof userControllerGetMyProfile>>,
   TError = unknown,
 >(
-  id: number,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -838,7 +828,6 @@ export const prefetchUserControllerGetMyProfile = async <
   TError = unknown,
 >(
   queryClient: QueryClient,
-  id: number,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -889,8 +878,7 @@ export const recommendSessionControllerStartSession = async (
   );
 };
 
-export function useUserControllerGetUser<
-  TData = Awaited<ReturnType<typeof userControllerGetUser>>,
+export const getRecommendSessionControllerStartSessionMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
@@ -925,8 +913,8 @@ export function useUserControllerGetUser<
     return recommendSessionControllerStartSession(data, requestOptions);
   };
 
-  return query;
-}
+  return { mutationFn, ...mutationOptions };
+};
 
 export type RecommendSessionControllerStartSessionMutationResult = NonNullable<
   Awaited<ReturnType<typeof recommendSessionControllerStartSession>>
@@ -937,9 +925,8 @@ export type RecommendSessionControllerStartSessionMutationError = unknown;
 
 export const useRecommendSessionControllerStartSession = <
   TError = unknown,
+  TContext = unknown,
 >(
-  queryClient: QueryClient,
-  id: string,
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
@@ -970,49 +957,51 @@ export type recommendSessionControllerSubmitAnswerResponse201 = {
 export type recommendSessionControllerSubmitAnswerResponseComposite =
   recommendSessionControllerSubmitAnswerResponse201;
 
-export type userControllerUpdateUserPasswordResponse =
-  userControllerUpdateUserPasswordResponseComposite & {
+export type recommendSessionControllerSubmitAnswerResponse =
+  recommendSessionControllerSubmitAnswerResponseComposite & {
     headers: Headers;
   };
 
-export const getUserControllerUpdateUserPasswordUrl = (userId: string) => {
-  return `https://api-dev.pockey.pics/api/v1/user/${userId}/password`;
+export const getRecommendSessionControllerSubmitAnswerUrl = (
+  sessionId: string,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/answer`;
 };
 
 export const recommendSessionControllerSubmitAnswer = async (
   sessionId: string,
   submitAnswerRequest: SubmitAnswerRequest,
   options?: RequestInit,
-): Promise<userControllerUpdateUserPasswordResponse> => {
-  return http<userControllerUpdateUserPasswordResponse>(
-    getUserControllerUpdateUserPasswordUrl(userId),
+): Promise<recommendSessionControllerSubmitAnswerResponse> => {
+  return http<recommendSessionControllerSubmitAnswerResponse>(
+    getRecommendSessionControllerSubmitAnswerUrl(sessionId),
     {
       ...options,
-      method: "PATCH",
+      method: "POST",
       headers: { "Content-Type": "application/json", ...options?.headers },
       body: JSON.stringify(submitAnswerRequest),
     },
   );
 };
 
-export const getUserControllerUpdateUserPasswordMutationOptions = <
+export const getRecommendSessionControllerSubmitAnswerMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+    Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
     TError,
     { sessionId: string; data: SubmitAnswerRequest },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
   TError,
   { sessionId: string; data: SubmitAnswerRequest },
   TContext
 > => {
-  const mutationKey = ["userControllerUpdateUserPassword"];
+  const mutationKey = ["recommendSessionControllerSubmitAnswer"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -1025,28 +1014,32 @@ export const getUserControllerUpdateUserPasswordMutationOptions = <
     Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
     { sessionId: string; data: SubmitAnswerRequest }
   > = (props) => {
-    const { userId, data } = props ?? {};
+    const { sessionId, data } = props ?? {};
 
-    return userControllerUpdateUserPassword(userId, data, requestOptions);
+    return recommendSessionControllerSubmitAnswer(
+      sessionId,
+      data,
+      requestOptions,
+    );
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type UserControllerUpdateUserPasswordMutationResult = NonNullable<
-  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>
+export type RecommendSessionControllerSubmitAnswerMutationResult = NonNullable<
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>
 >;
 export type RecommendSessionControllerSubmitAnswerMutationBody =
   SubmitAnswerRequest;
 export type RecommendSessionControllerSubmitAnswerMutationError = unknown;
 
-export const useUserControllerUpdateUserPassword = <
+export const useRecommendSessionControllerSubmitAnswer = <
   TError = unknown,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+      Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
       TError,
       { sessionId: string; data: SubmitAnswerRequest },
       TContext
@@ -1055,13 +1048,13 @@ export const useUserControllerUpdateUserPassword = <
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof userControllerUpdateUserPassword>>,
+  Awaited<ReturnType<typeof recommendSessionControllerSubmitAnswer>>,
   TError,
   { sessionId: string; data: SubmitAnswerRequest },
   TContext
 > => {
   const mutationOptions =
-    getUserControllerUpdateUserPasswordMutationOptions(options);
+    getRecommendSessionControllerSubmitAnswerMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1074,45 +1067,48 @@ export type recommendSessionControllerEndSessionResponse200 = {
 export type recommendSessionControllerEndSessionResponseComposite =
   recommendSessionControllerEndSessionResponse200;
 
-export type recommendSessionControllerStartSessionResponse =
-  recommendSessionControllerStartSessionResponseComposite & {
+export type recommendSessionControllerEndSessionResponse =
+  recommendSessionControllerEndSessionResponseComposite & {
     headers: Headers;
   };
 
-export const getRecommendSessionControllerStartSessionUrl = () => {
-  return `https://api-dev.pockey.pics/api/v1/recommend-session`;
+export const getRecommendSessionControllerEndSessionUrl = (
+  sessionId: string,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}`;
 };
 
-export const recommendSessionControllerStartSession = async (
+export const recommendSessionControllerEndSession = async (
+  sessionId: string,
   options?: RequestInit,
-): Promise<recommendSessionControllerStartSessionResponse> => {
-  return http<recommendSessionControllerStartSessionResponse>(
-    getRecommendSessionControllerStartSessionUrl(),
+): Promise<recommendSessionControllerEndSessionResponse> => {
+  return http<recommendSessionControllerEndSessionResponse>(
+    getRecommendSessionControllerEndSessionUrl(sessionId),
     {
       ...options,
-      method: "POST",
+      method: "DELETE",
     },
   );
 };
 
-export const getRecommendSessionControllerStartSessionMutationOptions = <
+export const getRecommendSessionControllerEndSessionMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
     TError,
-    void,
+    { sessionId: string },
     TContext
   >;
   request?: SecondParameter<typeof http>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
   TError,
-  void,
+  { sessionId: string },
   TContext
 > => {
-  const mutationKey = ["recommendSessionControllerStartSession"];
+  const mutationKey = ["recommendSessionControllerEndSession"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -1122,43 +1118,45 @@ export const getRecommendSessionControllerStartSessionMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
-    void
-  > = () => {
-    return recommendSessionControllerStartSession(requestOptions);
+    Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
+    { sessionId: string }
+  > = (props) => {
+    const { sessionId } = props ?? {};
+
+    return recommendSessionControllerEndSession(sessionId, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RecommendSessionControllerStartSessionMutationResult = NonNullable<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>
+export type RecommendSessionControllerEndSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>
 >;
 
-export type RecommendSessionControllerStartSessionMutationError = unknown;
+export type RecommendSessionControllerEndSessionMutationError = unknown;
 
-export const useRecommendSessionControllerStartSession = <
+export const useRecommendSessionControllerEndSession = <
   TError = unknown,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+      Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
       TError,
-      void,
+      { sessionId: string },
       TContext
     >;
     request?: SecondParameter<typeof http>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof recommendSessionControllerStartSession>>,
+  Awaited<ReturnType<typeof recommendSessionControllerEndSession>>,
   TError,
-  void,
+  { sessionId: string },
   TContext
 > => {
   const mutationOptions =
-    getRecommendSessionControllerStartSessionMutationOptions(options);
+    getRecommendSessionControllerEndSessionMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

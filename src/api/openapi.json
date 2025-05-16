@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/auth/login": {
+    "/api/v1/auth/login/social": {
       "post": {
         "operationId": "AuthController_loginWithSocial",
         "parameters": [],
@@ -10,7 +10,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginCommand"
+                "$ref": "#/components/schemas/SocialLoginCommand"
               }
             }
           }
@@ -272,23 +272,6 @@
             "description": ""
           }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "/api/v1/recommend-session": {
-      "post": {
-        "operationId": "RecommendSessionController_startSession",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
         "tags": ["RecommendSession"]
       }
     },
@@ -362,14 +345,14 @@
       }
     },
     "schemas": {
-      "LoginCommand": {
+      "SocialLoginCommand": {
         "type": "object",
         "properties": {
-          "email": {
+          "snsId": {
             "type": "string",
             "example": "unknown (isNotEmpty)"
           },
-          "password": {
+          "nickname": {
             "type": "string",
             "example": "unknown (isNotEmpty)"
           },
@@ -378,7 +361,7 @@
             "example": "unknown (isNotEmpty)"
           }
         },
-        "required": ["email", "password"]
+        "required": ["snsId", "nickname", "profileImageUrl"]
       },
       "StartSessionRequest": {
         "type": "object",
