@@ -2,8 +2,8 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { SignInButton } from "@/components/auth/sign-in";
+import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
-import { Button } from "@/components/ui/button";
 import { authOptions } from "@/lib/auth";
 
 const SignInPage = async () => {
@@ -15,9 +15,8 @@ const SignInPage = async () => {
   return (
     <Page className="bg-signInBackground">
       <Page.Header>
-        <Page.Header.Left></Page.Header.Left>
         <Page.Header.Right>
-          <Button variant="ghost">닫기</Button>
+          <Back label="닫기" />
         </Page.Header.Right>
       </Page.Header>
 
