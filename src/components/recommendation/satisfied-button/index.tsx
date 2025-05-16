@@ -45,7 +45,7 @@ export const SatisfiedButton = () => {
             선택된 취향과 관심사를 바탕으로 골랐어요.
           </DialogDescription>
         </DialogHeader>
-        <SignInButton />
+        <SignInButton callback={`/recommendation/result/${"sample-id"}`} />
       </DialogContent>
     </Dialog>
   );
