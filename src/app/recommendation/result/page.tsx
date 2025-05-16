@@ -4,9 +4,9 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { getResult } from "@/api/recommendation/result/get-result";
+import { RecommendationCloseButton } from "@/components/recommendation/close-button";
 import { ResultContent } from "@/components/recommendation/result/result-content";
 import { Page } from "@/components/shared/page";
-import { Button } from "@/components/ui/button";
 
 const ResultPage = async () => {
   const queryClient = new QueryClient();
@@ -16,15 +16,16 @@ const ResultPage = async () => {
     queryFn: getResult,
   });
 
+  // const cachedData = queryClient.getQueryData(["presents", "recommendation", "result"]);
+
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <Page>
       <Page.Header>
         <Page.Header.Right>
-          <Button variant="ghost" className="text-gray-400">
-            닫기
-          </Button>
+          {/* TODO. 저장하기 버튼 클릭 시 로그인 이후 해당 상품 상세 페이지로 이동되어야 하므로 상품 ID를 props로 전달 */}
+          <RecommendationCloseButton callbackTargetResultId="sample-id" />
         </Page.Header.Right>
       </Page.Header>
 
