@@ -5,6 +5,7 @@ export const recommendationSetupFormSchema = z.object({
   gender: z.string(),
   age: z.string(),
   relation: z.string(),
+  priceRange: z.string(),
   occasion: z.string(),
 });
 
