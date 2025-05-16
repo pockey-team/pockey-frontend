@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker/locale/ko";
-import type { Present } from "@/constants/Presents";
+import type { Present } from "@/constants/presents";
 
 interface ResultItem {
   result: Present;
