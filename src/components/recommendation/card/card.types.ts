@@ -1,4 +1,4 @@
-import { Present } from "@/constants/Presents";
+import type { Present } from "@/constants/presents";
 
 export interface RecommendationCardProps {
   present: Present;

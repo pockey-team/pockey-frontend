@@ -4,11 +4,15 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/shared/button";
 import { useKakaoSignIn } from "@/hooks/useKakaoSignIn";
 
-export const SignInButton = () => {
+interface Props {
+  callback?: string;
+}
+
+export const SignInButton = ({ callback }: Props) => {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") ?? "/";
 
-  const { login } = useKakaoSignIn({ callbackUrl });
+  const { login } = useKakaoSignIn({ callbackUrl: callback ?? callbackUrl });
   return (
     <Button
       size="large"

@@ -1,4 +1,4 @@
-import { defineConfig, InputOptions } from "orval";
+import { defineConfig, type InputOptions } from "orval";
 
 const input: InputOptions = {
   filters: { mode: "exclude", tags: ["Health"] },

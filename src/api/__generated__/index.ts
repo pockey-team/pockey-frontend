@@ -31,13 +31,8 @@ import type {
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
 export type authControllerLoginWithSocialResponse201 = {
-  data: LoginResponse;
+  data: undefined;
   status: 201;
 };
 
@@ -139,7 +134,7 @@ export const useAuthControllerLoginWithSocial = <
 };
 
 export type authControllerRefreshTokenResponse201 = {
-  data: LoginResponse;
+  data: undefined;
   status: 201;
 };
 

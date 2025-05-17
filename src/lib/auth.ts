@@ -1,7 +1,7 @@
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import { authControllerLoginWithSocial } from "@/api/__generated__";
-import { SocialLoginCommand } from "@/api/__generated__/index.schemas";
+import type { SocialLoginCommand } from "@/api/__generated__/index.schemas";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -33,8 +33,10 @@ export const authOptions: NextAuthOptions = {
             },
           });
 
-          if (response.data?.accessToken) {
-            token.accessToken = response.data.accessToken;
+          const data = response.data as unknown as { accessToken: string };
+
+          if (data.accessToken) {
+            token.accessToken = data.accessToken;
             token.snsId = token.sub;
             token.provider = account?.provider || "kakao";
           }

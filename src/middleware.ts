@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 
 import { withAuth } from "next-auth/middleware";
 
-const protectedRoutes = ["/recommendation/result"];
+const protectedRoutes = ["/recommendation/result/"];
 
 const isProtectedRoute = (path: string) => {
-  return protectedRoutes.some((route) => path.startsWith(route));
+  return protectedRoutes.some(
+    (route) => path.startsWith(route) && route !== path,
+  );
 };
 
 export default withAuth(
@@ -25,7 +27,6 @@ export default withAuth(
 
     pages: {
       signIn: "/auth/signIn",
-      error: "/auth/error",
     },
   },
 );
