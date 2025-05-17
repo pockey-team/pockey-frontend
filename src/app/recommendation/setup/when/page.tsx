@@ -146,7 +146,7 @@ const RecommendationSetupWhenSelection = () => {
             size="x-large"
             disabled={!occasion}
             aria-selected={!!occasion}
-            onClick={() => router.push("/recommendation/questions")}
+            onClick={() => router.push("/recommendation/question/steps/6")}
             className="w-full"
           >
             다음
