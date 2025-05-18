@@ -141,7 +141,7 @@ const RecommendationInitComplete = () => {
   useEffect(() => {
     const timeouts = [
       setTimeout(() => setInnerPhase("exiting"), 2_000),
-      setTimeout(() => router.push("/recommendation/setup/steps/1"), 2_500),
+      setTimeout(() => router.push("/recommendation/session/setup/1"), 2_500),
     ];
     return () => timeouts.forEach((timeout) => clearTimeout(timeout));
   }, [router.push]);

@@ -11,7 +11,7 @@ import { Page } from "@/components/shared/page";
 import { QUESTIONS } from "@/constants/recommendation-setup-questions";
 import { RecommendationSetupFormData } from "@/types/recommendation/setup";
 
-export default function RecommendationSetupStepPage() {
+export default function RecommendationSessionSetupPage() {
   const params = useParams();
   const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -40,7 +40,7 @@ export default function RecommendationSetupStepPage() {
     setTimeout(() => setIsTransitioning(true), 100);
     setTimeout(() => {
       if (id < steps) {
-        router.push(`/recommendation/setup/steps/${id + 1}`);
+        router.push(`/recommendation/session/setup/${id + 1}`);
       } else {
         router.push(`/recommendation/session/occasion/5`);
       }
