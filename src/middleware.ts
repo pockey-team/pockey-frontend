@@ -17,10 +17,9 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        if (isProtectedRoute(req.nextUrl.pathname)) {
-          return !!token;
-        }
-
+        // if (isProtectedRoute(req.nextUrl.pathname)) {
+        //   return !!token;
+        // }
         return true;
       },
     },

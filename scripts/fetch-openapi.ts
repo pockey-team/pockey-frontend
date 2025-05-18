@@ -14,6 +14,7 @@ export const main = async () => {
   }
 
   const { swaggerDoc } = JSON.parse(match[1]);
+  // @ts-ignore
   const file = path.join(import.meta.dirname, "../src/api/openapi.json");
   await fs.writeFile(file, JSON.stringify(swaggerDoc, null, 2));
   console.log(`Saved to ${file}`);

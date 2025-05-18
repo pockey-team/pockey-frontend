@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { getResult } from "@/api/recommendation/result/get-result";
 import { RecommendationCloseButton } from "@/components/recommendation/close-button";
-import { ResultContent } from "@/components/recommendation/result/result-content";
+import { PresentRecommendationResult } from "@/components/recommendation/result/present-recommendation-result";
 import { Page } from "@/components/shared/page";
 
 const ResultPage = async () => {
@@ -31,7 +31,7 @@ const ResultPage = async () => {
 
       <Page.Container className="flex-1">
         <HydrationBoundary state={dehydratedState}>
-          <ResultContent />
+          <PresentRecommendationResult />
         </HydrationBoundary>
       </Page.Container>
     </Page>
