@@ -12,10 +12,10 @@ export type RecommendationSessionOccasionOption = {
 
 export const OPTIONS: RecommendationSessionOccasionOption[] = [
   {
-    key: "thx",
+    key: "thankyou",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#20093F_100%)]",
-    image: OccasionImage.Thx,
-    buttonImageUrl: "/static/images/recommendation-when-thx.png",
+    image: OccasionImage.ThankYou,
+    buttonImageUrl: "/static/images/recommendation-when-thankyou.png",
     title: (name: string) => (
       <>
         <span className="text-primary-500">{name}</span>님께 고마운 마음을
@@ -37,10 +37,10 @@ export const OPTIONS: RecommendationSessionOccasionOption[] = [
     label: "생일이에요",
   },
   {
-    key: "congrat",
+    key: "congratulation",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#1F0B21_100%)]",
-    image: OccasionImage.Congrat,
-    buttonImageUrl: "/static/images/recommendation-when-congrat.png",
+    image: OccasionImage.Congratulation,
+    buttonImageUrl: "/static/images/recommendation-when-congratulation.png",
     title: (name: string) => (
       <>
         <span className="text-primary-500">{name}</span>님에게 기쁜 마음을
@@ -63,10 +63,10 @@ export const OPTIONS: RecommendationSessionOccasionOption[] = [
     label: "미안한 마음",
   },
   {
-    key: "fighting",
+    key: "support",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#3C351A_100%)]",
-    image: OccasionImage.Fighting,
-    buttonImageUrl: "/static/images/recommendation-when-fighting.png",
+    image: OccasionImage.Support,
+    buttonImageUrl: "/static/images/recommendation-when-support.png",
     title: (name: string) => (
       <>
         <span className="text-primary-500">{name}</span>님을 응원해요

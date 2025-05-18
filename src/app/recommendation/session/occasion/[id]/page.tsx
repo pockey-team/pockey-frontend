@@ -88,8 +88,8 @@ const RecommendationSessionOccasion = () => {
         className="flex flex-grow items-center justify-center"
       >
         <Image
-          src="/static/images/recommendation-when-thx-full.png"
-          alt="recommendation-when-thx-full"
+          src="/static/images/recommendation-when-thankyou-full.png"
+          alt="recommendation-when-thankyou-full"
           width={390}
           height={390}
           className="max-h-[50vh] w-full object-contain"
