@@ -135,6 +135,9 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
       },
+      transitionProperty: {
+        spacing: "margin, padding",
+      },
     },
   },
   plugins: [

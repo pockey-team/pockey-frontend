@@ -63,6 +63,14 @@
     text-wrap: balance;
   }
 
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   .bg-recommendation-setup-name {
     background: linear-gradient(
       155deg,
