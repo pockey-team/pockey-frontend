@@ -86,7 +86,7 @@ const AuthSettingsPage = async () => {
 
         {items.map((category) => (
           <section key={category.title} className="mb-[36px]">
-            <h2 className="py-8px text-gray-100 text-subtitle-18-semibold">
+            <h2 className="mb-4px py-8px text-gray-100 text-subtitle-18-semibold">
               {category.title}
             </h2>
             {category.links.map(({ image, name, url }) => (
