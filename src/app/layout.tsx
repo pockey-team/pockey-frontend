@@ -25,7 +25,23 @@ const Pretendard = localFont({
 
 export const metadata: Metadata = {
   title: "Pockey | 포키",
-  description: "Pockey",
+  description:
+    "고민은 줄이고, 마음은 더하게. 수신자 맞춤형 선물 추천 서비스, Pockey",
+  applicationName: "Pockey | 포키",
+  alternates: { canonical: "https://pockey.pics" },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/favicon-512.png",
+  },
+  manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    url: "https://pockey.pics",
+    title: "Pockey | 포키",
+    description:
+      "고민은 줄이고, 마음은 더하게. 수신자 맞춤형 선물 추천 서비스, Pockey",
+    siteName: "Pockey | 포키",
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
