@@ -95,14 +95,11 @@ const AuthSettingsPage = async () => {
                 href={url}
                 className="mb-4px flex items-center justify-between py-8px"
               >
-                <div className="flex items-center">
-                  <div className="flex items-center gap-8px">
-                    <Image src={image} alt={name} width={24} height={24} />
-                    <span className="text-body-16-regular text-gray-100">
-                      {name}
-                    </span>
-                  </div>
-                  <div className="h-5 w-5">{/* 화살표 아이콘 자리 */}</div>
+                <div className="flex items-center gap-8px">
+                  <Image src={image} alt={name} width={24} height={24} />
+                  <span className="text-body-16-regular text-gray-100">
+                    {name}
+                  </span>
                 </div>
                 <Image
                   src="/static/images/arrow-right-icon.svg"
