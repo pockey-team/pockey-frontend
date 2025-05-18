@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { RecommendationCard } from "@/components/recommendation/card";
-import type { Present } from "@/constants/presents";
 import { cn } from "@/lib/utils";
 
 interface Props {
-  cardContent: Present;
+  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
   flipDelay?: number;
   isDisappearing?: boolean;
   isFloating: boolean;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const FlipCard = ({
-  cardContent,
+  item,
   flipDelay = 1000,
   isDisappearing = false,
   isFloating = false,
@@ -94,7 +94,7 @@ export const FlipCard = ({
         >
           {/* 앞면 */}
           <div className="backface-hidden absolute size-full rotate-0">
-            <RecommendationCard present={cardContent} isCurrent isResult />
+            <RecommendationCard item={item} isCurrent isResult />
           </div>
 
           {/* 뒷면 */}

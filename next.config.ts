@@ -4,22 +4,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "k.kakaocdn.net",
-      },
-      {
-        protocol: "https",
-        hostname: "k.kakaocdn.net",
-      },
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
-      {
-        protocol: "https",
-        hostname: "loremflickr.com",
-      },
+      { protocol: "http", hostname: "*" },
+      { protocol: "https", hostname: "*" },
     ],
   },
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
