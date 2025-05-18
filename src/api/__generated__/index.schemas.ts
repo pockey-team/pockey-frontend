@@ -85,7 +85,33 @@ export type RecommendSessionControllerSubmitAnswer201OneOfEight = {
   type: RecommendSessionControllerSubmitAnswer201OneOfEightType;
 };
 
+export type RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct = {
+  id: number;
+  name: string;
+  url: string;
+  imageUrl: string;
+  category: string;
+  brand: string;
+  price: number;
+  priceRange: string;
+  ageRange: string;
+  situation: string[];
+  intention: string[];
+  friendshipLevel: string[];
+  targetGender: string;
+  tags: string[];
+  nextPickProductIds: number[];
+};
+
+export type RecommendSessionControllerSubmitAnswer201OneOfOneoneItem = {
+  product: RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
+  reason: string;
+  minifiedReason: string;
+  order: number;
+};
+
 export type RecommendSessionControllerSubmitAnswer201 =
   | RecommendSessionControllerSubmitAnswer201OneOf
   | RecommendSessionControllerSubmitAnswer201OneOfFour
-  | RecommendSessionControllerSubmitAnswer201OneOfEight;
+  | RecommendSessionControllerSubmitAnswer201OneOfEight
+  | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];

@@ -5,17 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useRecommendSessionControllerStartSession } from "@/api/__generated__";
 import { Button } from "@/components/shared/button";
 import { Page } from "@/components/shared/page";
+import { PageError } from "@/components/shared/page-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { RecommendationSetupFormData } from "@/types/recommendation/setup";
+import { createUrlFromSessionResponse } from "@/utils/recommendation";
 
 type Phase = "active" | "exiting" | "complete";
 
 export default function RecommendationInitPage() {
+  const [name, setName] = useState<string>("");
   const [phase, setPhase] = useState<Phase>("active");
 
   const handleNext = () => {
@@ -24,21 +26,28 @@ export default function RecommendationInitPage() {
   };
 
   if (phase === "active" || phase === "exiting") {
-    return <RecommendationInit phase={phase} onNext={handleNext} />;
+    return (
+      <RecommendationInit
+        name={name}
+        setName={setName}
+        phase={phase}
+        onNext={handleNext}
+      />
+    );
   } else if (phase === "complete") {
-    return <RecommendationInitComplete />;
+    return <RecommendationInitComplete name={name} />;
   }
 }
 
-const RecommendationInit = ({
-  phase,
-  onNext,
-}: {
+interface Props {
+  name: string;
+  setName: (name: string) => void;
   phase: Phase;
   onNext: () => void;
-}) => {
-  const { register } = useFormContext<RecommendationSetupFormData>();
-  const isValid = !!useWatch<RecommendationSetupFormData>({ name: "name" });
+}
+
+const RecommendationInit = ({ name, setName, phase, onNext }: Props) => {
+  const isValid = !!name;
 
   return (
     <Page
@@ -95,10 +104,11 @@ const RecommendationInit = ({
             >
               <Label htmlFor="name">선물 받는 사람</Label>
               <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="이름을 지어주세요"
                 maxLength={7}
                 required
-                {...register("name", { required: true })}
               />
             </motion.div>
           )}
@@ -133,18 +143,50 @@ const RecommendationInit = ({
   );
 };
 
-const RecommendationInitComplete = () => {
+const RecommendationInitComplete = ({ name }: { name: string }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [innerPhase, setInnerPhase] = useState<Phase>("active");
-  const name = useWatch<RecommendationSetupFormData>({ name: "name" });
+  const [error, setError] = useState<string | null>(null);
+
+  const mutation = useRecommendSessionControllerStartSession();
 
   useEffect(() => {
-    const timeouts = [
-      setTimeout(() => setInnerPhase("exiting"), 2_000),
-      setTimeout(() => router.push("/recommendation/session/setup/1"), 2_500),
-    ];
-    return () => timeouts.forEach((timeout) => clearTimeout(timeout));
-  }, [router.push]);
+    if (!isLoading) {
+      setIsLoading(true);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      return;
+    }
+
+    const start = async () => {
+      try {
+        const { data } = await mutation.mutateAsync({
+          data: { deviceId: "0000", receiverName: name },
+        });
+
+        setTimeout(() => setInnerPhase("exiting"), 2_000);
+        setTimeout(() => {
+          const url = createUrlFromSessionResponse(data, { name });
+          router.push(url);
+        }, 2_500);
+      } catch (err) {
+        setError("세션을 시작하는 데 문제가 발생했습니다.");
+        setIsLoading(false);
+      }
+    };
+
+    start();
+  }, [name, router, mutation.mutateAsync, isLoading]);
+
+  if (error) {
+    return (
+      <PageError retry={() => window.location.reload()}>{error}</PageError>
+    );
+  }
 
   return (
     <Page className="bg-recommendation-setup-name-complete">

@@ -73,6 +73,46 @@ export const getRecommendSessionControllerSubmitAnswerResponseMock =
         ).map(() => faker.string.alpha(20)),
         type: faker.helpers.arrayElement(["question"] as const),
       },
+      Array.from(
+        { length: faker.number.int({ min: 4, max: 4 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        product: {
+          id: faker.number.int({ min: undefined, max: undefined }),
+          name: faker.string.alpha(20),
+          url: faker.string.alpha(20),
+          imageUrl: faker.string.alpha(20),
+          category: faker.string.alpha(20),
+          brand: faker.string.alpha(20),
+          price: faker.number.int({ min: undefined, max: undefined }),
+          priceRange: faker.string.alpha(20),
+          ageRange: faker.string.alpha(20),
+          situation: Array.from(
+            { length: faker.number.int({ min: 4, max: 4 }) },
+            (_, i) => i + 1,
+          ).map(() => faker.string.alpha(20)),
+          intention: Array.from(
+            { length: faker.number.int({ min: 4, max: 4 }) },
+            (_, i) => i + 1,
+          ).map(() => faker.string.alpha(20)),
+          friendshipLevel: Array.from(
+            { length: faker.number.int({ min: 4, max: 4 }) },
+            (_, i) => i + 1,
+          ).map(() => faker.string.alpha(20)),
+          targetGender: faker.string.alpha(20),
+          tags: Array.from(
+            { length: faker.number.int({ min: 4, max: 4 }) },
+            (_, i) => i + 1,
+          ).map(() => faker.string.alpha(20)),
+          nextPickProductIds: Array.from(
+            { length: faker.number.int({ min: 4, max: 4 }) },
+            (_, i) => i + 1,
+          ).map(() => faker.number.int({ min: undefined, max: undefined })),
+        },
+        reason: faker.string.alpha(20),
+        minifiedReason: faker.string.alpha(20),
+        order: faker.number.int({ min: undefined, max: undefined }),
+      })),
     ]);
 
 export const getAuthControllerLoginWithSocialMockHandler = (
