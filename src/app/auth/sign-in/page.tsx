@@ -12,8 +12,9 @@ const SignInPage = async () => {
   if (session) {
     redirect("/");
   }
+
   return (
-    <Page className="bg-signInBackground">
+    <Page className="bg-sign-in">
       <Page.Header>
         <Page.Header.Right>
           <Back label="닫기" />
