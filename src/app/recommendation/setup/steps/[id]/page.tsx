@@ -42,7 +42,7 @@ export default function RecommendationSetupStepPage() {
       if (id < steps) {
         router.push(`/recommendation/setup/steps/${id + 1}`);
       } else {
-        router.push(`/recommendation/setup/when`);
+        router.push(`/recommendation/session/occasion`);
       }
     }, 500);
   };

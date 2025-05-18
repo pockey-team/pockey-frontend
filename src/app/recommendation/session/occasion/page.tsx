@@ -11,14 +11,14 @@ import { Button } from "@/components/shared/button";
 import { Page } from "@/components/shared/page";
 import {
   OPTIONS,
-  RecommendationSetupWhenOption,
-} from "@/constants/recommendation-setup-when-options";
+  RecommendationSessionOccasionOption,
+} from "@/constants/recommendation-session-occasion-options";
 import { cn } from "@/lib/utils";
 import { RecommendationSetupFormData } from "@/types/recommendation/setup";
 
 type Phase = "init" | "selection";
 
-export default function RecommendationSetupWhenPage() {
+export default function RecommendationSessionOccasionPage() {
   const [phase, setPhase] = useState<Phase>("init");
   const name = useWatch<RecommendationSetupFormData>({
     name: "name",
@@ -47,14 +47,14 @@ export default function RecommendationSetupWhenPage() {
       </Page.Header>
 
       <AnimatePresence mode="wait">
-        {phase === "init" && <RecommendationSetupWhen />}
-        {phase === "selection" && <RecommendationSetupWhenSelection />}
+        {phase === "init" && <RecommendationSessionOccasion />}
+        {phase === "selection" && <RecommendationSessionOccasionSelection />}
       </AnimatePresence>
     </Page>
   );
 }
 
-const RecommendationSetupWhen = () => {
+const RecommendationSessionOccasion = () => {
   return (
     <Page.Container
       as={motion.div}
@@ -99,7 +99,7 @@ const RecommendationSetupWhen = () => {
   );
 };
 
-const RecommendationSetupWhenSelection = () => {
+const RecommendationSessionOccasionSelection = () => {
   const router = useRouter();
   const { setValue } = useFormContext<RecommendationSetupFormData>();
   const [name, occasion] = useWatch<RecommendationSetupFormData>({
@@ -164,7 +164,7 @@ const Option = ({
 }: {
   active: boolean;
   onClick: () => void;
-  option: RecommendationSetupWhenOption;
+  option: RecommendationSessionOccasionOption;
 }) => {
   return (
     <button

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const WhenImage = {
+export const OccasionImage = {
   Thx: () => (
     <motion.div className="relative flex items-center justify-center">
       <motion.div

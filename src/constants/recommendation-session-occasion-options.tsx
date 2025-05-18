@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { WhenImage } from "@/components/recommendation/setup/when-image";
+import { OccasionImage } from "@/components/recommendation/session/occasion-image";
 
-export type RecommendationSetupWhenOption = {
+export type RecommendationSessionOccasionOption = {
   key: string;
   bg: string;
   image: () => ReactNode;
@@ -10,11 +10,11 @@ export type RecommendationSetupWhenOption = {
   label: string;
 };
 
-export const OPTIONS: RecommendationSetupWhenOption[] = [
+export const OPTIONS: RecommendationSessionOccasionOption[] = [
   {
     key: "thx",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#20093F_100%)]",
-    image: WhenImage.Thx,
+    image: OccasionImage.Thx,
     buttonImageUrl: "/static/images/recommendation-when-thx.png",
     title: (name: string) => (
       <>
@@ -27,7 +27,7 @@ export const OPTIONS: RecommendationSetupWhenOption[] = [
   {
     key: "birthday",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#1A2647_100%)]",
-    image: WhenImage.Birthday,
+    image: OccasionImage.Birthday,
     buttonImageUrl: "/static/images/recommendation-when-birthday.png",
     title: (name: string) => (
       <>
@@ -39,7 +39,7 @@ export const OPTIONS: RecommendationSetupWhenOption[] = [
   {
     key: "congrat",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#1F0B21_100%)]",
-    image: WhenImage.Congrat,
+    image: OccasionImage.Congrat,
     buttonImageUrl: "/static/images/recommendation-when-congrat.png",
     title: (name: string) => (
       <>
@@ -52,7 +52,7 @@ export const OPTIONS: RecommendationSetupWhenOption[] = [
   {
     key: "sorry",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#1F0B21_100%)]",
-    image: WhenImage.Sorry,
+    image: OccasionImage.Sorry,
     buttonImageUrl: "/static/images/recommendation-when-sorry.png",
     title: (name: string) => (
       <>
@@ -65,7 +65,7 @@ export const OPTIONS: RecommendationSetupWhenOption[] = [
   {
     key: "fighting",
     bg: "bg-[linear-gradient(180deg,#030507_0%,#3C351A_100%)]",
-    image: WhenImage.Fighting,
+    image: OccasionImage.Fighting,
     buttonImageUrl: "/static/images/recommendation-when-fighting.png",
     title: (name: string) => (
       <>
