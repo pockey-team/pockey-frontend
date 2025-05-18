@@ -1,4 +1,4 @@
-import { PRESENTS, Present } from "@/constants/Presents";
+import { PRESENTS, type Present } from "@/constants/presents";
 
 export const getPresents = async (options?: {
   delay?: number;

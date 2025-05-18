@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
   darkMode: ["class"],
@@ -80,6 +81,9 @@ const config: Config = {
           "linear-gradient(168deg, #4F76C5 -17.08%, #D7ECFF 95.84%)",
         "gradient-secondary":
           "linear-gradient(168deg, #1A90E0 -17.08%, #5ECBFF 95.84%)",
+        "gradient-card": "linear-gradient(168deg, #F5F8FF 100%, #CCDCFF 100%)",
+        "gradient-recommendation":
+          "linear-gradient(168deg, #141214 -17.08%, #2F3E60 95.84% )",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -133,7 +137,23 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    ({ addUtilities }: PluginAPI) => {
+      const newUtilities = {
+        ".perspective-1000px": {
+          perspective: "1000px",
+        },
+        ".backface-hidden": {
+          backfaceVisibility: "hidden",
+        },
+        ".preserve-3d": {
+          transformStyle: "preserve-3d",
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
 
 export default config;

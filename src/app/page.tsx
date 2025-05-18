@@ -10,7 +10,7 @@ import { getPresents } from "@/api/Present/get-presents";
 import { BottomBar } from "@/components/layout/bottom-bar";
 import { PresentRecommendationContent } from "@/components/present-recommendation-content";
 import { Page } from "@/components/shared/page";
-import type { Present } from "@/constants/Presents";
+import type { Present } from "@/constants/presents";
 import { isMobileDevice } from "@/lib/user-agent";
 import { cn } from "@/lib/utils";
 
