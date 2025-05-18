@@ -13,4 +13,6 @@ export interface RecommendationDetailContentsProps {
   messageTitle?: string;
   messageContent?: string;
   relatedProducts?: Array<{ id: number; title: string; imageUrl: string }>;
+  showFooterLogo?: boolean;
+  showPriceRange?: boolean;
 }

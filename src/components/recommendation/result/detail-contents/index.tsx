@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ContentSection } from "@/components/recommendation/result/detail-contents/content-section";
 import type { RecommendationDetailContentsProps } from "@/components/recommendation/result/detail-contents/types";
 import { RECOMMENDATION_RESULT_DETAIL_CONTENTS } from "@/constants/recommendation-result-detail";
+import { cn } from "@/lib/utils";
 
 export const RecommendationDetailContents = ({
   showCategory = true,
@@ -19,9 +20,18 @@ export const RecommendationDetailContents = ({
   messageTitle = RECOMMENDATION_RESULT_DETAIL_CONTENTS.messageTitle,
   messageContent = RECOMMENDATION_RESULT_DETAIL_CONTENTS.messageContent,
   relatedProducts = RECOMMENDATION_RESULT_DETAIL_CONTENTS.relatedProducts,
+  showFooterLogo = false,
+  showPriceRange = true,
 }: RecommendationDetailContentsProps) => {
   return (
-    <div className="flex h-full min-h-screen flex-col overflow-y-auto bg-gray-900 text-gray-100">
+    <div
+      className={cn(
+        "flex h-full min-h-screen flex-col overflow-y-auto",
+        showFooterLogo
+          ? "bg-gray-100 text-gray-900"
+          : "bg-gray-900 text-gray-100",
+      )}
+    >
       <Image src={productImage} alt="상품이미지" width={390} height={465} />
 
       <section className="flex flex-col px-16px pt-24px">
@@ -54,7 +64,9 @@ export const RecommendationDetailContents = ({
             </div>
           )}
         </div>
-        <p className="text-gray-300 text-subtitle-18-medium">{priceRange}</p>
+        {showPriceRange && (
+          <p className="text-gray-300 text-subtitle-18-medium">{priceRange}</p>
+        )}
 
         {showFeelingsSection && (
           <ContentSection title="이 선물, 이런 감정을 담았어요">
@@ -75,6 +87,10 @@ export const RecommendationDetailContents = ({
           <ContentSection
             title="이 선물로 전하고 싶은 마음"
             subTitle={messageTitle}
+            className={cn(
+              showMessageSection && "rounded-3xl bg-[#E5E7EBA1] p-24px",
+            )}
+            isCapture
           >
             {messageContent}
           </ContentSection>
@@ -99,6 +115,16 @@ export const RecommendationDetailContents = ({
           </ContentSection>
         )}
       </section>
+      {showFooterLogo && (
+        <div className="flex items-center justify-center">
+          <Image
+            src="/share/footer-logo.svg"
+            alt="footer-logo"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
     </div>
   );
 };

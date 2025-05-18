@@ -5,6 +5,7 @@ interface Props {
   subTitle?: string;
   children: React.ReactNode;
   className?: string;
+  isCapture?: boolean;
 }
 
 export const ContentSection = ({
@@ -12,12 +13,25 @@ export const ContentSection = ({
   subTitle = "",
   children = "",
   className = "",
+  isCapture = false,
 }: Props) => {
   return (
     <section className={cn("my-40px", className)}>
-      <h2 className="mb-12px text-gray-100 text-subtitle-18-bold">{title}</h2>
+      <h2
+        className={cn(
+          "mb-12px text-subtitle-18-bold",
+          isCapture ? "text-gray-900" : "text-gray-100",
+        )}
+      >
+        {title}
+      </h2>
       {subTitle && (
-        <p className="mb-12px text-body-16-regular text-primary-500">
+        <p
+          className={cn(
+            "mb-12px text-body-16-regular",
+            isCapture ? "text-[#407CFF]" : "text-primary-500",
+          )}
+        >
           {subTitle}
         </p>
       )}

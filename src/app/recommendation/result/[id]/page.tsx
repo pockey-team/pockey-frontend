@@ -1,4 +1,5 @@
 import { RecommendationDetailContents } from "@/components/recommendation/result/detail-contents";
+import { ShareButton } from "@/components/recommendation/share-button";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,7 @@ const ResultDetailPage = () => {
                 <Button className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold">
                   구매하기
                 </Button>
-                <Button className="!rounded-2xl w-1/2 py-16px">공유하기</Button>
+                <ShareButton className="!rounded-2xl w-1/2 py-16px" />
               </div>
             )}
           </Page.ActionButton>
