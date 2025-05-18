@@ -359,6 +359,10 @@
           "profileImageUrl": {
             "type": "string",
             "example": "unknown (isNotEmpty)"
+          },
+          "deviceId": {
+            "type": "string",
+            "example": "string"
           }
         },
         "required": ["snsId", "nickname", "profileImageUrl"]
