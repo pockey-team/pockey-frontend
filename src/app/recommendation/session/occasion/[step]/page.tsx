@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useRecommendSessionControllerSubmitAnswer } from "@/api/__generated__";
 import { RecommendationTitle } from "@/components/recommendation/title";
@@ -174,11 +174,13 @@ const RecommendationSessionOccasionSelection = ({
   options,
 }: RecommendationSessionOccasionSelectionProps) => {
   const router = useRouter();
+  const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { setKey, option } = useOccasionOptions(options);
   const mutation = useRecommendSessionControllerSubmitAnswer();
 
+  const step = Number(params.step);
   const optionOrDefault = option || {
     ...options[0],
     ...occasionOptions[options[0].key],
@@ -194,7 +196,7 @@ const RecommendationSessionOccasionSelection = ({
 
       const { data } = await mutation.mutateAsync({
         sessionId,
-        data: { answer: option.title },
+        data: { step, answer: option.title },
       });
 
       setTimeout(() => {

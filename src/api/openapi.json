@@ -384,12 +384,16 @@
       "SubmitAnswerRequest": {
         "type": "object",
         "properties": {
+          "step": {
+            "type": "number",
+            "example": "0"
+          },
           "answer": {
             "type": "string",
             "example": "string"
           }
         },
-        "required": ["answer"]
+        "required": ["step", "answer"]
       }
     }
   }

@@ -18,6 +18,7 @@ export interface StartSessionRequest {
 }
 
 export interface SubmitAnswerRequest {
+  step: number;
   answer: string;
 }
 

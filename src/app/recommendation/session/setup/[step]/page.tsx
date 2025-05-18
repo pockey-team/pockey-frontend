@@ -53,7 +53,7 @@ export default function RecommendationSessionSetupPage() {
     try {
       const { data } = await mutation.mutateAsync({
         sessionId,
-        data: { answer: value },
+        data: { step, answer: value },
       });
 
       setTimeout(() => {
