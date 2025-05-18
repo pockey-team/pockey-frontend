@@ -7,7 +7,7 @@ import { Page } from "@/components/shared/page";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
 
-const ResultPage = async () => {
+const ResultPage = () => {
   const { name, sessionId = "default" } = useSearchParamsObject<{
     name: string;
     sessionId?: string;

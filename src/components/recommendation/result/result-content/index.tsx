@@ -1,10 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getResult } from "@/api/recommendation/result/get-result";
+import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { FlipCard } from "@/components/recommendation/flip-card";
 import { SatisfiedButton } from "@/components/recommendation/satisfied-button";
 import { Page } from "@/components/shared/page";
@@ -14,7 +13,9 @@ import {
   AVAILABLE_NEXT_PICK_COUNT,
   TOAST_STYLE,
 } from "@/constants/recommendation-result";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
+import { getSessionResultStorageKey } from "@/utils/recommendation";
 
 interface ResultResponse {
   result: Present;
@@ -29,21 +30,25 @@ export const ResultContent = () => {
   const [cardKey, setCardKey] = useState(0);
   const [isFloating, setIsFloating] = useState(false);
 
-  // TODO.선물 추천 API 연동
-  const { data: resultPresents } = useQuery<ResultResponse[]>({
-    queryKey: ["presents", "recommendation", "result"],
-    queryFn: getResult,
-  });
+  const { name, sessionId = "default" } = useSearchParamsObject<{
+    name: string;
+    sessionId?: string;
+  }>();
 
-  const displayPresent = resultPresents?.[currentIndex]?.result;
+  const items = JSON.parse(
+    window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
+      "[]",
+  ) as RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
+
+  const item = items[currentIndex];
 
   const handleNextResult = () => {
     setIsDisappearing(true);
     setNextPickCount((prev) => Math.max(0, prev - 1));
 
     setTimeout(() => {
-      if (resultPresents && currentIndex < resultPresents.length - 1) {
-        setCurrentIndex((prev) => (prev + 1) % resultPresents.length);
+      if (items && currentIndex < items.length - 1) {
+        setCurrentIndex((prev) => (prev + 1) % items.length);
       }
 
       setTimeout(() => {
@@ -91,10 +96,10 @@ export const ResultContent = () => {
       </Page.Title>
 
       <div className="flex flex-1 items-center justify-center">
-        {displayPresent && (
+        {item && (
           <FlipCard
             key={cardKey}
-            cardContent={displayPresent}
+            item={item}
             flipDelay={500}
             isDisappearing={isDisappearing}
             isFloating={isFloating}
