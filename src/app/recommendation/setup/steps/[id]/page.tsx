@@ -24,7 +24,7 @@ export default function RecommendationSetupStepPage() {
 
   const [name, value] = useWatch({ name: ["name", question!.name] });
   if (!name) {
-    return redirect("/recommendation/setup/name");
+    return redirect("/recommendation/init");
   }
 
   if (!question) {

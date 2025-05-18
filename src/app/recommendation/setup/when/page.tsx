@@ -30,7 +30,7 @@ export default function RecommendationSetupWhenPage() {
   }, []);
 
   if (!name) {
-    return redirect("/recommendation/setup/name");
+    return redirect("/recommendation/init");
   }
 
   return (

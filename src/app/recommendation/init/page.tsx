@@ -15,7 +15,7 @@ import { RecommendationSetupFormData } from "@/types/recommendation/setup";
 
 type Phase = "active" | "exiting" | "complete";
 
-export default function RecommendationSetupNamePage() {
+export default function RecommendationInitPage() {
   const [phase, setPhase] = useState<Phase>("active");
 
   const handleNext = () => {
@@ -24,13 +24,13 @@ export default function RecommendationSetupNamePage() {
   };
 
   if (phase === "active" || phase === "exiting") {
-    return <RecommendationSetupName phase={phase} onNext={handleNext} />;
+    return <RecommendationInit phase={phase} onNext={handleNext} />;
   } else if (phase === "complete") {
-    return <RecommendationSetupNameComplete />;
+    return <RecommendationInitComplete />;
   }
 }
 
-const RecommendationSetupName = ({
+const RecommendationInit = ({
   phase,
   onNext,
 }: {
@@ -133,7 +133,7 @@ const RecommendationSetupName = ({
   );
 };
 
-const RecommendationSetupNameComplete = () => {
+const RecommendationInitComplete = () => {
   const router = useRouter();
   const [innerPhase, setInnerPhase] = useState<Phase>("active");
   const name = useWatch<RecommendationSetupFormData>({ name: "name" });
