@@ -11,8 +11,8 @@ interface Props {
 export const SignInButton = ({ callback }: Props) => {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") ?? "/";
-
   const { login } = useKakaoSignIn({ callbackUrl: callback ?? callbackUrl });
+
   return (
     <Button
       size="large"
