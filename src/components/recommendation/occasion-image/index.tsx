@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const WhenImage = {
-  Thx: () => (
+export const OccasionImage = {
+  ThankYou: () => (
     <motion.div className="relative flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0 }}
@@ -11,8 +11,8 @@ export const WhenImage = {
         className="absolute z-10"
       >
         <Image
-          src="/static/images/recommendation-when-thx-deco.png"
-          alt="thx-deco"
+          src="/static/images/recommendation-when-thankyou-deco.png"
+          alt="thankyou-deco"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px) w-full object-contain"
@@ -24,8 +24,8 @@ export const WhenImage = {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
       >
         <Image
-          src="/static/images/recommendation-when-thx-full.png"
-          alt="thx-full"
+          src="/static/images/recommendation-when-thankyou-full.png"
+          alt="thankyou-full"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px)] w-full object-contain"
@@ -64,7 +64,7 @@ export const WhenImage = {
       </motion.div>
     </motion.div>
   ),
-  Congrat: () => (
+  Congratulation: () => (
     <motion.div className="relative flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 50, scale: 0.5 }}
@@ -73,8 +73,8 @@ export const WhenImage = {
         className="absolute z-10"
       >
         <Image
-          src="/static/images/recommendation-when-congrat-deco.png"
-          alt="congrat-deco"
+          src="/static/images/recommendation-when-congratulation-deco.png"
+          alt="congratulation-deco"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px) w-full object-contain"
@@ -86,8 +86,8 @@ export const WhenImage = {
         transition={{ type: "spring", duration: 0.75 }}
       >
         <Image
-          src="/static/images/recommendation-when-congrat-full.png"
-          alt="congrat-full"
+          src="/static/images/recommendation-when-congratulation-full.png"
+          alt="congratulation-full"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px)] w-full object-contain"
@@ -126,7 +126,7 @@ export const WhenImage = {
       </motion.div>
     </motion.div>
   ),
-  Fighting: () => (
+  Support: () => (
     <motion.div className="relative flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 10, scale: 0.5 }}
@@ -135,8 +135,8 @@ export const WhenImage = {
         className="absolute z-10"
       >
         <Image
-          src="/static/images/recommendation-when-fighting-deco.png"
-          alt="fighting-deco"
+          src="/static/images/recommendation-when-support-deco.png"
+          alt="support-deco"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px) w-full object-contain"
@@ -148,8 +148,8 @@ export const WhenImage = {
         transition={{ type: "spring", duration: 0.75 }}
       >
         <Image
-          src="/static/images/recommendation-when-fighting-full.png"
-          alt="fighting-full"
+          src="/static/images/recommendation-when-support-full.png"
+          alt="support-full"
           width={390}
           height={390}
           className="max-h-[min(40vh,390px)] w-full object-contain"

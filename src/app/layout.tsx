@@ -6,13 +6,13 @@ import { Toaster } from "sonner";
 import { Providers } from "@/components/shared/providers";
 import { cn } from "@/lib/utils";
 
-if (
-  process.env.NEXT_RUNTIME === "nodejs" &&
-  process.env.NODE_ENV !== "production"
-) {
-  const { server } = await import("@/mocks/node");
-  server.listen();
-}
+// if (
+//   process.env.NEXT_RUNTIME === "nodejs" &&
+//   process.env.NODE_ENV !== "production"
+// ) {
+//   const { server } = await import("@/mocks/node");
+//   server.listen();
+// }
 
 const Pretendard = localFont({
   src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",

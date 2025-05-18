@@ -2,31 +2,87 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecommendSessionControllerSubmitAnswer } from "@/api/__generated__";
 import { CloverButtons } from "@/components/recommendation/clover-buttons";
 import { QuestionStepper } from "@/components/recommendation/question-stepper";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
+import { PageError } from "@/components/shared/page-error";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
+import { createUrlFromSessionResponse } from "@/utils/recommendation";
 
 type Phase = "init" | "waiting" | "selection";
 
-export default function RecommendationQuestionStepPage() {
+export interface RecommendationSessionQuestionPageQuery {
+  name: string;
+  sessionId: string;
+  question: string;
+  options: string[];
+}
+
+export default function RecommendationSessionQuestionPage() {
   const router = useRouter();
   const params = useParams();
-  const [phase, setPhase] = useState<Phase>("init");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string>();
+  const mutation = useRecommendSessionControllerSubmitAnswer();
 
-  const currentStep = Number(params.id) - 5;
+  const step = Number(params.step);
+  const { name, sessionId, question, options } =
+    useSearchParamsObject<RecommendationSessionQuestionPageQuery>({
+      hook: (data) => ({ ...data, options: JSON.parse(data.options || "[]") }),
+    });
+  const currentStep = step - 5;
   const isFirst = currentStep === 1;
-  const [selected, setSelected] = useState<number>();
+
+  const [phase, setPhase] = useState<Phase>(isFirst ? "init" : "selection");
 
   useEffect(() => {
+    if (!isFirst) {
+      return;
+    }
     const timeouts = [
       setTimeout(() => setPhase("waiting"), 3_000),
       setTimeout(() => setPhase("selection"), 4_000),
     ];
     return () => timeouts.forEach((timeout) => clearTimeout(timeout));
-  }, []);
+  }, [isFirst]);
+
+  if (!name || !sessionId || !question || !options || !options.length) {
+    return redirect("/recommendation/init");
+  }
+
+  const handleSelect = async (value: string) => {
+    if (isLoading || !sessionId) return;
+
+    setSelected(value);
+    setIsLoading(true);
+
+    try {
+      const { data } = await mutation.mutateAsync({
+        sessionId,
+        data: { answer: value },
+      });
+
+      setTimeout(() => {
+        const url = createUrlFromSessionResponse(data, { name });
+        router.push(url);
+      }, 800);
+    } catch (err) {
+      console.error("Submit answer error:", err);
+      setError("답변을 제출하는데 문제가 발생했습니다.");
+      setIsLoading(false);
+    }
+  };
+
+  if (error) {
+    return (
+      <PageError retry={() => window.location.reload()}>{error}</PageError>
+    );
+  }
 
   return (
     <Page className="bg-[linear-gradient(180deg,#030507_0%,#1A2647_100%)]">
@@ -42,14 +98,17 @@ export default function RecommendationQuestionStepPage() {
       </Page.Header>
       <Page.Container className="mt-4">
         <motion.div
-          initial={{ y: 30 }}
+          initial={{ y: isFirst ? 30 : 0 }}
           animate={{ y: 0 }}
-          transition={{ delay: 3, duration: 0.5 }}
+          transition={{ delay: isFirst ? 3 : 0, duration: 0.5 }}
         >
           <motion.div
-            initial={{ y: 20, opacity: 0, transition: { delay: 3 } }}
+            initial={{ y: isFirst ? 20 : 0, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{
+              duration: 0.5,
+              delay: isFirst ? 3 : 0,
+            }}
             className="mt-[62px] mb-24px transition-spacing duration-500"
           >
             <QuestionStepper
@@ -65,38 +124,40 @@ export default function RecommendationQuestionStepPage() {
             <>
               <Page.Title
                 as={motion.h1}
-                initial={{ y: -20, opacity: 0 }}
+                initial={{ y: isFirst ? -20 : 0, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
+                exit={{ y: isFirst ? -20 : 0, opacity: 0 }}
                 transition={{ duration: 0.5 }}
                 className="mb-[54px] text-gray-100 text-heading-20-semibold"
               >
-                상대를 하나의 단어로 표현한다면?
+                {question}
               </Page.Title>
-              <CloverButtons
-                options={[
-                  {
-                    active: selected === 1,
-                    label: "따뜻하고 열정적이에요",
-                    onClick: () => setSelected(1),
-                  },
-                  {
-                    active: selected === 2,
-                    label: "섬세하고 트렌디해요",
-                    onClick: () => setSelected(2),
-                  },
-                  {
-                    active: selected === 3,
-                    label: "귀엽고 한편으론 시크해요",
-                    onClick: () => setSelected(3),
-                  },
-                  {
-                    active: selected === 4,
-                    label: "차분하고 꼼꼼해요",
-                    onClick: () => setSelected(4),
-                  },
-                ]}
-              />
+              {options.length === 4 && (
+                <CloverButtons
+                  options={[
+                    {
+                      active: selected === options[0],
+                      label: options[0],
+                      onClick: () => !isLoading && handleSelect(options[0]),
+                    },
+                    {
+                      active: selected === options[1],
+                      label: options[1],
+                      onClick: () => !isLoading && handleSelect(options[1]),
+                    },
+                    {
+                      active: selected === options[2],
+                      label: options[2],
+                      onClick: () => !isLoading && handleSelect(options[2]),
+                    },
+                    {
+                      active: selected === options[3],
+                      label: options[3],
+                      onClick: () => !isLoading && handleSelect(options[3]),
+                    },
+                  ]}
+                />
+              )}
             </>
           )}
         </AnimatePresence>
