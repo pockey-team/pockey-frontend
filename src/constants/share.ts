@@ -5,10 +5,6 @@ interface ShareContent {
 
 export const SHARE_CONTENTS: ShareContent[] = [
   {
-    label: "이미지 저장",
-    imageUrl: "/share/download.svg",
-  },
-  {
     label: "URL 복사",
     imageUrl: "/share/copy.svg",
   },
