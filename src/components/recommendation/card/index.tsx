@@ -3,16 +3,22 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { cn } from "@/lib/utils";
-import type { RecommendationCardProps } from "./card.types";
+
+interface RecommendationCardProps {
+  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  isCurrent: boolean;
+  isResult?: boolean;
+}
 
 export const RecommendationCard = ({
-  present,
+  item,
   isCurrent,
   isResult = false,
 }: RecommendationCardProps) => {
   return (
-    <Link href={`/recommendation/result/${present.id}`}>
+    <Link href={`/recommendation/result/${item.product.id}`}>
       <div
         className={cn(
           "scale-100 bg-gray-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",
@@ -24,17 +30,11 @@ export const RecommendationCard = ({
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
         >
           <div className="flex flex-col gap-12px">
-            {isResult && (
-              <p className="font-bold text-gray-700 tracking-tight">
-                TO.{present.receiver}
-              </p>
-            )}
-
             <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-200">
               <Image
                 className="object-cover"
-                src={present.image || ""}
-                alt={present.title}
+                src={item.product.imageUrl || ""}
+                alt={item.product.name}
                 fill
                 priority
               />
@@ -60,12 +60,12 @@ export const RecommendationCard = ({
             className="mt-16px flex flex-col"
           >
             <p className="line-clamp-1 text-subtitle-18-bold">
-              {present.content}
+              {item.product.name}
             </p>
             {!isResult && (
               <div className="flex flex-col">
                 <p className="py-4px font-semibold text-[#4DA6FF]">
-                  {present.receiver}님의 꼼꼼한 성격과 적합해요
+                  {item.minifiedReason}
                 </p>
                 <div className="w-fit rounded-md bg-[#6D8FFF] px-4px py-[3px] font-bold text-white">
                   인기 TOP 10
@@ -73,7 +73,7 @@ export const RecommendationCard = ({
               </div>
             )}
             <p className="line-clamp-1 self-end pt-12px text-subtitle-18-semibold">
-              {Number(present.price).toLocaleString()}
+              {item.product.priceRange}
             </p>
           </motion.div>
         </motion.div>

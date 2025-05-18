@@ -1,24 +1,26 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { getResult } from "@/api/recommendation/result/get-result";
+"use client";
+
+import { redirect } from "next/navigation";
 import { RecommendationCloseButton } from "@/components/recommendation/close-button";
 import { PresentRecommendationResult } from "@/components/recommendation/result/present-recommendation-result";
 import { Page } from "@/components/shared/page";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
+import { getSessionResultStorageKey } from "@/utils/recommendation";
 
-const ResultPage = async () => {
-  const queryClient = new QueryClient();
+const ResultPage = () => {
+  const { name, sessionId = "default" } = useSearchParamsObject<{
+    name: string;
+    sessionId?: string;
+  }>();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["presents", "recommendation", "result"],
-    queryFn: getResult,
-  });
+  const items = JSON.parse(
+    window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
+      "[]",
+  );
 
-  // const cachedData = queryClient.getQueryData(["presents", "recommendation", "result"]);
-
-  const dehydratedState = dehydrate(queryClient);
+  if (!name || !items || !Array.isArray(items)) {
+    return redirect("/");
+  }
 
   return (
     <Page>
@@ -30,9 +32,7 @@ const ResultPage = async () => {
       </Page.Header>
 
       <Page.Container className="flex-1">
-        <HydrationBoundary state={dehydratedState}>
-          <PresentRecommendationResult />
-        </HydrationBoundary>
+        <PresentRecommendationResult name={name} items={items} />
       </Page.Container>
     </Page>
   );

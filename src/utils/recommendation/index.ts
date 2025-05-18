@@ -15,6 +15,10 @@ export const getRotation = ({ index, current }: Props) => {
   return diff * ROTATION_FACTOR;
 };
 
+export const getSessionResultStorageKey = (sessionId: string) => {
+  return `pockey.session.${sessionId}.result`;
+};
+
 export const createUrlFromSessionResponse = (
   data:
     | RecommendSessionControllerSubmitAnswer201
@@ -22,7 +26,13 @@ export const createUrlFromSessionResponse = (
   extra?: Record<string, string>,
 ) => {
   if (Array.isArray(data)) {
-    return "/recommendation/result";
+    const sessionId = extra?.sessionId || "default";
+    window.sessionStorage.setItem(
+      getSessionResultStorageKey(sessionId),
+      JSON.stringify(data),
+    );
+    const params = new URLSearchParams({ sessionId, ...extra });
+    return `/recommendation/result?${params}`;
   }
 
   if (data.type === "setup" || data.type === "question") {

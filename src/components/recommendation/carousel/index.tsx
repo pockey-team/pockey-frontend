@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { getPresents } from "@/api/Present/get-presents";
+import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { RecommendationCard } from "@/components/recommendation/card";
 import {
   Carousel,
@@ -13,18 +12,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getRotation } from "@/utils/recommendation";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
+import {
+  getRotation,
+  getSessionResultStorageKey,
+} from "@/utils/recommendation";
 
 export const RecommendationCarousel = () => {
-  const { data: presents } = useQuery({
-    queryKey: ["presents"],
-    queryFn: () =>
-      getPresents({
-        delay: 1000,
-        empty: false,
-        error: false,
-      }),
-  });
+  const { name, sessionId = "default" } = useSearchParamsObject<{
+    name: string;
+    sessionId?: string;
+  }>();
+
+  const items = JSON.parse(
+    window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
+      "[]",
+  ) as RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -57,14 +61,14 @@ export const RecommendationCarousel = () => {
         }}
       >
         <CarouselContent className="-ml-0">
-          {presents?.map((present, index) => (
+          {items?.map((item, index) => (
             <div
-              key={present.id}
+              key={item.product.id}
               className="flex flex-col items-center gap-32px"
             >
               <div className="pl-32px">
                 <div className="flex h-40px min-w-[125px] items-center justify-center rounded-full bg-white px-16px py-12px font-bold text-[#4C90FE] text-body-16-bold">
-                  {present.receiver} | 3개 선물
+                  {name} | 3개 선물
                 </div>
               </div>
               <CarouselItem className="basis-4/5 pl-32px md:basis-3/4 lg:basis-3/5">
@@ -82,7 +86,7 @@ export const RecommendationCarousel = () => {
                   className="h-full"
                 >
                   <RecommendationCard
-                    present={present}
+                    item={item}
                     isCurrent={current === index}
                   />
                 </motion.div>

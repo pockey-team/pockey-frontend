@@ -1,8 +1,12 @@
+import { Suspense } from "react";
+
 const ResultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="bg-gradient-recommendation">
-      <section>{children}</section>
-    </main>
+    <Suspense fallback={null}>
+      <main className="bg-gradient-recommendation">
+        <section>{children}</section>
+      </main>
+    </Suspense>
   );
 };
 

@@ -31,7 +31,9 @@ export const RecommendationCloseButton = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>닫기</Button>
+        <Link href="/" className="text-body-16-regular text-gray-500">
+          닫기
+        </Link>
       </DialogTrigger>
       <DialogContent className="min-h-[276px] w-[310px] rounded-2xl border-none bg-gray-800 p-24px">
         <DialogHeader className="flex size-full justify-center">
