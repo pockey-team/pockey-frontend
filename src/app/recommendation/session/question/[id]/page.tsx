@@ -11,7 +11,7 @@ import { Page } from "@/components/shared/page";
 
 type Phase = "init" | "waiting" | "selection";
 
-export default function RecommendationQuestionStepPage() {
+export default function RecommendationSessionQuestionPage() {
   const router = useRouter();
   const params = useParams();
   const [phase, setPhase] = useState<Phase>("init");
