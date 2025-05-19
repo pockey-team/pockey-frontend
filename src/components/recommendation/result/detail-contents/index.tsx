@@ -82,6 +82,10 @@ export const RecommendationDetailContents = ({
   }, [detailId, sessionId]);
 
   const currentItem = useMemo(() => {
+    if (clientData) {
+      return clientData;
+    }
+
     if (productData) {
       return {
         product: productData,
@@ -89,11 +93,7 @@ export const RecommendationDetailContents = ({
         minifiedReason: "서버 반환 데이터 수정 필요",
       };
     }
-
-    return clientData;
   }, [productData, clientData]);
-
-  console.log("currentItem", currentItem);
 
   const getTagsArray = (tags: unknown): string[] => {
     if (!tags) return [];
