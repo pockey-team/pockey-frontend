@@ -81,7 +81,7 @@ const config: Config = {
           "linear-gradient(168deg, #4F76C5 -17.08%, #D7ECFF 95.84%)",
         "gradient-secondary":
           "linear-gradient(168deg, #1A90E0 -17.08%, #5ECBFF 95.84%)",
-        "gradient-card": "linear-gradient(168deg, #F5F8FF 100%, #CCDCFF 100%)",
+        "gradient-card": "linear-gradient(168deg, #F5F8FF 40%, #CCDCFF 100%)",
         "gradient-recommendation":
           "linear-gradient(168deg, #141214 -17.08%, #2F3E60 95.84% )",
       },

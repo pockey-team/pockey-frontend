@@ -62,7 +62,7 @@ export const PresentRecommendationResult = ({ name, items }: Props) => {
         좋아할 선물을 준비했어요
       </Page.Title>
 
-      <div className="flex flex-1 items-center justify-center">
+      <div className="mb-8px flex flex-1 items-center justify-center">
         {item && (
           <FlipCard
             key={cardKey}

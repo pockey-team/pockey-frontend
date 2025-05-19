@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { RecommendationCard } from "@/components/recommendation/card";
 import { cn } from "@/lib/utils";
 
@@ -94,7 +94,12 @@ export const FlipCard = ({
         >
           {/* 앞면 */}
           <div className="backface-hidden absolute size-full rotate-0">
-            <RecommendationCard item={item} isCurrent isResult />
+            <RecommendationCard
+              item={item}
+              isCurrent
+              isResult
+              className="bg-gradient-card"
+            />
           </div>
 
           {/* 뒷면 */}

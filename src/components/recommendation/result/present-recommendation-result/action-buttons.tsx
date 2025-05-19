@@ -14,6 +14,7 @@ export const ActionButtons = ({
 }: ActionButtonsProps) => {
   return (
     <Page.ActionButton
+      className="py-16px"
       as={motion.div}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
