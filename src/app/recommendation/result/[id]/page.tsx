@@ -45,7 +45,7 @@ const ResultDetailPage = async ({
           </Page.Header>
         </div>
 
-        <div className="absolute top-0px right-0px left-0px z-30 flex-1 overflow-auto">
+        <div className="absolute top-0px right-0px left-0px z-30 flex-1 overflow-auto desktop:bg-gray-900">
           <Page.Container className="pt-0" noPadding>
             <RecommendationDetailContents
               detailId={detailId}
