@@ -14,6 +14,24 @@ import { cn } from "@/lib/utils";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
 import { ShareButton } from "../../share-button";
 
+export interface ProductData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  url: string;
+  priceRange: string;
+  ageRange: string | string[];
+  category: string | string[];
+  friendshipLevel: string[] | string;
+  intention: string[] | string;
+  situation: string[] | string;
+  tags: string[] | string;
+  targetGender?: string;
+  brand?: string | null;
+  nextPickProductIds?: number[] | null;
+  price?: number | null;
+}
+
 export const RecommendationDetailContents = ({
   showCategory = true,
   showHeart = true,
@@ -28,6 +46,7 @@ export const RecommendationDetailContents = ({
   isCapturing = false,
   isMobile,
   name,
+  productData,
 }: RecommendationDetailContentsProps) => {
   const { sessionId = "default" } = useSearchParamsObject<{
     sessionId?: string;
@@ -39,11 +58,62 @@ export const RecommendationDetailContents = ({
         "[]",
     );
 
+  // const currentItem = useMemo(() => {
+  //   return items.find((item) => item.product.id === Number(detailId));
+  // }, [detailId, items]);
+
+  const clientData = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[] =
+        JSON.parse(
+          window.sessionStorage.getItem(
+            getSessionResultStorageKey(sessionId),
+          ) || "[]",
+        );
+
+      return items.find((item) => item.product.id === Number(detailId));
+    } catch (error) {
+      console.error("세션 데이터 파싱 오류:", error);
+      return null;
+    }
+  }, [detailId, sessionId]);
+
   const currentItem = useMemo(() => {
-    return items.find((item) => item.product.id === Number(detailId));
-  }, [detailId, items]);
+    if (productData) {
+      return {
+        product: productData,
+        reason: "서버 반환 데이터 수정 필요",
+        minifiedReason: "서버 반환 데이터 수정 필요",
+      };
+    }
+
+    return clientData;
+  }, [productData, clientData]);
 
   const { product } = currentItem ?? {};
+
+  const getTagsArray = (tags: unknown): string[] => {
+    if (!tags) return [];
+
+    if (Array.isArray(tags)) {
+      return tags as string[];
+    }
+
+    if (typeof tags === "string") {
+      try {
+        if (tags.startsWith("[")) {
+          return JSON.parse(tags);
+        }
+        return [tags];
+      } catch (e) {
+        return [tags];
+      }
+    }
+
+    return [];
+  };
 
   return (
     <div
@@ -112,7 +182,7 @@ export const RecommendationDetailContents = ({
           {showFeelingsSection && (
             <ContentSection title="이 선물, 이런 감정을 담았어요">
               <div className="flex flex-wrap gap-8px">
-                {product?.tags.map((tag) => (
+                {getTagsArray(product?.tags).map((tag) => (
                   <div
                     key={tag}
                     className="max-h-[36px] rounded-xl bg-gray-700 px-16px py-8px text-gray-200"

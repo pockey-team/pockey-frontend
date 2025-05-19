@@ -1,3 +1,5 @@
+import type { ProductData } from ".";
+
 export interface RecommendationDetailContentsProps {
   showCategory?: boolean;
   showHeart?: boolean;
@@ -12,4 +14,5 @@ export interface RecommendationDetailContentsProps {
   isCapturing?: boolean;
   isMobile?: boolean;
   name?: string;
+  productData?: ProductData;
 }
