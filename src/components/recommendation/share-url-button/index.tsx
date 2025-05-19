@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-export const ShareUrlButton = () => {
-  const currentUrl = usePathname();
+interface Props {
+  detailId: string;
+}
 
-  const resultUrl = `${window.location.origin}${currentUrl}`;
+export const ShareUrlButton = ({ detailId }: Props) => {
+  const resultUrl = `${window.location.origin}/recommendation/share/${detailId}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(resultUrl);

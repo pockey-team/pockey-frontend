@@ -52,7 +52,7 @@ export const ShareButton = ({ className = "", detailId, name }: Props) => {
 
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
           <SaveImageButton detailId={detailId} name={name} />
-          <ShareUrlButton />
+          <ShareUrlButton detailId={detailId} />
           {/* {SHARE_CONTENTS.map((content) => (
             <ul key={content.label} className="flex flex-col">
               <li className="my-12px flex items-center gap-12px">
