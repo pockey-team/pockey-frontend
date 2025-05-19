@@ -6,14 +6,17 @@ import { Button } from "@/components/ui/button";
 interface ActionButtonsProps {
   nextPickCount: number;
   onNextResult: () => void;
+  itemId: number;
 }
 
 export const ActionButtons = ({
   nextPickCount,
   onNextResult,
+  itemId,
 }: ActionButtonsProps) => {
   return (
     <Page.ActionButton
+      className="py-16px"
       as={motion.div}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -28,7 +31,7 @@ export const ActionButtons = ({
     >
       {() => (
         <div className="flex w-full justify-between gap-8px">
-          <SatisfiedButton />
+          <SatisfiedButton itemId={itemId} />
           <Button
             disabled={nextPickCount === 0}
             onClick={onNextResult}

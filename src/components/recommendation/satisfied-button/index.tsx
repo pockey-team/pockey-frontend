@@ -13,14 +13,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export const SatisfiedButton = () => {
+interface Props {
+  itemId: number;
+}
+
+export const SatisfiedButton = ({ itemId }: Props) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
 
   const handleClick = () => {
     if (session.data) {
-      router.push(`/recommendation/result/${"상품디테일아이디"}`);
+      router.push(`/recommendation/result/${itemId}`);
     } else {
       setIsOpen(true);
     }
@@ -45,7 +49,7 @@ export const SatisfiedButton = () => {
             선택된 취향과 관심사를 바탕으로 골랐어요.
           </DialogDescription>
         </DialogHeader>
-        <SignInButton callback={`/recommendation/result/${"sample-id"}`} />
+        <SignInButton callback={`/recommendation/result/${itemId}`} />
       </DialogContent>
     </Dialog>
   );

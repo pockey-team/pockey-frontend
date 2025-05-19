@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef } from "react";
+import { type ForwardedRef, forwardRef, type Ref } from "react";
 import { RecommendationDetailContents } from "@/components/recommendation/result/detail-contents";
 
 interface Props {
@@ -6,15 +6,26 @@ interface Props {
   productImage?: string;
   productTitle?: string;
   priceRange?: string;
+  detailId: string;
+  isCapturing: boolean;
+  name?: string;
 }
 
 export const CaptureRecommendationDetail = forwardRef(
   (
-    { className, productImage, productTitle, priceRange }: Props,
+    {
+      className,
+      productImage,
+      productTitle,
+      priceRange,
+      detailId,
+      isCapturing,
+      name,
+    }: Props,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     return (
-      <div ref={ref}>
+      <div ref={ref as Ref<HTMLDivElement>}>
         <RecommendationDetailContents
           showCategory={false}
           showHeart={false}
@@ -23,6 +34,9 @@ export const CaptureRecommendationDetail = forwardRef(
           showRelatedProductsSection={false}
           showFooterLogo={true}
           showPriceRange={false}
+          detailId={detailId}
+          isCapturing={isCapturing}
+          name={name}
         />
       </div>
     );

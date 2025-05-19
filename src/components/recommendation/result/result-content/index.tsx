@@ -3,12 +3,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { FlipCard } from "@/components/recommendation/flip-card";
 import { SatisfiedButton } from "@/components/recommendation/satisfied-button";
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
-import type { Present } from "@/constants/presents";
 import {
   AVAILABLE_NEXT_PICK_COUNT,
   TOAST_STYLE,
@@ -16,11 +15,6 @@ import {
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
-
-interface ResultResponse {
-  result: Present;
-  nextPick: Present[];
-}
 
 export const ResultContent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -123,7 +117,7 @@ export const ResultContent = () => {
       >
         {() => (
           <div className="flex w-full justify-between gap-8px">
-            <SatisfiedButton />
+            <SatisfiedButton itemId={item?.product.id} />
             <Button
               disabled={nextPickCount === 0}
               onClick={handleNextResult}

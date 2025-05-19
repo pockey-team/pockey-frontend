@@ -1,22 +1,40 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
-import { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import { RecommendationCloseButton } from "@/components/recommendation/close-button";
 import { FlipCard } from "@/components/recommendation/flip-card";
+import { ActionButtons } from "@/components/recommendation/result/present-recommendation-result/action-buttons";
+import { useCardAnimation } from "@/components/recommendation/result/present-recommendation-result/hooks/useCardAnimation";
+import { useResultToast } from "@/components/recommendation/result/present-recommendation-result/hooks/useResultToast";
 import { Page } from "@/components/shared/page";
 import { AVAILABLE_NEXT_PICK_COUNT } from "@/constants/recommendation-result";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
-import { ActionButtons } from "./action-buttons";
-import { useCardAnimation } from "./hooks/useCardAnimation";
-import { useResultToast } from "./hooks/useResultToast";
+import { getSessionResultStorageKey } from "@/utils/recommendation";
 
 interface Props {
   name: string;
   items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
 }
 
-export const PresentRecommendationResult = ({ name, items }: Props) => {
+export const PresentRecommendationResult = () => {
+  const { name, sessionId = "default" } = useSearchParamsObject<{
+    name: string;
+    sessionId?: string;
+  }>();
+
+  const items = JSON.parse(
+    window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
+      "[]",
+  );
+
+  // if (!name || !items || !Array.isArray(items)) {
+  //   return redirect("/");
+  // }
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextPickCount, setNextPickCount] = useState(AVAILABLE_NEXT_PICK_COUNT);
   const {
@@ -44,6 +62,12 @@ export const PresentRecommendationResult = ({ name, items }: Props) => {
 
   return (
     <div className="relative flex h-full flex-col">
+      <Page.Header>
+        <Page.Header.Right>
+          {/* TODO. 저장하기 버튼 클릭 시 로그인 이후 해당 상품 상세 페이지로 이동되어야 하므로 상품 ID를 props로 전달 */}
+          <RecommendationCloseButton callbackTargetResultId={item.product.id} />
+        </Page.Header.Right>
+      </Page.Header>
       {/* 카드 flip 될 때 overlay */}
       <motion.div
         className={cn(
@@ -62,22 +86,25 @@ export const PresentRecommendationResult = ({ name, items }: Props) => {
         좋아할 선물을 준비했어요
       </Page.Title>
 
-      <div className="flex flex-1 items-center justify-center">
+      <div className="mb-8px flex flex-1 items-center justify-center">
         {item && (
-          <FlipCard
-            key={cardKey}
-            item={item}
-            flipDelay={500}
-            isDisappearing={isDisappearing}
-            isFloating={isFloating}
-            setIsFloating={setIsFloating}
-          />
+          <Link href={`/recommendation/result/${item.product.id}?name=${name}`}>
+            <FlipCard
+              key={cardKey}
+              item={item}
+              flipDelay={500}
+              isDisappearing={isDisappearing}
+              isFloating={isFloating}
+              setIsFloating={setIsFloating}
+            />
+          </Link>
         )}
       </div>
 
       <ActionButtons
         nextPickCount={nextPickCount}
         onNextResult={handleNextResult}
+        itemId={item.product.id}
       />
     </div>
   );
