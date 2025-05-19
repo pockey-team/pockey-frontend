@@ -4,11 +4,16 @@ import html2canvas from "html2canvas";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/shared/button";
+import { cn } from "@/lib/utils";
 import { CaptureRecommendationDetail } from "./capture-recommendation-detail";
 
 const SAMPLE_USER_NAME = "포키";
 
-export const SaveImageButton = () => {
+interface Props {
+  detailId: string;
+}
+
+export const SaveImageButton = ({ detailId }: Props) => {
   const captureRef = useRef<HTMLDivElement>(null);
   const [isCapturing, setIsCapturing] = useState(false);
 
@@ -16,12 +21,20 @@ export const SaveImageButton = () => {
     if (isCapturing && captureRef.current) {
       const element = captureRef.current;
       setTimeout(() => {
+        if (!captureRef.current) {
+          setIsCapturing(false);
+          return;
+        }
         html2canvas(element, {
           width: 390,
-          scale: window.devicePixelRatio,
+          height: element.scrollHeight,
+          windowHeight: element.scrollHeight,
+          scale: typeof window !== "undefined" ? window.devicePixelRatio : 1,
           useCORS: true,
           allowTaint: true,
           backgroundColor: null,
+          logging: true,
+          imageTimeout: 30000,
         })
           .then((canvas) => {
             onSaveAs(
@@ -34,7 +47,7 @@ export const SaveImageButton = () => {
             console.error("캡처 오류:", err);
             setIsCapturing(false);
           });
-      }, 300);
+      }, 1500);
     }
   }, [isCapturing]);
 
@@ -56,6 +69,7 @@ export const SaveImageButton = () => {
       <li className="my-12px flex items-center gap-12px">
         <Button
           variant="ghost"
+          disabled={isCapturing}
           onClick={handleSaveImage}
           className="!px-0px !py-0px flex items-center gap-8px focus:bg-transparent"
         >
@@ -70,9 +84,18 @@ export const SaveImageButton = () => {
       </li>
 
       <div
-        className={`h-full w-[390px] overflow-hidden ${isCapturing ? "-left-[9999px] absolute block" : "hidden"} `}
+        className={cn(
+          "w-[390px]",
+          isCapturing
+            ? "-left-[9999px] absolute top-0 block h-auto overflow-visible"
+            : "hidden",
+        )}
       >
-        <CaptureRecommendationDetail ref={captureRef} />
+        <CaptureRecommendationDetail
+          ref={captureRef}
+          detailId={detailId}
+          isCapturing={isCapturing}
+        />
       </div>
     </ul>
   );

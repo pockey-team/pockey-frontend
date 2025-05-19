@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { FlipCard } from "@/components/recommendation/flip-card";
@@ -64,14 +65,16 @@ export const PresentRecommendationResult = ({ name, items }: Props) => {
 
       <div className="mb-8px flex flex-1 items-center justify-center">
         {item && (
-          <FlipCard
-            key={cardKey}
-            item={item}
-            flipDelay={500}
-            isDisappearing={isDisappearing}
-            isFloating={isFloating}
-            setIsFloating={setIsFloating}
-          />
+          <Link href={`/recommendation/result/${item.product.id}`}>
+            <FlipCard
+              key={cardKey}
+              item={item}
+              flipDelay={500}
+              isDisappearing={isDisappearing}
+              isFloating={isFloating}
+              setIsFloating={setIsFloating}
+            />
+          </Link>
         )}
       </div>
 

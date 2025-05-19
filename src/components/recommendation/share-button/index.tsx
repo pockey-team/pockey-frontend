@@ -17,9 +17,10 @@ import { SaveImageButton } from "../save-image-button";
 
 interface Props {
   className?: string;
+  detailId: string;
 }
 
-export const ShareButton = ({ className = "" }: Props) => {
+export const ShareButton = ({ className = "", detailId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -48,8 +49,9 @@ export const ShareButton = ({ className = "" }: Props) => {
             오늘의 선물을 공유해 보세요.
           </SheetDescription>
         </SheetHeader>
+
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
-          <SaveImageButton />
+          <SaveImageButton detailId={detailId} />
           {SHARE_CONTENTS.map((content) => (
             <ul key={content.label} className="flex flex-col">
               <li className="my-12px flex items-center gap-12px">
