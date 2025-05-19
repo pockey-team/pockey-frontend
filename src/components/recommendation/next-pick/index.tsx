@@ -25,10 +25,15 @@ export const NextPick = ({ ids }: NextPickProps) => {
       enabled: !!id,
     })),
   });
+
   const nextPickResults = nextPickQueries
-    .map((query) => query.data)
-    // @ts-ignore
-    .map((data) => data?.data);
+    .filter((query) => query.isSuccess && query.data)
+    .map((query) => {
+      const response = query.data;
+      // @ts-ignore
+      return response?.data as unknown as ProductData;
+    });
+
   return (
     <div className="grid grid-cols-3 gap-8px">
       {nextPickResults.map((result) => (
