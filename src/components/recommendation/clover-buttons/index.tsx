@@ -19,7 +19,7 @@ export const CloverButtons = ({ options }: Props) => {
   const [topLeft, topRight, bottomLeft, bottomRight] = options;
 
   return (
-    <div className="grid grid-cols-[auto_2px_auto]">
+    <div className="grid grid-cols-[50%_2px_50%]">
       <CloverButton
         active={topLeft.active}
         onClick={topLeft.onClick}

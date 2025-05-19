@@ -10,6 +10,12 @@ const isProtectedRoute = (path: string) => {
   );
 };
 
+export const config = {
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|auth|mockServiceWorker.js|.*\\.png$|.*\\.svg$|$).*)",
+  ],
+};
+
 export default withAuth(
   function middleware() {
     return NextResponse.next();
@@ -23,15 +29,8 @@ export default withAuth(
         return true;
       },
     },
-
     pages: {
-      signIn: "/auth/signIn",
+      signIn: "/auth/sign-in",
     },
   },
 );
-
-export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|auth|mockServiceWorker.js|.*\\.png$|.*\\.svg$|$).*)",
-  ],
-};

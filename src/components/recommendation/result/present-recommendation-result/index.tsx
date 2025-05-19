@@ -1,27 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { getResult } from "@/api/recommendation/result/get-result";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { FlipCard } from "@/components/recommendation/flip-card";
-import type { Present } from "@/constants/presents";
+import { Page } from "@/components/shared/page";
 import { AVAILABLE_NEXT_PICK_COUNT } from "@/constants/recommendation-result";
 import { cn } from "@/lib/utils";
 import { ActionButtons } from "./action-buttons";
 import { useCardAnimation } from "./hooks/useCardAnimation";
 import { useResultToast } from "./hooks/useResultToast";
-import { TitleSection } from "./title-section";
 
-interface ResultResponse {
-  result: Present;
-  nextPick: Present[];
+interface Props {
+  name: string;
+  items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
 }
 
-export const PresentRecommendationResult = () => {
+export const PresentRecommendationResult = ({ name, items }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextPickCount, setNextPickCount] = useState(AVAILABLE_NEXT_PICK_COUNT);
-
   const {
     isDisappearing,
     cardKey,
@@ -32,20 +29,14 @@ export const PresentRecommendationResult = () => {
 
   const { triggerToast } = useResultToast(nextPickCount);
 
-  // TODO.선물 추천 API 연동
-  const { data: resultPresents } = useQuery<ResultResponse[]>({
-    queryKey: ["presents", "recommendation", "result"],
-    queryFn: getResult,
-  });
-
-  const displayPresent = resultPresents?.[currentIndex]?.result;
+  const item = items[currentIndex];
 
   const handleNextResult = () => {
     setNextPickCount((prev) => Math.max(0, prev - 1));
 
     triggerCardTransition(() => {
-      if (resultPresents && currentIndex < resultPresents.length - 1) {
-        setCurrentIndex((prev) => (prev + 1) % resultPresents.length);
+      if (items && currentIndex < items.length - 1) {
+        setCurrentIndex((prev) => (prev + 1) % items.length);
       }
     });
     triggerToast();
@@ -64,13 +55,18 @@ export const PresentRecommendationResult = () => {
         transition={{ duration: 0.1 }}
       />
 
-      <TitleSection />
+      <Page.Title className="desktop:mt-[60px] mt-16px text-gray-100">
+        <span className="text-primary-500">{name}</span>
+        님이
+        <br />
+        좋아할 선물을 준비했어요
+      </Page.Title>
 
       <div className="flex flex-1 items-center justify-center">
-        {displayPresent && (
+        {item && (
           <FlipCard
             key={cardKey}
-            cardContent={displayPresent}
+            item={item}
             flipDelay={500}
             isDisappearing={isDisappearing}
             isFloating={isFloating}

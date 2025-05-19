@@ -1,6 +1,8 @@
 "use client";
 
 import Image, { ImageProps } from "next/image";
+import { useRouter } from "next/navigation";
+import { PropsWithChildren } from "react";
 import { BottomBarTabs } from "@/components/layout/bottom-bar/bottom-bar-tabs";
 import { cn } from "@/lib/utils";
 
@@ -9,12 +11,31 @@ interface Props {
 }
 
 export const BottomBar = ({ className }: Props) => {
+  const router = useRouter();
+
   return (
     <div className={cn("flex w-full items-center justify-between", className)}>
       <StarIcon width={25} height={25} />
       <BottomBarTabs />
-      <UserIcon width={35} height={35} />
+      <IconButton onClick={() => router.push("/auth/settings")}>
+        <UserIcon width={35} height={35} />
+      </IconButton>
     </div>
+  );
+};
+
+const IconButton = ({
+  onClick,
+  children,
+}: PropsWithChildren<{ onClick: () => void }>) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-center justify-center p-8px"
+    >
+      {children}
+    </button>
   );
 };
 

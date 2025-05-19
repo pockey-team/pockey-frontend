@@ -1,7 +1,7 @@
-export default function RecommendationLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <div>{children}</div>;
+"use client";
+
+import { PropsWithChildren } from "react";
+
+export default function RecommendationLayout({ children }: PropsWithChildren) {
+  return <>{children}</>;
 }

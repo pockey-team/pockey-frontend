@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getPresents } from "@/api/Present/get-presents";
 import { HeaderSection } from "@/components/present-recommendation-content/header-section";
@@ -16,9 +17,12 @@ interface PresentRecommendationContentProps {
 export const PresentRecommendationContent = ({
   isMobile,
 }: PresentRecommendationContentProps) => {
+  const router = useRouter();
   const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
+
   const handleClickNextStepButton = () => {
     setIsNextStepButtonClicked(true);
+    setTimeout(() => router.push("/recommendation/init"), 1_000);
   };
 
   const { data: presents } = useQuery({

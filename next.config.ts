@@ -1,19 +1,18 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
-      {
-        protocol: "https",
-        hostname: "loremflickr.com",
-      },
+      { protocol: "http", hostname: "*" },
+      { protocol: "https", hostname: "*" },
     ],
   },
+  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };
 
-export default nextConfig;
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
+
+export default withMDX(nextConfig);

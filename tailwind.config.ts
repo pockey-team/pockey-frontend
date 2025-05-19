@@ -27,7 +27,7 @@ const config: Config = {
       },
       white: "#FFFFFF",
       kakao: "#FEDC00",
-      signInBackground: "#f9fafd",
+      "sign-in": "#f9fafd",
     },
     fontSize: {
       "display-32-semibold": [
