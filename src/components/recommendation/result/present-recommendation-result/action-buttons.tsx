@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 interface ActionButtonsProps {
   nextPickCount: number;
   onNextResult: () => void;
+  itemId: number;
 }
 
 export const ActionButtons = ({
   nextPickCount,
   onNextResult,
+  itemId,
 }: ActionButtonsProps) => {
   return (
     <Page.ActionButton
@@ -29,7 +31,7 @@ export const ActionButtons = ({
     >
       {() => (
         <div className="flex w-full justify-between gap-8px">
-          <SatisfiedButton />
+          <SatisfiedButton itemId={itemId} />
           <Button
             disabled={nextPickCount === 0}
             onClick={onNextResult}

@@ -8,6 +8,7 @@ interface Props {
   priceRange?: string;
   detailId: string;
   isCapturing: boolean;
+  name?: string;
 }
 
 export const CaptureRecommendationDetail = forwardRef(
@@ -19,6 +20,7 @@ export const CaptureRecommendationDetail = forwardRef(
       priceRange,
       detailId,
       isCapturing,
+      name,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
@@ -34,6 +36,7 @@ export const CaptureRecommendationDetail = forwardRef(
           showPriceRange={false}
           detailId={detailId}
           isCapturing={isCapturing}
+          name={name}
         />
       </div>
     );

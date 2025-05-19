@@ -26,6 +26,8 @@ export const RecommendationDetailContents = ({
   detailId,
   showActionButton = false,
   isCapturing = false,
+  isMobile,
+  name,
 }: RecommendationDetailContentsProps) => {
   const { sessionId = "default" } = useSearchParamsObject<{
     sessionId?: string;
@@ -46,7 +48,7 @@ export const RecommendationDetailContents = ({
   return (
     <div
       className={cn("grid w-[390px] grid-rows-[1fr_auto] bg-gray-900", {
-        "h-screen overflow-hidden": !isCapturing,
+        "h-screen overflow-hidden": !isCapturing && isMobile,
         "h-auto overflow-visible": isCapturing,
       })}
     >
@@ -64,7 +66,7 @@ export const RecommendationDetailContents = ({
             alt="상품이미지"
             width={390}
             height={390}
-            priority
+            id="product-image"
           />
         ) : (
           <div className="flex h-[390px] w-[390px] items-center justify-center bg-gray-800">
@@ -90,7 +92,7 @@ export const RecommendationDetailContents = ({
             <div className="flex flex-1 flex-col items-start">
               {isCapturing && (
                 <p className="font-semibold text-[14px] text-gray-400">
-                  포키님을 위한 선물
+                  {name}님을 위한 선물
                 </p>
               )}
               <h1 className="font-semibold text-[22px]">{product?.name}</h1>
@@ -127,6 +129,7 @@ export const RecommendationDetailContents = ({
               title="이 선물로 전하고 싶은 마음"
               subTitle={currentItem?.minifiedReason}
               isCapturing={isCapturing}
+              className="mb-56px"
             >
               {currentItem?.reason}
             </ContentSection>
@@ -162,11 +165,14 @@ export const RecommendationDetailContents = ({
             />
           </div>
         )}
+        {showActionButton && (
+          <div className="h-[100px] w-full shrink-0" aria-hidden="true" />
+        )}
       </div>
 
       {showActionButton && (
-        <div className="z-20 border-gray-800 border-t bg-gray-900">
-          <Page.ActionButton className="bg-gray-900 py-16px">
+        <div className="fixed bottom-0px z-20 min-h-[100px] w-full border-gray-800 border-t bg-gray-900">
+          <Page.ActionButton className="mb-0px bg-gray-900 py-16px">
             {() => (
               <div className="flex items-center gap-12px">
                 <Button
@@ -180,6 +186,7 @@ export const RecommendationDetailContents = ({
                 <ShareButton
                   className="!rounded-2xl w-1/2 py-16px"
                   detailId={detailId}
+                  name={name}
                 />
               </div>
             )}

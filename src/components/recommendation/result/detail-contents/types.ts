@@ -10,4 +10,6 @@ export interface RecommendationDetailContentsProps {
   detailId: string;
   showActionButton?: boolean;
   isCapturing?: boolean;
+  isMobile?: boolean;
+  name?: string;
 }

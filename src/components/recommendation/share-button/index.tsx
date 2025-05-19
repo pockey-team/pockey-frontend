@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { SaveImageButton } from "@/components/recommendation/save-image-button";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,14 +14,14 @@ import {
 } from "@/components/ui/sheet";
 import { SHARE_CONTENTS } from "@/constants/share";
 import { cn } from "@/lib/utils";
-import { SaveImageButton } from "../save-image-button";
 
 interface Props {
   className?: string;
   detailId: string;
+  name?: string;
 }
 
-export const ShareButton = ({ className = "", detailId }: Props) => {
+export const ShareButton = ({ className = "", detailId, name }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -51,7 +52,7 @@ export const ShareButton = ({ className = "", detailId }: Props) => {
         </SheetHeader>
 
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
-          <SaveImageButton detailId={detailId} />
+          <SaveImageButton detailId={detailId} name={name} />
           {SHARE_CONTENTS.map((content) => (
             <ul key={content.label} className="flex flex-col">
               <li className="my-12px flex items-center gap-12px">

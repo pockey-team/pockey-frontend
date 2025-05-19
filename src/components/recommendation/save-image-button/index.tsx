@@ -3,17 +3,15 @@
 import html2canvas from "html2canvas";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/shared/button";
 import { cn } from "@/lib/utils";
 import { CaptureRecommendationDetail } from "./capture-recommendation-detail";
 
-const SAMPLE_USER_NAME = "포키";
-
 interface Props {
   detailId: string;
+  name?: string;
 }
 
-export const SaveImageButton = ({ detailId }: Props) => {
+export const SaveImageButton = ({ detailId, name }: Props) => {
   const captureRef = useRef<HTMLDivElement>(null);
   const [isCapturing, setIsCapturing] = useState(false);
 
@@ -29,7 +27,7 @@ export const SaveImageButton = ({ detailId }: Props) => {
           width: 390,
           height: element.scrollHeight,
           windowHeight: element.scrollHeight,
-          scale: typeof window !== "undefined" ? window.devicePixelRatio : 1,
+          scale: 1,
           useCORS: true,
           allowTaint: true,
           backgroundColor: null,
@@ -39,7 +37,7 @@ export const SaveImageButton = ({ detailId }: Props) => {
           .then((canvas) => {
             onSaveAs(
               canvas.toDataURL("image/png"),
-              `${SAMPLE_USER_NAME}님을 위한 선물.png`,
+              `${name}님을 위한 선물.png`,
             );
             setIsCapturing(false);
           })
@@ -49,7 +47,7 @@ export const SaveImageButton = ({ detailId }: Props) => {
           });
       }, 1500);
     }
-  }, [isCapturing]);
+  }, [isCapturing, name]);
 
   const handleSaveImage = () => {
     setIsCapturing(true);
@@ -66,21 +64,23 @@ export const SaveImageButton = ({ detailId }: Props) => {
 
   return (
     <ul>
-      <li className="my-12px flex items-center gap-12px">
-        <Button
-          variant="ghost"
-          disabled={isCapturing}
-          onClick={handleSaveImage}
-          className="!px-0px !py-0px flex items-center gap-8px focus:bg-transparent"
-        >
-          <Image
-            src="/share/download.svg"
-            alt="URL 복사"
-            width={24}
-            height={24}
-          />
-          <span>이미지 저장</span>
-        </Button>
+      <li
+        className="my-12px flex cursor-pointer items-center gap-12px"
+        onClick={handleSaveImage}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleSaveImage();
+          }
+        }}
+      >
+        <Image
+          src="/share/download.svg"
+          alt="URL 복사"
+          width={24}
+          height={24}
+        />
+        <span>이미지 저장</span>
       </li>
 
       <div
@@ -95,6 +95,7 @@ export const SaveImageButton = ({ detailId }: Props) => {
           ref={captureRef}
           detailId={detailId}
           isCapturing={isCapturing}
+          name={name}
         />
       </div>
     </ul>
