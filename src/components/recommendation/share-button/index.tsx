@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { SaveImageButton } from "@/components/recommendation/save-image-button";
 import { Button } from "@/components/ui/button";
@@ -12,8 +11,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SHARE_CONTENTS } from "@/constants/share";
 import { cn } from "@/lib/utils";
+import { ShareUrlButton } from "../share-url-button";
 
 interface Props {
   className?: string;
@@ -53,7 +52,8 @@ export const ShareButton = ({ className = "", detailId, name }: Props) => {
 
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
           <SaveImageButton detailId={detailId} name={name} />
-          {SHARE_CONTENTS.map((content) => (
+          <ShareUrlButton />
+          {/* {SHARE_CONTENTS.map((content) => (
             <ul key={content.label} className="flex flex-col">
               <li className="my-12px flex items-center gap-12px">
                 <Image
@@ -65,7 +65,7 @@ export const ShareButton = ({ className = "", detailId, name }: Props) => {
                 <span>{content.label}</span>
               </li>
             </ul>
-          ))}
+          ))} */}
         </div>
       </SheetContent>
     </Sheet>
