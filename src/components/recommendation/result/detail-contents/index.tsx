@@ -203,6 +203,7 @@ export const RecommendationDetailContents = ({
               subTitle={currentItem?.minifiedReason}
               isCapturing={isCapturing}
               className="mb-56px"
+              showBackground
             >
               {currentItem?.reason}
             </ContentSection>
@@ -229,7 +230,7 @@ export const RecommendationDetailContents = ({
       </div>
 
       {showActionButton && (
-        <div className="fixed bottom-0px z-20 min-h-[100px] w-full border-gray-800 border-t bg-gray-900">
+        <div className="fixed bottom-0px z-20 min-h-[100px] w-full desktop:max-w-[390px] border-gray-800 border-t bg-gray-900">
           <Page.ActionButton className="mb-0px bg-gray-900 py-16px">
             {() => (
               <div className="flex items-center gap-12px">

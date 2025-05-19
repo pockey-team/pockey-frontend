@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   isCapturing?: boolean;
+  showBackground?: boolean;
 }
 
 export const ContentSection = ({
@@ -14,12 +15,17 @@ export const ContentSection = ({
   children = "",
   className = "",
   isCapturing = false,
+  showBackground = false,
 }: Props) => {
   return (
     <section
       className={cn(
         "my-24px rounded-3xl",
-        isCapturing ? "bg-[#E5E7EB] p-24px" : "bg-gray-800",
+        isCapturing
+          ? "bg-[#E5E7EB] p-24px"
+          : showBackground
+            ? "bg-gray-800 p-8px"
+            : undefined,
         className,
       )}
     >
