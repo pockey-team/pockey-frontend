@@ -92,9 +92,6 @@ export const RecommendationDetailContents = ({
     return clientData;
   }, [productData, clientData]);
 
-  const { product } = currentItem ?? {};
-  console.log("currentItem", currentItem);
-
   const getTagsArray = (tags: unknown): string[] => {
     if (!tags) return [];
 
