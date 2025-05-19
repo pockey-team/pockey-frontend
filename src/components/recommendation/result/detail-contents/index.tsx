@@ -12,6 +12,7 @@ import { RECOMMENDATION_RESULT_DETAIL_CONTENTS } from "@/constants/recommendatio
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
+import { NextPick } from "../../next-pick";
 import { ShareButton } from "../../share-button";
 
 export interface ProductData {
@@ -92,6 +93,8 @@ export const RecommendationDetailContents = ({
     return clientData;
   }, [productData, clientData]);
 
+  console.log("currentItem", currentItem);
+
   const getTagsArray = (tags: unknown): string[] => {
     if (!tags) return [];
 
@@ -142,7 +145,7 @@ export const RecommendationDetailContents = ({
           </div>
         )}
 
-        <section className="flex flex-col px-16px pt-24px">
+        <section className="flex flex-col px-16px pt-24px pb-48px">
           {showCategory && (
             <nav
               aria-label="카테고리"
@@ -205,24 +208,9 @@ export const RecommendationDetailContents = ({
             </ContentSection>
           )}
 
-          {/* {showRelatedProductsSection && (
-            <ContentSection title="함께 보면 좋은 선물">
-              <div className="grid grid-cols-3 gap-16px">
-                {relatedProducts.map((product) => (
-                  <div key={product.id} className="flex flex-col gap-8px">
-                    <Image
-                      src={product.imageUrl}
-                      alt="상품이미지"
-                      width={103}
-                      height={103}
-                      className="size-[103px] rounded-xl object-cover"
-                    />
-                    <p className="line-clamp-1">{product.title}</p>
-                  </div>
-                ))}
-              </div>
-            </ContentSection>
-          )} */}
+          <ContentSection title="함께 보면 좋은 선물">
+            <NextPick ids={currentItem?.product.nextPickProductIds ?? []} />
+          </ContentSection>
         </section>
 
         {showFooterLogo && (

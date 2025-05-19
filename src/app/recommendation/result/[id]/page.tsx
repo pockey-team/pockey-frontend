@@ -1,4 +1,8 @@
-import { RecommendationDetailContents } from "@/components/recommendation/result/detail-contents";
+import { productControllerGetProduct } from "@/api/__generated__";
+import {
+  type ProductData,
+  RecommendationDetailContents,
+} from "@/components/recommendation/result/detail-contents";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
@@ -19,6 +23,9 @@ const ResultDetailPage = async ({
   const isMobile = await isMobileDevice();
   const searchParam = await searchParams;
   const name = searchParam.name;
+
+  const response = await productControllerGetProduct(Number(detailId));
+  const productData = response.data as unknown as ProductData;
   return (
     <Page className="relative flex flex-col bg-gray-900">
       <div className="relative size-full">
@@ -44,6 +51,7 @@ const ResultDetailPage = async ({
               detailId={detailId}
               isMobile={isMobile}
               name={name}
+              productData={productData}
               showActionButton
             />
           </Page.Container>
