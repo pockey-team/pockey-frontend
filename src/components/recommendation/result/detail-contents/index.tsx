@@ -93,6 +93,7 @@ export const RecommendationDetailContents = ({
   }, [productData, clientData]);
 
   const { product } = currentItem ?? {};
+  console.log("currentItem", currentItem);
 
   const getTagsArray = (tags: unknown): string[] => {
     if (!tags) return [];
@@ -130,9 +131,9 @@ export const RecommendationDetailContents = ({
             : "bg-gray-900 text-gray-100",
         )}
       >
-        {product?.imageUrl ? (
+        {currentItem?.product?.imageUrl ? (
           <Image
-            src={product.imageUrl}
+            src={currentItem.product.imageUrl}
             alt="상품이미지"
             width={390}
             height={390}
@@ -151,9 +152,9 @@ export const RecommendationDetailContents = ({
               className="flex items-center text-gray-400"
             >
               <ul className="flex items-center">
-                {typeof product?.category === "string"
-                  ? JSON.parse(product?.category).join(" | ")
-                  : product?.category}
+                {typeof currentItem?.product?.category === "string"
+                  ? JSON.parse(currentItem?.product?.category).join(" | ")
+                  : currentItem?.product?.category}
               </ul>
             </nav>
           )}
@@ -165,7 +166,9 @@ export const RecommendationDetailContents = ({
                   {name}님을 위한 선물
                 </p>
               )}
-              <h1 className="font-semibold text-[22px]">{product?.name}</h1>
+              <h1 className="font-semibold text-[22px]">
+                {currentItem?.product?.name}
+              </h1>
             </div>
             {/* {showHeart && (
               <div className="flex w-[96px] justify-end">
@@ -175,14 +178,14 @@ export const RecommendationDetailContents = ({
           </div>
           {showPriceRange && (
             <p className="text-gray-300 text-subtitle-18-medium">
-              {product?.priceRange}
+              {currentItem?.product?.priceRange}
             </p>
           )}
 
           {showFeelingsSection && (
             <ContentSection title="이 선물, 이런 감정을 담았어요">
               <div className="flex flex-wrap gap-8px">
-                {getTagsArray(product?.tags).map((tag) => (
+                {getTagsArray(currentItem?.product?.tags).map((tag) => (
                   <div
                     key={tag}
                     className="max-h-[36px] rounded-xl bg-gray-700 px-16px py-8px text-gray-200"
@@ -249,7 +252,7 @@ export const RecommendationDetailContents = ({
                   className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold"
                   asChild
                 >
-                  <Link href={product?.url ?? ""} target="_blank">
+                  <Link href={currentItem?.product?.url ?? ""} target="_blank">
                     구매하기
                   </Link>
                 </Button>
