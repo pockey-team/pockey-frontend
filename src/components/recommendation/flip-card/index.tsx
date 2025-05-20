@@ -104,14 +104,12 @@ export const FlipCard = ({
 
           {/* 뒷면 */}
           <div
-            className="backface-hidden absolute flex size-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-card bg-white shadow-xl"
+            className="backface-hidden !bg-white absolute flex size-full items-center justify-center overflow-hidden rounded-2xl shadow-xl"
             style={{
               transform: "rotateY(180deg)",
             }}
           >
-            <div className="absolute top-[10%] left-[10%] size-80% rounded-12px bg-gradient-card opacity-50 shadow-xl" />
-            <div className="absolute top-[30%] h-2px w-[50%] bg-gradient-card" />
-            <div className="absolute top-[70%] h-1px w-[50%] bg-gradient-card" />
+            <div className="absolute top-[10%] left-[10%] size-80% rounded-12px bg-white opacity-50 shadow-xl" />
           </div>
         </motion.div>
       </motion.div>
