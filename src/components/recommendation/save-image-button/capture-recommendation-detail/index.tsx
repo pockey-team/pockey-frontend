@@ -1,6 +1,6 @@
 import { type ForwardedRef, forwardRef, type Ref } from "react";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
-import { DetailCard } from "../../detail-card";
+import { DetailCard } from "@/components/recommendation/detail-card";
 
 interface Props {
   item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;

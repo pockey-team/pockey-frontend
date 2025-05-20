@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { SaveImageButton } from "@/components/recommendation/save-image-button";
+import { ShareUrlButton } from "@/components/recommendation/share-url-button";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,7 +14,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { ShareUrlButton } from "../share-url-button";
 
 interface Props {
   item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;

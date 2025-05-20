@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LoginDialog } from "@/components/recommendation/dialog/login";
+import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
 import { Button } from "@/components/ui/button";
-import { LoginDialog } from "../dialog/login";
-import { useLoginDialog } from "../dialog/login/hooks/useLoginDialog";
 
 interface Props {
   itemId: number;
