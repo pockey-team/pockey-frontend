@@ -1,37 +1,31 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { SignInButton } from "@/components/auth/sign-in";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { LoginDialog } from "../dialog/login";
+import { useLoginDialog } from "../dialog/login/hooks/useLoginDialog";
 
 interface Props {
   itemId: number;
 }
 
 export const SatisfiedButton = ({ itemId }: Props) => {
+  const { isLoginDialogOpen, setIsLoginDialogOpen, isLoggedIn } =
+    useLoginDialog();
+
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  const session = useSession();
 
   const handleClick = () => {
-    if (session.data) {
+    if (isLoggedIn) {
       router.push(`/recommendation/result/${itemId}`);
-    } else {
-      setIsOpen(true);
+      return;
     }
+
+    setIsLoginDialogOpen(true);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <>
       <Button
         onClick={handleClick}
         variant="outline"
@@ -39,18 +33,12 @@ export const SatisfiedButton = ({ itemId }: Props) => {
       >
         마음에 들어요
       </Button>
-      <DialogContent className="min-h-[276px] w-[310px] rounded-2xl border-none bg-gray-800 p-24px">
-        <DialogHeader className="flex size-full flex-col justify-center gap-24px">
-          <DialogTitle className="text-gray-100 text-heading-24-semibold">
-            추천 이유가 궁금하다면 <br />
-            지금 로그인해보기
-          </DialogTitle>
-          <DialogDescription className="text-body-14-semibold">
-            선택된 취향과 관심사를 바탕으로 골랐어요.
-          </DialogDescription>
-        </DialogHeader>
-        <SignInButton callback={`/recommendation/result/${itemId}`} />
-      </DialogContent>
-    </Dialog>
+
+      <LoginDialog
+        isOpen={isLoginDialogOpen && !isLoggedIn}
+        onOpenChange={setIsLoginDialogOpen}
+        callbackUrl={`/recommendation/result/${itemId}`}
+      />
+    </>
   );
 };

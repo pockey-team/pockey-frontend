@@ -22,10 +22,10 @@ export const ContentSection = ({
   return (
     <section
       className={cn(
-        "my-24px rounded-3xl",
+        "my-24px rounded-3xl py-16px",
         hideOnCapture ? "hidden" : "block",
         isCapturing
-          ? "my-0px bg-[#E5E7EB] p-24px"
+          ? "my-0px bg-[#E5E7EB]"
           : showBackground
             ? "bg-gray-800 p-8px"
             : "!my-0px",
