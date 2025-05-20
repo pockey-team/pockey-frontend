@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { SaveImageButton } from "@/components/recommendation/save-image-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,13 +16,17 @@ import { cn } from "@/lib/utils";
 import { ShareUrlButton } from "../share-url-button";
 
 interface Props {
+  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
   className?: string;
-  detailId: string;
-  name?: string;
 }
 
-export const ShareButton = ({ className = "", detailId, name }: Props) => {
+export const ShareButton = ({ className = "", item }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleCloseSheet = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -51,21 +56,11 @@ export const ShareButton = ({ className = "", detailId, name }: Props) => {
         </SheetHeader>
 
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
-          <SaveImageButton detailId={detailId} name={name} />
-          <ShareUrlButton detailId={detailId} />
-          {/* {SHARE_CONTENTS.map((content) => (
-            <ul key={content.label} className="flex flex-col">
-              <li className="my-12px flex items-center gap-12px">
-                <Image
-                  src={content.imageUrl}
-                  alt={content.label}
-                  width={24}
-                  height={24}
-                />
-                <span>{content.label}</span>
-              </li>
-            </ul>
-          ))} */}
+          <SaveImageButton item={item} onCloseSheet={handleCloseSheet} />
+          <ShareUrlButton
+            detailId={item.product.id.toString()}
+            onCloseSheet={handleCloseSheet}
+          />
         </div>
       </SheetContent>
     </Sheet>

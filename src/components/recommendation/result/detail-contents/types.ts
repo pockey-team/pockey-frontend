@@ -1,5 +1,20 @@
-import type { ProductData } from ".";
-
+interface ProductData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  url: string;
+  priceRange: string;
+  ageRange: string | string[];
+  category: string | string[];
+  friendshipLevel: string[] | string;
+  intention: string[] | string;
+  situation: string[] | string;
+  tags: string[] | string;
+  targetGender?: string;
+  brand?: string | null;
+  nextPickProductIds?: number[] | null;
+  price?: number | null;
+}
 export interface RecommendationDetailContentsProps {
   showCategory?: boolean;
   showHeart?: boolean;

@@ -1,42 +1,25 @@
 import { type ForwardedRef, forwardRef, type Ref } from "react";
-import { RecommendationDetailContents } from "@/components/recommendation/result/detail-contents";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import { DetailCard } from "../../detail-card";
 
 interface Props {
-  className?: string;
-  productImage?: string;
-  productTitle?: string;
-  priceRange?: string;
-  detailId: string;
+  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
   isCapturing: boolean;
-  name?: string;
+  receiverName: string;
 }
 
 export const CaptureRecommendationDetail = forwardRef(
   (
-    {
-      className,
-      productImage,
-      productTitle,
-      priceRange,
-      detailId,
-      isCapturing,
-      name,
-    }: Props,
+    { item, isCapturing, receiverName }: Props,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     return (
       <div ref={ref as Ref<HTMLDivElement>}>
-        <RecommendationDetailContents
-          showCategory={false}
-          showHeart={false}
-          showFeelingsSection={false}
-          showMessageSection={true}
-          showRelatedProductsSection={false}
-          showFooterLogo={true}
-          showPriceRange={false}
-          detailId={detailId}
+        <DetailCard
+          data={item}
           isCapturing={isCapturing}
-          name={name}
+          receiverName={receiverName}
+          hideOnCapture
         />
       </div>
     );
