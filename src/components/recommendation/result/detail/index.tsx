@@ -64,7 +64,7 @@ export const ResultDetail = ({ productId }: Props) => {
                 className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold"
                 asChild
               >
-                <Link href={""} target="_blank">
+                <Link href={item?.product.url ?? ""} target="_blank">
                   구매하기
                 </Link>
               </Button>
