@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { OccasionImage } from "@/components/recommendation/occasion-image";
 
 export type RecommendationSessionOccasionOption = {

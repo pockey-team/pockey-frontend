@@ -54,7 +54,9 @@ export const NextPick = ({ ids }: NextPickProps) => {
                 />
               )}
             </div>
-            <p className="line-clamp-1 w-[108px] text-center">{result?.name}</p>
+            <p className="line-clamp-1 w-[108px] text-center font-medium text-[12px] text-gray-200">
+              {result?.name}
+            </p>
           </div>
         </Link>
       ))}

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import TermContent from "@/content/term.mdx";

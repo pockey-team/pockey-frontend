@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { RecommendationCloseButton } from "@/components/recommendation/close-button";
+import { LoginDialog } from "@/components/recommendation/dialog/login";
+import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
 import { FlipCard } from "@/components/recommendation/flip-card";
 import { ActionButtons } from "@/components/recommendation/result/present-recommendation-result/action-buttons";
 import { useCardAnimation } from "@/components/recommendation/result/present-recommendation-result/hooks/useCardAnimation";
@@ -15,12 +16,8 @@ import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
 
-interface Props {
-  name: string;
-  items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
-}
-
 export const PresentRecommendationResult = () => {
+  const router = useRouter();
   const { name, sessionId = "default" } = useSearchParamsObject<{
     name: string;
     sessionId?: string;
@@ -30,6 +27,9 @@ export const PresentRecommendationResult = () => {
     window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
       "[]",
   );
+
+  const { isLoginDialogOpen, setIsLoginDialogOpen, isLoggedIn } =
+    useLoginDialog();
 
   // if (!name || !items || !Array.isArray(items)) {
   //   return redirect("/");
@@ -60,11 +60,18 @@ export const PresentRecommendationResult = () => {
     triggerToast();
   };
 
+  const handleClickProduct = () => {
+    if (!isLoggedIn) {
+      setIsLoginDialogOpen(true);
+    } else {
+      router.push(`/recommendation/result/${item.product.id}?name=${name}`);
+    }
+  };
+
   return (
     <div className="relative flex h-full flex-col">
       <Page.Header>
         <Page.Header.Right>
-          {/* TODO. 저장하기 버튼 클릭 시 로그인 이후 해당 상품 상세 페이지로 이동되어야 하므로 상품 ID를 props로 전달 */}
           <RecommendationCloseButton callbackTargetResultId={item.product.id} />
         </Page.Header.Right>
       </Page.Header>
@@ -88,7 +95,12 @@ export const PresentRecommendationResult = () => {
 
       <div className="mb-8px flex flex-1 items-center justify-center">
         {item && (
-          <Link href={`/recommendation/result/${item.product.id}?name=${name}`}>
+          <button
+            type="button"
+            onClick={handleClickProduct}
+            onKeyDown={handleClickProduct}
+            className="cursor-pointer"
+          >
             <FlipCard
               key={cardKey}
               item={item}
@@ -97,7 +109,7 @@ export const PresentRecommendationResult = () => {
               isFloating={isFloating}
               setIsFloating={setIsFloating}
             />
-          </Link>
+          </button>
         )}
       </div>
 
@@ -105,6 +117,11 @@ export const PresentRecommendationResult = () => {
         nextPickCount={nextPickCount}
         onNextResult={handleNextResult}
         itemId={item.product.id}
+      />
+      <LoginDialog
+        isOpen={isLoginDialogOpen}
+        onOpenChange={setIsLoginDialogOpen}
+        callbackUrl={`/recommendation/result/${item.product.id}?name=${name}`}
       />
     </div>
   );

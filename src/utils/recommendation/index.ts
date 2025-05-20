@@ -1,4 +1,4 @@
-import {
+import type {
   RecommendSessionControllerStartSession201,
   RecommendSessionControllerSubmitAnswer201,
 } from "@/api/__generated__/index.schemas";

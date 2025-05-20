@@ -4,7 +4,7 @@ import { withAuth } from "next-auth/middleware";
 
 const protectedRoutes = ["/recommendation/result/"];
 
-const isProtectedRoute = (path: string) => {
+const _isProtectedRoute = (path: string) => {
   return protectedRoutes.some(
     (route) => path.startsWith(route) && route !== path,
   );
@@ -22,7 +22,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token, req }) => {
+      authorized: () => {
         // if (isProtectedRoute(req.nextUrl.pathname)) {
         //   return !!token;
         // }

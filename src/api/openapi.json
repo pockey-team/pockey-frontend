@@ -253,6 +253,56 @@
         "tags": ["User"]
       }
     },
+    "/api/v1/recommend-session/{sessionId}/result": {
+      "get": {
+        "operationId": "RecommendSessionController_getRecommendSessionResults",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["RecommendSession"]
+      }
+    },
+    "/api/v1/recommend-session/{sessionId}/result/{order}": {
+      "get": {
+        "operationId": "RecommendSessionController_getRecommendSessionResultOne",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["RecommendSession"]
+      }
+    },
     "/api/v1/recommend-session": {
       "post": {
         "operationId": "RecommendSessionController_startSession",

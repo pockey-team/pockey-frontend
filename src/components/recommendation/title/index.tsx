@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, ReactNode } from "react";
+import { Fragment, type PropsWithChildren, type ReactNode } from "react";
 
 interface Props {
   name: string;

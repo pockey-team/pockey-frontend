@@ -168,12 +168,16 @@ const RecommendationInitComplete = ({ name }: { name: string }) => {
           data: { deviceId: "0000", receiverName: name },
         });
 
+        if ("sessionId" in data) {
+          window.sessionStorage.setItem("pockey.sessionId", data.sessionId);
+        }
+
         setTimeout(() => setInnerPhase("exiting"), 2_000);
         setTimeout(() => {
           const url = createUrlFromSessionResponse(data, { name });
           router.push(url);
         }, 2_500);
-      } catch (err) {
+      } catch (_err) {
         setError("세션을 시작하는 데 문제가 발생했습니다.");
         setIsLoading(false);
       }

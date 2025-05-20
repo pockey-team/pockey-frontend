@@ -53,7 +53,7 @@ export const RecommendationCard = ({
           </p>
 
           {isResult && (
-            <p className="py-4px font-semibold text-[#709DFF] text-body-14-semibold">
+            <p className="break-keep py-4px font-semibold text-[#709DFF] text-body-14-semibold">
               {item.minifiedReason}
             </p>
           )}

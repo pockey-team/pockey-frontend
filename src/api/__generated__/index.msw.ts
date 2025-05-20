@@ -195,6 +195,46 @@ export const getUserControllerGetMyProfileMockHandler = (
   });
 };
 
+export const getRecommendSessionControllerGetRecommendSessionResultsMockHandler =
+  (
+    overrideResponse?:
+      | void
+      | ((
+          info: Parameters<Parameters<typeof http.get>[1]>[0],
+        ) => Promise<void> | void),
+  ) => {
+    return http.get(
+      "*/api/v1/recommend-session/:sessionId/result",
+      async (info) => {
+        await delay(500);
+        if (typeof overrideResponse === "function") {
+          await overrideResponse(info);
+        }
+        return new HttpResponse(null, { status: 200 });
+      },
+    );
+  };
+
+export const getRecommendSessionControllerGetRecommendSessionResultOneMockHandler =
+  (
+    overrideResponse?:
+      | void
+      | ((
+          info: Parameters<Parameters<typeof http.get>[1]>[0],
+        ) => Promise<void> | void),
+  ) => {
+    return http.get(
+      "*/api/v1/recommend-session/:sessionId/result/:order",
+      async (info) => {
+        await delay(500);
+        if (typeof overrideResponse === "function") {
+          await overrideResponse(info);
+        }
+        return new HttpResponse(null, { status: 200 });
+      },
+    );
+  };
+
 export const getRecommendSessionControllerStartSessionMockHandler = (
   overrideResponse?:
     | RecommendSessionControllerStartSession201
@@ -269,6 +309,8 @@ export const getPockeyAPIDocumentationMock = () => [
   getPostControllerGetPostsMockHandler(),
   getProductControllerGetProductMockHandler(),
   getUserControllerGetMyProfileMockHandler(),
+  getRecommendSessionControllerGetRecommendSessionResultsMockHandler(),
+  getRecommendSessionControllerGetRecommendSessionResultOneMockHandler(),
   getRecommendSessionControllerStartSessionMockHandler(),
   getRecommendSessionControllerSubmitAnswerMockHandler(),
   getRecommendSessionControllerEndSessionMockHandler(),

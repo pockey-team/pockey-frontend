@@ -60,7 +60,7 @@ export default function RecommendationSessionSetupPage() {
         const url = createUrlFromSessionResponse(data, { name });
         router.push(url);
       }, 500);
-    } catch (err) {
+    } catch (_err) {
       setError("답변을 제출하는데 문제가 발생했습니다.");
       setIsLoading(false);
       setIsTransitioning(false);

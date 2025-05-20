@@ -1,31 +1,34 @@
 import { cn } from "@/lib/utils";
 
 interface Props {
-  title: string;
+  title?: string;
   subTitle?: string;
   children: React.ReactNode;
   className?: string;
   isCapturing?: boolean;
   showBackground?: boolean;
+  hideOnCapture?: boolean;
 }
 
 export const ContentSection = ({
-  title,
+  title = "",
   subTitle = "",
   children = "",
   className = "",
   isCapturing = false,
   showBackground = false,
+  hideOnCapture = false,
 }: Props) => {
   return (
     <section
       className={cn(
-        "my-24px rounded-3xl",
+        "my-24px rounded-3xl py-16px",
+        hideOnCapture ? "hidden" : "block",
         isCapturing
-          ? "bg-[#E5E7EB] p-24px"
+          ? "my-0px bg-[#E5E7EB]"
           : showBackground
             ? "bg-gray-800 p-8px"
-            : undefined,
+            : "!my-0px",
         className,
       )}
     >
