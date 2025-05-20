@@ -1,8 +1,8 @@
 "use client";
 
-import Image, { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { BottomBarTabs } from "@/components/layout/bottom-bar/bottom-bar-tabs";
 import { cn } from "@/lib/utils";
 

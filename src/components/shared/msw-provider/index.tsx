@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, Suspense, use } from "react";
+import { type PropsWithChildren, Suspense, use } from "react";
 
 const setupMSW =
   typeof window === "undefined" || process.env.NODE_ENV === "production"

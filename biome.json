@@ -20,6 +20,9 @@
           "fix": "safe"
         }
       },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
       "suspicious": {
         "noExplicitAny": "off"
       }

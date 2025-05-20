@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { Button } from "@/components/shared/button";
 import { Page } from "@/components/shared/page";
 

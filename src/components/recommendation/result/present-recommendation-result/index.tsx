@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { RecommendationCloseButton } from "@/components/recommendation/close-button";
 import { LoginDialog } from "@/components/recommendation/dialog/login";
 import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
@@ -16,11 +15,6 @@ import { AVAILABLE_NEXT_PICK_COUNT } from "@/constants/recommendation-result";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
-
-interface Props {
-  name: string;
-  items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
-}
 
 export const PresentRecommendationResult = () => {
   const router = useRouter();
@@ -101,7 +95,8 @@ export const PresentRecommendationResult = () => {
 
       <div className="mb-8px flex flex-1 items-center justify-center">
         {item && (
-          <div
+          <button
+            type="button"
             onClick={handleClickProduct}
             onKeyDown={handleClickProduct}
             className="cursor-pointer"
@@ -114,7 +109,7 @@ export const PresentRecommendationResult = () => {
               isFloating={isFloating}
               setIsFloating={setIsFloating}
             />
-          </div>
+          </button>
         )}
       </div>
 
