@@ -7,8 +7,6 @@ import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@
 import { DetailCard } from "@/components/recommendation/detail-card";
 import { Page } from "@/components/shared/page";
 
-type Params = Promise<{ id: string; name: string }>;
-
 export interface ProductData {
   id: number;
   name: string;

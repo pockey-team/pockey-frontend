@@ -177,7 +177,7 @@ const RecommendationInitComplete = ({ name }: { name: string }) => {
           const url = createUrlFromSessionResponse(data, { name });
           router.push(url);
         }, 2_500);
-      } catch (err) {
+      } catch (_err) {
         setError("세션을 시작하는 데 문제가 발생했습니다.");
         setIsLoading(false);
       }

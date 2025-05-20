@@ -14,13 +14,13 @@ const makeQueryClient = () => {
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
           query.state.status === "pending",
-        shouldRedactErrors: (error) => false,
+        shouldRedactErrors: (_error) => false,
       },
     },
   });
 };
 
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 export const getQueryClient = () => {
   if (isServer) {

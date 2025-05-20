@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image, { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";

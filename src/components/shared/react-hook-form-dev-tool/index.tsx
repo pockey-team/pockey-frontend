@@ -1,4 +1,4 @@
-import { DevTool as DevToolBase } from "@hookform/devtools";
+import type { DevTool as DevToolBase } from "@hookform/devtools";
 import dynamic from "next/dynamic";
 
 export const DevTool =
