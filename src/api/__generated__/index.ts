@@ -848,6 +848,600 @@ export const prefetchUserControllerGetMyProfileQuery = async <
   return queryClient;
 };
 
+export type recommendSessionControllerGetRecommendSessionResultsResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type recommendSessionControllerGetRecommendSessionResultsResponseComposite =
+  recommendSessionControllerGetRecommendSessionResultsResponse200;
+
+export type recommendSessionControllerGetRecommendSessionResultsResponse =
+  recommendSessionControllerGetRecommendSessionResultsResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRecommendSessionControllerGetRecommendSessionResultsUrl = (
+  sessionId: string,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result`;
+};
+
+export const recommendSessionControllerGetRecommendSessionResults = async (
+  sessionId: string,
+  options?: RequestInit,
+): Promise<recommendSessionControllerGetRecommendSessionResultsResponse> => {
+  return http<recommendSessionControllerGetRecommendSessionResultsResponse>(
+    getRecommendSessionControllerGetRecommendSessionResultsUrl(sessionId),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getRecommendSessionControllerGetRecommendSessionResultsQueryKey = (
+  sessionId: string,
+) => {
+  return [
+    `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result`,
+  ] as const;
+};
+
+export const getRecommendSessionControllerGetRecommendSessionResultsQueryOptions =
+  <
+    TData = Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+    >,
+    TError = unknown,
+  >(
+    sessionId: string,
+    options?: {
+      query?: Partial<
+        UseQueryOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof http>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getRecommendSessionControllerGetRecommendSessionResultsQueryKey(
+        sessionId,
+      );
+
+    const queryFn: QueryFunction<
+      Awaited<
+        ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+      >
+    > = ({ signal }) =>
+      recommendSessionControllerGetRecommendSessionResults(sessionId, {
+        signal,
+        ...requestOptions,
+      });
+
+    return {
+      queryKey,
+      queryFn,
+      enabled: !!sessionId,
+      ...queryOptions,
+    } as UseQueryOptions<
+      Awaited<
+        ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+      >,
+      TError,
+      TData
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type RecommendSessionControllerGetRecommendSessionResultsQueryResult =
+  NonNullable<
+    Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+    >
+  >;
+export type RecommendSessionControllerGetRecommendSessionResultsQueryError =
+  unknown;
+
+export function useRecommendSessionControllerGetRecommendSessionResults<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResults
+          >
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >,
+          TError,
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRecommendSessionControllerGetRecommendSessionResults<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResults
+          >
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >,
+          TError,
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRecommendSessionControllerGetRecommendSessionResults<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResults
+          >
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useRecommendSessionControllerGetRecommendSessionResults<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResults
+          >
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getRecommendSessionControllerGetRecommendSessionResultsQueryOptions(
+      sessionId,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchRecommendSessionControllerGetRecommendSessionResultsQuery =
+  async <
+    TData = Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResults>
+    >,
+    TError = unknown,
+  >(
+    queryClient: QueryClient,
+    sessionId: string,
+    options?: {
+      query?: Partial<
+        UseQueryOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResults
+            >
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof http>;
+    },
+  ): Promise<QueryClient> => {
+    const queryOptions =
+      getRecommendSessionControllerGetRecommendSessionResultsQueryOptions(
+        sessionId,
+        options,
+      );
+
+    await queryClient.prefetchQuery(queryOptions);
+
+    return queryClient;
+  };
+
+export type recommendSessionControllerGetRecommendSessionResultOneResponse200 =
+  {
+    data: undefined;
+    status: 200;
+  };
+
+export type recommendSessionControllerGetRecommendSessionResultOneResponseComposite =
+  recommendSessionControllerGetRecommendSessionResultOneResponse200;
+
+export type recommendSessionControllerGetRecommendSessionResultOneResponse =
+  recommendSessionControllerGetRecommendSessionResultOneResponseComposite & {
+    headers: Headers;
+  };
+
+export const getRecommendSessionControllerGetRecommendSessionResultOneUrl = (
+  sessionId: string,
+  order: number,
+) => {
+  return `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result/${order}`;
+};
+
+export const recommendSessionControllerGetRecommendSessionResultOne = async (
+  sessionId: string,
+  order: number,
+  options?: RequestInit,
+): Promise<recommendSessionControllerGetRecommendSessionResultOneResponse> => {
+  return http<recommendSessionControllerGetRecommendSessionResultOneResponse>(
+    getRecommendSessionControllerGetRecommendSessionResultOneUrl(
+      sessionId,
+      order,
+    ),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getRecommendSessionControllerGetRecommendSessionResultOneQueryKey =
+  (sessionId: string, order: number) => {
+    return [
+      `https://api-dev.pockey.pics/api/v1/recommend-session/${sessionId}/result/${order}`,
+    ] as const;
+  };
+
+export const getRecommendSessionControllerGetRecommendSessionResultOneQueryOptions =
+  <
+    TData = Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+    >,
+    TError = unknown,
+  >(
+    sessionId: string,
+    order: number,
+    options?: {
+      query?: Partial<
+        UseQueryOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof http>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getRecommendSessionControllerGetRecommendSessionResultOneQueryKey(
+        sessionId,
+        order,
+      );
+
+    const queryFn: QueryFunction<
+      Awaited<
+        ReturnType<
+          typeof recommendSessionControllerGetRecommendSessionResultOne
+        >
+      >
+    > = ({ signal }) =>
+      recommendSessionControllerGetRecommendSessionResultOne(sessionId, order, {
+        signal,
+        ...requestOptions,
+      });
+
+    return {
+      queryKey,
+      queryFn,
+      enabled: !!(sessionId && order),
+      ...queryOptions,
+    } as UseQueryOptions<
+      Awaited<
+        ReturnType<
+          typeof recommendSessionControllerGetRecommendSessionResultOne
+        >
+      >,
+      TError,
+      TData
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type RecommendSessionControllerGetRecommendSessionResultOneQueryResult =
+  NonNullable<
+    Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+    >
+  >;
+export type RecommendSessionControllerGetRecommendSessionResultOneQueryError =
+  unknown;
+
+export function useRecommendSessionControllerGetRecommendSessionResultOne<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  order: number,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResultOne
+          >
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >,
+          TError,
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRecommendSessionControllerGetRecommendSessionResultOne<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  order: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResultOne
+          >
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >,
+          TError,
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRecommendSessionControllerGetRecommendSessionResultOne<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  order: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResultOne
+          >
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useRecommendSessionControllerGetRecommendSessionResultOne<
+  TData = Awaited<
+    ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+  >,
+  TError = unknown,
+>(
+  sessionId: string,
+  order: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<
+            typeof recommendSessionControllerGetRecommendSessionResultOne
+          >
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getRecommendSessionControllerGetRecommendSessionResultOneQueryOptions(
+      sessionId,
+      order,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchRecommendSessionControllerGetRecommendSessionResultOneQuery =
+  async <
+    TData = Awaited<
+      ReturnType<typeof recommendSessionControllerGetRecommendSessionResultOne>
+    >,
+    TError = unknown,
+  >(
+    queryClient: QueryClient,
+    sessionId: string,
+    order: number,
+    options?: {
+      query?: Partial<
+        UseQueryOptions<
+          Awaited<
+            ReturnType<
+              typeof recommendSessionControllerGetRecommendSessionResultOne
+            >
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof http>;
+    },
+  ): Promise<QueryClient> => {
+    const queryOptions =
+      getRecommendSessionControllerGetRecommendSessionResultOneQueryOptions(
+        sessionId,
+        order,
+        options,
+      );
+
+    await queryClient.prefetchQuery(queryOptions);
+
+    return queryClient;
+  };
+
 export type recommendSessionControllerStartSessionResponse201 = {
   data: RecommendSessionControllerStartSession201;
   status: 201;
