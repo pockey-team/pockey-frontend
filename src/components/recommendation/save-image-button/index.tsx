@@ -1,19 +1,28 @@
 "use client";
 
 import html2canvas from "html2canvas";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CaptureRecommendationDetail } from "./capture-recommendation-detail";
 
 interface Props {
-  detailId: string;
-  name?: string;
+  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  onCloseSheet?: () => void;
 }
 
-export const SaveImageButton = ({ detailId, name }: Props) => {
+export const SaveImageButton = ({ item, onCloseSheet }: Props) => {
+  const searchParams = useSearchParams();
+  const receiverName = searchParams.get("name");
+
   const captureRef = useRef<HTMLDivElement>(null);
   const [isCapturing, setIsCapturing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isCapturing && captureRef.current) {
@@ -23,6 +32,7 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
           setIsCapturing(false);
           return;
         }
+        setIsLoading(true);
         html2canvas(element, {
           width: 390,
           height: element.scrollHeight,
@@ -37,9 +47,12 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
           .then((canvas) => {
             onSaveAs(
               canvas.toDataURL("image/png"),
-              `${name}님을 위한 선물.png`,
+              `${receiverName}님을 위한 선물.png`,
             );
             setIsCapturing(false);
+            setIsLoading(false);
+            onCloseSheet?.();
+            toast.success("이미지가 저장되었습니다.");
           })
           .catch((err) => {
             console.error("캡처 오류:", err);
@@ -47,9 +60,10 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
           });
       }, 1500);
     }
-  }, [isCapturing, name]);
+  }, [isCapturing, onCloseSheet, receiverName]);
 
   const handleSaveImage = () => {
+    setIsLoading(true);
     setIsCapturing(true);
   };
 
@@ -64,15 +78,11 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
 
   return (
     <ul>
-      <li
-        className="my-12px flex cursor-pointer items-center gap-12px"
+      <Button
         onClick={handleSaveImage}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            handleSaveImage();
-          }
-        }}
+        variant="ghost"
+        className="!bg-transparent !text-gray-100 flex items-center gap-8px px-8px py-4px"
+        disabled={isLoading}
       >
         <Image
           src="/share/download.svg"
@@ -80,8 +90,12 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
           width={24}
           height={24}
         />
-        <span>이미지 저장</span>
-      </li>
+        {isLoading ? (
+          <Loader2 className="animate-spin" />
+        ) : (
+          <span>이미지 저장</span>
+        )}
+      </Button>
 
       <div
         className={cn(
@@ -93,9 +107,9 @@ export const SaveImageButton = ({ detailId, name }: Props) => {
       >
         <CaptureRecommendationDetail
           ref={captureRef}
-          detailId={detailId}
+          item={item}
           isCapturing={isCapturing}
-          name={name}
+          receiverName={receiverName ?? ""}
         />
       </div>
     </ul>
