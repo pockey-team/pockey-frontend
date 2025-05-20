@@ -168,6 +168,10 @@ const RecommendationInitComplete = ({ name }: { name: string }) => {
           data: { deviceId: "0000", receiverName: name },
         });
 
+        if ("sessionId" in data) {
+          window.sessionStorage.setItem("pockey.sessionId", data.sessionId);
+        }
+
         setTimeout(() => setInnerPhase("exiting"), 2_000);
         setTimeout(() => {
           const url = createUrlFromSessionResponse(data, { name });
