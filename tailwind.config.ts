@@ -23,35 +23,54 @@ const config: Config = {
         900: "#030507",
       },
       primary: {
+        300: "#EEF4FF",
+        400: "#D5E3FF",
         500: "#C9DAFF",
+        600: "#72AAFF",
       },
       white: "#FFFFFF",
       kakao: "#FEDC00",
       "sign-in": "#f9fafd",
     },
     fontSize: {
+      // Display
       "display-32-semibold": [
         "32px",
         { lineHeight: "36px", fontWeight: "600" },
       ],
+      // Heading
       "heading-24-semibold": [
         "24px",
-        { lineHeight: "32px", fontWeight: "600" },
+        { lineHeight: "34px", fontWeight: "600" },
+      ],
+      "heading-22-semibold": [
+        "22px",
+        { lineHeight: "30px", fontWeight: "600" },
       ],
       "heading-20-semibold": [
         "20px",
         { lineHeight: "28px", fontWeight: "600" },
       ],
+      // SubTitle
       "subtitle-18-bold": ["18px", { lineHeight: "24px", fontWeight: "700" }],
       "subtitle-18-semibold": [
         "18px",
-        { lineHeight: "24px", fontWeight: "600" },
+        { lineHeight: "26px", fontWeight: "600" },
       ],
-      "subtitle-18-medium": ["18px", { lineHeight: "24px", fontWeight: "500" }],
+      "subtitle-18-medium": ["18px", { lineHeight: "26px", fontWeight: "500" }],
+      "subtitle-16-semibold": [
+        "16px",
+        { lineHeight: "22px", fontWeight: "600" },
+      ],
+      // Body
       "body-16-bold": ["16px", { lineHeight: "24px", fontWeight: "700" }],
-      "body-16-regular": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+      "body-16-regular": ["16px", { lineHeight: "22px", fontWeight: "400" }],
+      "body-14-regular": ["14px", { lineHeight: "25px", fontWeight: "400" }],
+      "body-14-medium": ["14px", { lineHeight: "20px", fontWeight: "500" }],
       "body-14-semibold": ["14px", { lineHeight: "20px", fontWeight: "600" }],
-      "caption-12-medium": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+      "body-13-semibold": ["13px", { lineHeight: "18px", fontWeight: "600" }],
+      // Caption
+      "caption-12-medium": ["12px", { lineHeight: "20px", fontWeight: "500" }],
     },
     screens: {
       mobile: "390px",
