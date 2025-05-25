@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 const buttonVariants = cva("enabled:cursor-pointer transition-colors", {
   variants: {
     size: {
-      medium: "rounded-[8px] px-48px py-16px text-subtitle-18-medium",
-      large: "rounded-[12px] px-48px py-[17px] text-body-16-bold",
-      "x-large": "rounded-[12px] px-48px py-16px text-subtitle-18-bold",
-      keyboard: "px-48px py-16px text-subtitle-18-bold",
+      select: "rounded-[8px] px-24px py-16px text-subtitle-16-semibold",
+      large: "rounded-[12px] px-24px py-[17px] text-body-16-bold",
+      "x-large": "rounded-[12px] px-24px py-16px text-subtitle-18-bold",
+      keyboard: "px-24px py-16px text-subtitle-18-bold",
     },
     variant: {
       contained: [
@@ -21,7 +21,7 @@ const buttonVariants = cva("enabled:cursor-pointer transition-colors", {
     },
   },
   defaultVariants: {
-    size: "medium",
+    size: "select",
     variant: "contained",
   },
 });

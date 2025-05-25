@@ -247,7 +247,7 @@ const RecommendationSessionOccasionSelection = ({
       </Page.Container>
       <Page.Container as={motion.div} noPadding className="mt-auto w-full">
         <div className="no-scrollbar overflow-x-auto">
-          <div className="flex w-max gap-[18px] px-16px py-[30px]">
+          <div className="flex w-max gap-16px px-16px py-[30px]">
             {options.map((opt) => (
               <Option
                 key={opt.key}
@@ -319,7 +319,7 @@ const Option = ({
       <p
         className={cn(
           "text-body-14-semibol transition-colors",
-          active ? "text-gray-100" : "text-gray-400",
+          active ? "text-gray-100" : "text-gray-500",
         )}
       >
         {option.label}

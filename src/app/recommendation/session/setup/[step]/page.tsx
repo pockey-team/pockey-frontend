@@ -86,62 +86,63 @@ export default function RecommendationSessionSetupPage() {
         </Page.Header.Right>
       </Page.Header>
 
-      <Page.Container className="mt-[104px]">
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={step}
-            initial={isFirst ? { y: 70 } : { y: 0 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
-            className="mb-16px text-center text-gray-500 text-subtitle-18-semibold"
-          >
-            {step}/{steps}
-          </motion.p>
-        </AnimatePresence>
+      <div className="flex flex-grow flex-col items-center justify-center pb-[128px]">
+        <Page.Container>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={step}
+              initial={isFirst ? { y: 70 } : { y: 0 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
+              className="mb-16px text-center text-gray-500 text-subtitle-18-medium"
+            >
+              {step}/{steps}
+            </motion.p>
+          </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={isFirst ? { y: 85 } : { y: 0 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
-          >
-            <Page.Title className="text-gray-100">
-              <RecommendationTitle
-                name={name || ""}
-                text={question}
-                component={({ children }) => (
-                  <span className="text-primary-500">{children}</span>
-                )}
-              />
-            </Page.Title>
-          </motion.div>
-        </AnimatePresence>
-      </Page.Container>
-
-      <Page.Container className="flex flex-grow flex-col justify-center pb-[256px]">
-        <AnimatePresence mode="wait">
-          {!isTransitioning && (
+          <AnimatePresence mode="wait">
             <motion.div
               key={step}
-              initial={{ opacity: 0, y: 70 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: {
-                  delay: isFirst ? 0.5 : 0,
-                  duration: 0.5,
-                  ease: "easeInOut",
-                },
-              }}
-              exit={{ opacity: 0, y: -70 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              initial={isFirst ? { y: 85 } : { y: 0 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
             >
-              <div className="grid grid-cols-2 gap-16px">
+              <Page.Title className="text-gray-100">
+                <RecommendationTitle
+                  name={name || ""}
+                  text={question}
+                  component={({ children }) => (
+                    <span className="text-primary-500">{children}</span>
+                  )}
+                />
+              </Page.Title>
+            </motion.div>
+          </AnimatePresence>
+        </Page.Container>
+
+        <Page.Container className="mt-[28px] flex h-[272px] flex-col justify-center">
+          <AnimatePresence mode="wait">
+            {!isTransitioning && (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 70 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: isFirst ? 0.5 : 0,
+                    duration: 0.5,
+                    ease: "easeInOut",
+                  },
+                }}
+                exit={{ opacity: 0, y: -70 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="grid grid-cols-2 gap-16px"
+              >
                 {options.map((option) => (
                   <Button
                     key={option}
-                    size="medium"
+                    size="select"
                     variant="contained"
                     onClick={() => handleSelect(option)}
                     aria-selected={value === option}
@@ -150,11 +151,11 @@ export default function RecommendationSessionSetupPage() {
                     {option}
                   </Button>
                 ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Page.Container>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Page.Container>
+      </div>
     </Page>
   );
 }

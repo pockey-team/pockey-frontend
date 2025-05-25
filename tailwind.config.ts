@@ -47,6 +47,10 @@ const config: Config = {
         "18px",
         { lineHeight: "24px", fontWeight: "600" },
       ],
+      "subtitle-16-semibold": [
+        "16px",
+        { lineHeight: "24px", fontWeight: "600" },
+      ],
       "subtitle-18-medium": ["18px", { lineHeight: "24px", fontWeight: "500" }],
       "body-16-bold": ["16px", { lineHeight: "24px", fontWeight: "700" }],
       "body-16-regular": ["16px", { lineHeight: "24px", fontWeight: "400" }],
