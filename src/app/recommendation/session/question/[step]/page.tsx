@@ -128,7 +128,7 @@ export default function RecommendationSessionQuestionPage() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: isFirst ? -20 : 0, opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="mb-[54px] text-gray-100 text-heading-20-semibold"
+                className="!text-heading-22-semibold mb-[54px] text-gray-100"
               >
                 {question}
               </Page.Title>
