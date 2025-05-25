@@ -26,7 +26,7 @@ export const QuestionStepper = ({ wide, currentStep, totalSteps }: Props) => {
               )}
             >
               {highlighted ? (
-                <span className="text-body-14-semibold text-gray-800">
+                <span className="text-body-14-medium text-gray-800">
                   {step}
                 </span>
               ) : (

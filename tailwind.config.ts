@@ -38,6 +38,10 @@ const config: Config = {
         "24px",
         { lineHeight: "32px", fontWeight: "600" },
       ],
+      "heading-22-semibold": [
+        "22px",
+        { lineHeight: "30px", fontWeight: "600" },
+      ],
       "heading-20-semibold": [
         "20px",
         { lineHeight: "28px", fontWeight: "600" },
@@ -53,8 +57,9 @@ const config: Config = {
       ],
       "subtitle-18-medium": ["18px", { lineHeight: "24px", fontWeight: "500" }],
       "body-16-bold": ["16px", { lineHeight: "24px", fontWeight: "700" }],
-      "body-16-regular": ["16px", { lineHeight: "24px", fontWeight: "400" }],
       "body-14-semibold": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+      "body-14-medium": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+      "body-16-regular": ["16px", { lineHeight: "24px", fontWeight: "400" }],
       "caption-12-medium": ["12px", { lineHeight: "16px", fontWeight: "500" }],
     },
     screens: {
