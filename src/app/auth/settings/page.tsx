@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { BottomBar } from "@/components/layout/bottom-bar";
 import { Page } from "@/components/shared/page";
 import { authOptions } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -77,41 +78,50 @@ const AuthSettingsPage = async () => {
           <Link href="/auth/settings/edit">
             <button
               type="button"
-              className="rounded-[8px] bg-gray-700 px-12px py-[6px] text-gray-300"
+              className={cn(
+                "rounded-[8px] bg-gray-700 px-12px py-[6px] text-gray-300 transition-all",
+                "hover:bg-gray-600/50 hover:text-gray-200",
+              )}
             >
               프로필 수정
             </button>
           </Link>
         </section>
-
-        {items.map((category) => (
-          <section key={category.title} className="mb-[36px]">
-            <h2 className="mb-4px py-8px text-gray-100 text-subtitle-18-semibold">
-              {category.title}
-            </h2>
-            {category.links.map(({ image, name, url }) => (
-              <Link
-                key={name}
-                href={url}
-                className="mb-4px flex items-center justify-between py-8px"
-              >
-                <div className="flex items-center gap-8px">
-                  <Image src={image} alt={name} width={24} height={24} />
-                  <span className="text-body-16-regular text-gray-100">
-                    {name}
-                  </span>
-                </div>
-                <Image
-                  src="/static/images/arrow-right-icon.svg"
-                  alt="arrow-right-icon"
-                  width={20}
-                  height={20}
-                />
-              </Link>
-            ))}
-          </section>
-        ))}
       </Page.Container>
+
+      {items.map((category) => (
+        <Page.Container
+          key={category.title}
+          as="section"
+          className="mb-[36px] px-8px"
+          noPadding
+        >
+          <h2 className="mb-4px px-8px py-8px text-gray-100 text-subtitle-18-semibold">
+            {category.title}
+          </h2>
+          {category.links.map(({ image, name, url }) => (
+            <Link
+              key={name}
+              href={url}
+              className={cn(
+                "mb-4px flex items-center justify-between rounded-[8px] px-8px py-8px text-gray-100 transition-all",
+                "hover:scale-[1.01] hover:bg-gray-700 hover:text-white",
+              )}
+            >
+              <div className="flex items-center gap-8px">
+                <Image src={image} alt={name} width={24} height={24} />
+                <span className="text-body-16-regular">{name}</span>
+              </div>
+              <Image
+                src="/static/images/arrow-right-icon.svg"
+                alt="arrow-right-icon"
+                width={20}
+                height={20}
+              />
+            </Link>
+          ))}
+        </Page.Container>
+      ))}
 
       <Page.ActionButton>
         {(props) => <BottomBar {...props} />}
