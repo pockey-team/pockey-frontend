@@ -2,6 +2,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import type { PropsWithChildren } from "react";
+import { SignOutButton } from "@/components/auth/sign-out";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { authOptions } from "@/lib/auth";
@@ -55,9 +56,11 @@ const AuthSettingsEditPage = async () => {
       <div className="h-8px w-full bg-gray-700" />
 
       <Page.Container className="flex py-12px">
-        <PersonButton>로그아웃</PersonButton>
+        <SignOutButton>
+          <PersonButton>로그아웃</PersonButton>
+        </SignOutButton>
         <div className="mx-8px h-[48px] w-[1px] bg-gray-700" />
-        <PersonButton>회원탈퇴</PersonButton>
+        <PersonButton disabled>회원탈퇴</PersonButton>
       </Page.Container>
     </Page>
   );
@@ -75,13 +78,18 @@ PersonInfo.Value = ({ children }: PropsWithChildren) => {
   return <p className="text-gray-100 text-subtitle-16-semibold">{children}</p>;
 };
 
-const PersonButton = ({ children }: PropsWithChildren) => {
+const PersonButton = ({
+  disabled,
+  children,
+}: PropsWithChildren<{ disabled?: boolean }>) => {
   return (
     <button
       type="button"
+      disabled={disabled}
       className={cn(
-        "w-full rounded-[8px] text-gray-100 text-subtitle-16-semibold transition-colors",
-        "hover:bg-gray-700 hover:text-white",
+        "w-full rounded-[8px] text-subtitle-16-semibold transition-colors",
+        !disabled && "hover:bg-gray-700 hover:text-white",
+        disabled ? "text-gray-500" : "text-gray-100",
       )}
     >
       {children}
