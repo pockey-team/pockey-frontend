@@ -72,16 +72,16 @@ const SharePage = () => {
               <p className="text-gray-400">다시 시도해 주세요.</p>
             </div>
           )}
-          <div className="fixed right-0px bottom-0px left-0px w-full px-16px pb-16px">
-            <Link href={targetUrl}>
-              <Button
-                variant="ghost"
-                className="!rounded-2xl w-full bg-primary-500 py-16px text-gray-700 text-subtitle-18-bold"
-                asChild
-              >
+          <div className="fixed right-0px bottom-0px left-0px desktop:mx-auto desktop:w-[390px] mobile:w-full px-16px pb-16px">
+            <Button
+              variant="ghost"
+              className="!rounded-2xl w-full bg-primary-500 py-16px text-gray-700 text-subtitle-18-bold"
+              asChild
+            >
+              <Link href={targetUrl} target="_blank">
                 나도 선물 추천받기
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </Page.Container>
       </div>
