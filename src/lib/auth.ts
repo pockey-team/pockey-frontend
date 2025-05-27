@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import type { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import { authControllerLoginWithSocial } from "@/api/__generated__";
@@ -21,10 +22,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account }) {
       if (token.sub) {
         try {
+          const cookieStore = await cookies();
+          const deviceId = cookieStore.get("nextauth_deviceId")?.value;
+
           const loginCommand: SocialLoginCommand = {
             snsId: token.sub,
             nickname: token.name ?? "",
             profileImageUrl: token.picture ?? "",
+            deviceId,
           };
 
           const response = await authControllerLoginWithSocial(loginCommand, {
