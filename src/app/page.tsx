@@ -3,7 +3,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPresents } from "@/api/Present/get-presents";
@@ -49,11 +48,6 @@ export default async function Home() {
               <Image src="/logo.svg" alt="logo" width={100} height={100} />
             </Link>
           </Page.Header.Left>
-          <Page.Header.Right>
-            <Link href="/">
-              <Search className="text-white" />
-            </Link>
-          </Page.Header.Right>
         </Page.Header>
 
         <Page.Container className="flex-1" noPadding>
