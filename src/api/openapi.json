@@ -35,6 +35,28 @@
         "tags": ["Auth"]
       }
     },
+    "/api/v1/auth/withdraw": {
+      "post": {
+        "operationId": "AuthController_withdraw",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
     "/api/health": {
       "get": {
         "operationId": "HealthController_readiness",
@@ -376,6 +398,80 @@
         },
         "tags": ["RecommendSession"]
       }
+    },
+    "/api/v1/wishlist": {
+      "post": {
+        "operationId": "WishlistController_addWishlist",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWishlistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["Wishlist"]
+      },
+      "get": {
+        "operationId": "WishlistController_getWishlistsByReceiverName",
+        "parameters": [
+          {
+            "name": "receiverName",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["Wishlist"]
+      }
+    },
+    "/api/v1/wishlist/{id}": {
+      "delete": {
+        "operationId": "WishlistController_removeWishlist",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["Wishlist"]
+      }
+    },
+    "/api/v1/wishlist/summary": {
+      "get": {
+        "operationId": "WishlistController_getWishlistGroups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["Wishlist"]
+      }
     }
   },
   "info": {
@@ -417,6 +513,16 @@
         },
         "required": ["snsId", "nickname", "profileImageUrl"]
       },
+      "WithdrawRequest": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": ["reason"]
+      },
       "StartSessionRequest": {
         "type": "object",
         "properties": {
@@ -444,6 +550,20 @@
           }
         },
         "required": ["step", "answer"]
+      },
+      "AddWishlistRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "number",
+            "example": "0"
+          },
+          "receiverName": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": ["productId", "receiverName"]
       }
     }
   }
