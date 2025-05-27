@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { RecommendationCloseButton } from "@/components/recommendation/close-button";
 import { LoginDialog } from "@/components/recommendation/dialog/login";
 import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
 import { FlipCard } from "@/components/recommendation/flip-card";
@@ -11,6 +11,7 @@ import { ActionButtons } from "@/components/recommendation/result/present-recomm
 import { useCardAnimation } from "@/components/recommendation/result/present-recommendation-result/hooks/useCardAnimation";
 import { useResultToast } from "@/components/recommendation/result/present-recommendation-result/hooks/useResultToast";
 import { Page } from "@/components/shared/page";
+import { Button } from "@/components/ui/button";
 import { AVAILABLE_NEXT_PICK_COUNT } from "@/constants/recommendation-result";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
@@ -72,7 +73,14 @@ export const PresentRecommendationResult = () => {
     <div className="relative flex h-full flex-col">
       <Page.Header>
         <Page.Header.Right>
-          <RecommendationCloseButton callbackTargetResultId={item.product.id} />
+          <Button
+            asChild
+            type="button"
+            variant="ghost"
+            className="text-gray-500 hover:bg-transparent hover:text-gray-500"
+          >
+            <Link href="/">닫기</Link>
+          </Button>
         </Page.Header.Right>
       </Page.Header>
       {/* 카드 flip 될 때 overlay */}
@@ -117,6 +125,7 @@ export const PresentRecommendationResult = () => {
         nextPickCount={nextPickCount}
         onNextResult={handleNextResult}
         itemId={item.product.id}
+        receiverName={name}
       />
       <LoginDialog
         isOpen={isLoginDialogOpen}
