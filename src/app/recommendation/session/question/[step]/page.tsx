@@ -13,7 +13,7 @@ import { PageError } from "@/components/shared/page-error";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { createUrlFromSessionResponse } from "@/utils/recommendation";
 
-type Phase = "init" | "waiting" | "selection";
+type Phase = "init" | "waiting" | "selection" | "exit";
 
 export interface RecommendationSessionQuestionPageQuery {
   name: string;
@@ -61,16 +61,16 @@ export default function RecommendationSessionQuestionPage() {
     setSelected(value);
     setIsLoading(true);
 
+    setTimeout(() => setPhase("exit"), 500);
+
     try {
       const { data } = await mutation.mutateAsync({
         sessionId,
         data: { step, answer: value },
       });
 
-      setTimeout(() => {
-        const url = createUrlFromSessionResponse(data, { name });
-        router.push(url);
-      }, 800);
+      const url = createUrlFromSessionResponse(data, { name });
+      router.push(url);
     } catch (err) {
       console.error("Submit answer error:", err);
       setError("답변을 제출하는데 문제가 발생했습니다.");
@@ -136,22 +136,26 @@ export default function RecommendationSessionQuestionPage() {
                 <CloverButtons
                   options={[
                     {
-                      active: selected === options[0],
+                      active: !selected,
+                      selected: selected === options[0],
                       label: options[0],
                       onClick: () => !isLoading && handleSelect(options[0]),
                     },
                     {
-                      active: selected === options[1],
+                      active: !selected,
+                      selected: selected === options[1],
                       label: options[1],
                       onClick: () => !isLoading && handleSelect(options[1]),
                     },
                     {
-                      active: selected === options[2],
+                      active: !selected,
+                      selected: selected === options[2],
                       label: options[2],
                       onClick: () => !isLoading && handleSelect(options[2]),
                     },
                     {
-                      active: selected === options[3],
+                      active: !selected,
+                      selected: selected === options[3],
                       label: options[3],
                       onClick: () => !isLoading && handleSelect(options[3]),
                     },
