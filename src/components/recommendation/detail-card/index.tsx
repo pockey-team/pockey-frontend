@@ -1,8 +1,12 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import { wishlistControllerAddWishlist } from "@/api/__generated__";
 import type {
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
@@ -19,6 +23,7 @@ interface Props {
   hideOnCapture?: boolean;
   isCapturing?: boolean;
   receiverName?: string;
+  isSharePage?: boolean;
 }
 
 export const DetailCard = ({
@@ -26,98 +31,159 @@ export const DetailCard = ({
   hideOnCapture = false,
   isCapturing = false,
   receiverName = "",
+  isSharePage = false,
 }: Props) => {
+  const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const session = useSession();
+
   const productData = useMemo(() => {
     return isFullItem(data) ? data.product : data;
   }, [data]);
 
+  const wishListMutation = useMutation({
+    mutationFn: async () =>
+      wishlistControllerAddWishlist(
+        {
+          productId: productData.id,
+          receiverName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session.data?.accessToken}`,
+          },
+        },
+      ),
+    onSuccess: () => {
+      setIsHeartFilled(true);
+      toast.success("보관함에 추가되었습니다.");
+    },
+  });
+
+  const handleClickHeart = () => {
+    wishListMutation.mutateAsync();
+  };
+
   return (
     <div
       className={cn(
-        isCapturing ? "h-full min-h-screen" : undefined,
+        isCapturing || isSharePage ? "h-full min-h-screen" : undefined,
         "flex flex-col",
       )}
     >
-      <div className="relative h-[465px] mobile:w-full w-[390px]">
+      <div
+        className={cn(
+          isSharePage
+            ? "size-[342px] overflow-hidden rounded-3xl"
+            : "h-[465px] mobile:w-full w-[390px]",
+          "relative mx-auto",
+        )}
+      >
         <Image src={productData.imageUrl} fill priority alt="상품이미지" />
       </div>
 
       <div className="flex flex-col px-16px">
         <ContentSection>
           <div className="flex flex-col">
-            {isCapturing && (
-              <p className="text-body-16-bold text-gray-200">
-                {receiverName}님을 위한 선물
-              </p>
-            )}
-            {!isCapturing && (
-              <p className="text-gray-400">
-                {JSON.parse(productData.category).join(" | ")}
-              </p>
-            )}
+            {isCapturing ||
+              (isSharePage && (
+                <p
+                  className={cn(
+                    isSharePage ? "text-gray-600" : "text-gray-200",
+                    "text-body-16-bold ",
+                  )}
+                >
+                  {receiverName}님을 위한 선물
+                </p>
+              ))}
+
+            {!isCapturing ||
+              (!isSharePage && (
+                <p className="text-gray-400">
+                  {JSON.parse(productData.category).join(" | ")}
+                </p>
+              ))}
+
             <div className="flex items-start justify-between py-12px">
-              <p className="max-w-[240px] break-keep font-semibold text-[22px] text-gray-100">
+              <p
+                className={cn(
+                  isSharePage
+                    ? "max-w-full text-gray-600"
+                    : "max-w-[240px] text-gray-100",
+                  " break-keep font-semibold text-[22px]",
+                )}
+              >
                 {productData.name}
               </p>
-              <Button
-                variant="ghost"
-                size="icon"
+
+              {!isSharePage && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    "group hover:bg-transparent",
+                    hideOnCapture ? "hidden" : "block",
+                  )}
+                  onClick={handleClickHeart}
+                  disabled={wishListMutation.isPending}
+                >
+                  <Heart
+                    fill={isHeartFilled ? "#C9DAFF" : "none"}
+                    className="border-primary-500 text-gray-100 hover:bg-primary-500 group-hover:text-primary-500"
+                  />
+                </Button>
+              )}
+            </div>
+            {!isSharePage && (
+              <p
                 className={cn(
-                  "group hover:bg-transparent",
+                  "text-gray-300 text-subtitle-18-medium",
                   hideOnCapture ? "hidden" : "block",
                 )}
               >
-                <Heart
-                  fill="#C9DAFF"
-                  className="border-primary-500 text-gray-100 hover:bg-primary-500 group-hover:text-primary-500"
-                />
-              </Button>
-            </div>
-            <p
-              className={cn(
-                "text-gray-300 text-subtitle-18-medium",
-                hideOnCapture ? "hidden" : "block",
-              )}
-            >
-              {productData.priceRange}
-            </p>
+                {productData.priceRange}
+              </p>
+            )}
           </div>
         </ContentSection>
 
-        <ContentSection
-          title="이 선물, 이런 감정을 담았어요"
-          hideOnCapture={hideOnCapture}
-        >
-          <div className="flex flex-wrap gap-8px">
-            {productData.tags?.map((tag) => (
-              <Chip key={tag} label={tag} />
-            ))}
-          </div>
-        </ContentSection>
+        {!isSharePage && (
+          <ContentSection
+            title="이 선물, 이런 감정을 담았어요"
+            hideOnCapture={hideOnCapture}
+          >
+            <div className="flex flex-wrap gap-8px">
+              {productData.tags?.map((tag) => (
+                <Chip key={tag} label={tag} />
+              ))}
+            </div>
+          </ContentSection>
+        )}
 
         <ContentSection
           title="이 선물로 전하고 싶은 마음"
           subTitle={isFullItem(data) ? data.minifiedReason : undefined}
           showBackground
-          className="p-16px"
+          isSharePage={isSharePage}
         >
-          <p className="text-gray-100">
+          <p className={cn(isSharePage ? "text-gray-600" : "text-gray-100")}>
             {isFullItem(data) ? data.reason : undefined}
           </p>
         </ContentSection>
 
-        <ContentSection
-          title="함께 보면 좋을 선물"
-          hideOnCapture={hideOnCapture}
-        >
-          <NextPick
-            ids={
-              isFullItem(data)
-                ? data.product.nextPickProductIds
-                : data.nextPickProductIds
-            }
-          />
-        </ContentSection>
+        {!isSharePage && (
+          <ContentSection
+            title="함께 보면 좋을 선물"
+            hideOnCapture={hideOnCapture}
+          >
+            <NextPick
+              ids={
+                isFullItem(data)
+                  ? data.product.nextPickProductIds
+                  : data.nextPickProductIds
+              }
+            />
+          </ContentSection>
+        )}
 
         {isCapturing && (
           <div className="flex w-full items-center justify-center">
@@ -129,6 +195,17 @@ export const DetailCard = ({
             />
           </div>
         )}
+
+        {/* {isSharePage && (
+          <div className="flex w-full items-center justify-center">
+            <Image
+              src="/share/footer-logo.svg"
+              alt="footer-logo"
+              width={74}
+              height={24}
+            />
+          </div>
+        )} */}
       </div>
     </div>
   );

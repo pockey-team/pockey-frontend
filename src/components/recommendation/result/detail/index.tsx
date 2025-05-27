@@ -13,9 +13,10 @@ import { getSessionResultStorageKey } from "@/utils/recommendation";
 
 interface Props {
   productId: number;
+  receiverName: string;
 }
 
-export const ResultDetail = ({ productId }: Props) => {
+export const ResultDetail = ({ productId, receiverName }: Props) => {
   const { sessionId = "default" } = useSearchParamsObject<{
     sessionId?: string;
   }>();
@@ -37,8 +38,13 @@ export const ResultDetail = ({ productId }: Props) => {
           <Back />
         </Page.Header.Left>
         <Page.Header.Right>
-          <Button variant="ghost" className="text-gray-500">
-            닫기
+          <Button
+            asChild
+            type="button"
+            variant="ghost"
+            className="text-gray-500 hover:bg-transparent hover:text-gray-500"
+          >
+            <Link href="/">닫기</Link>
           </Button>
         </Page.Header.Right>
       </Page.Header>
@@ -48,7 +54,7 @@ export const ResultDetail = ({ productId }: Props) => {
           className="!px-0px desktop:max-w-[390px] mobile:max-w-full bg-gray-900 pb-[100px]"
         >
           {item ? (
-            <DetailCard data={item} />
+            <DetailCard data={item} receiverName={receiverName} />
           ) : (
             <div className="flex min-h-[50vh] w-full items-center justify-center">
               <p>존재 하지 않는 상품입니다.</p>
@@ -61,7 +67,7 @@ export const ResultDetail = ({ productId }: Props) => {
           {() => (
             <div className="flex items-center gap-12px">
               <Button
-                className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold"
+                className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold hover:bg-primary-500/80"
                 asChild
               >
                 <Link href={item?.product.url ?? ""} target="_blank">
@@ -72,6 +78,7 @@ export const ResultDetail = ({ productId }: Props) => {
                 <ShareButton
                   className="!rounded-2xl w-1/2 py-16px"
                   item={item}
+                  receiverName={receiverName}
                 />
               )}
             </div>
