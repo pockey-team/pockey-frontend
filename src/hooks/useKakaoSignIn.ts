@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { getDeviceId } from "@/utils/device-id";
 
 interface UseKakaoSignInProps {
   onError?: (error: unknown) => void;
@@ -11,6 +12,16 @@ export const useKakaoSignIn = ({
 }: UseKakaoSignInProps = {}) => {
   const login = async () => {
     try {
+      const deviceId = getDeviceId();
+
+      if (deviceId) {
+        const cookieName = "nextauth_deviceId";
+        const cookieValue = encodeURIComponent(deviceId);
+        const maxAgeInSeconds = 5 * 60;
+        const path = "/";
+        document.cookie = `${cookieName}=${cookieValue}; path=${path}; max-age=${maxAgeInSeconds}; SameSite=Lax`;
+      }
+
       await signIn("kakao", {
         callbackUrl: `${window.location.origin}${callbackUrl}`,
         redirect: true,

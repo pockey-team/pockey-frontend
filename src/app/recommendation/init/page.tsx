@@ -12,6 +12,7 @@ import { PageError } from "@/components/shared/page-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { setDeviceId } from "@/utils/device-id";
 import { createUrlFromSessionResponse } from "@/utils/recommendation";
 
 type Phase = "active" | "exiting" | "complete";
@@ -162,10 +163,15 @@ const RecommendationInitComplete = ({ name }: { name: string }) => {
       return;
     }
 
+    const deviceId = setDeviceId();
+    if (typeof deviceId !== "string") {
+      return;
+    }
+
     const start = async () => {
       try {
         const { data } = await mutation.mutateAsync({
-          data: { deviceId: "0000", receiverName: name },
+          data: { deviceId: deviceId, receiverName: name },
         });
 
         if ("sessionId" in data) {
