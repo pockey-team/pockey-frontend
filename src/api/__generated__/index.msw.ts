@@ -147,6 +147,22 @@ export const getAuthControllerRefreshTokenMockHandler = (
   });
 };
 
+export const getAuthControllerWithdrawMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/api/v1/auth/withdraw", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
 export const getPostControllerGetPostsMockHandler = (
   overrideResponse?:
     | void
@@ -303,9 +319,74 @@ export const getRecommendSessionControllerEndSessionMockHandler = (
     return new HttpResponse(null, { status: 200 });
   });
 };
+
+export const getWishlistControllerAddWishlistMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/api/v1/wishlist", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getWishlistControllerGetWishlistsByReceiverNameMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/api/v1/wishlist", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getWishlistControllerRemoveWishlistMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.delete("*/api/v1/wishlist/:id", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getWishlistControllerGetWishlistGroupsMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/api/v1/wishlist/summary", async (info) => {
+    await delay(500);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
 export const getPockeyAPIDocumentationMock = () => [
   getAuthControllerLoginWithSocialMockHandler(),
   getAuthControllerRefreshTokenMockHandler(),
+  getAuthControllerWithdrawMockHandler(),
   getPostControllerGetPostsMockHandler(),
   getProductControllerGetProductMockHandler(),
   getUserControllerGetMyProfileMockHandler(),
@@ -314,4 +395,8 @@ export const getPockeyAPIDocumentationMock = () => [
   getRecommendSessionControllerStartSessionMockHandler(),
   getRecommendSessionControllerSubmitAnswerMockHandler(),
   getRecommendSessionControllerEndSessionMockHandler(),
+  getWishlistControllerAddWishlistMockHandler(),
+  getWishlistControllerGetWishlistsByReceiverNameMockHandler(),
+  getWishlistControllerRemoveWishlistMockHandler(),
+  getWishlistControllerGetWishlistGroupsMockHandler(),
 ];

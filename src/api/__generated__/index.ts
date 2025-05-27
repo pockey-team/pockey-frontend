@@ -23,12 +23,15 @@ import type {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { http } from "../http";
 import type {
+  AddWishlistRequest,
   PostControllerGetPostsParams,
   RecommendSessionControllerStartSession201,
   RecommendSessionControllerSubmitAnswer201,
   SocialLoginCommand,
   StartSessionRequest,
   SubmitAnswerRequest,
+  WishlistControllerGetWishlistsByReceiverNameParams,
+  WithdrawRequest,
 } from "./index.schemas";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -227,6 +230,101 @@ export const useAuthControllerRefreshToken = <
   TContext
 > => {
   const mutationOptions = getAuthControllerRefreshTokenMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type authControllerWithdrawResponse201 = {
+  data: undefined;
+  status: 201;
+};
+
+export type authControllerWithdrawResponseComposite =
+  authControllerWithdrawResponse201;
+
+export type authControllerWithdrawResponse =
+  authControllerWithdrawResponseComposite & {
+    headers: Headers;
+  };
+
+export const getAuthControllerWithdrawUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/auth/withdraw`;
+};
+
+export const authControllerWithdraw = async (
+  withdrawRequest: WithdrawRequest,
+  options?: RequestInit,
+): Promise<authControllerWithdrawResponse> => {
+  return http<authControllerWithdrawResponse>(getAuthControllerWithdrawUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(withdrawRequest),
+  });
+};
+
+export const getAuthControllerWithdrawMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerWithdraw>>,
+    TError,
+    { data: WithdrawRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerWithdraw>>,
+  TError,
+  { data: WithdrawRequest },
+  TContext
+> => {
+  const mutationKey = ["authControllerWithdraw"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerWithdraw>>,
+    { data: WithdrawRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return authControllerWithdraw(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerWithdrawMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerWithdraw>>
+>;
+export type AuthControllerWithdrawMutationBody = WithdrawRequest;
+export type AuthControllerWithdrawMutationError = unknown;
+
+export const useAuthControllerWithdraw = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof authControllerWithdraw>>,
+      TError,
+      { data: WithdrawRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerWithdraw>>,
+  TError,
+  { data: WithdrawRequest },
+  TContext
+> => {
+  const mutationOptions = getAuthControllerWithdrawMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1755,4 +1853,665 @@ export const useRecommendSessionControllerEndSession = <
     getRecommendSessionControllerEndSessionMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
+};
+
+export type wishlistControllerAddWishlistResponse201 = {
+  data: undefined;
+  status: 201;
+};
+
+export type wishlistControllerAddWishlistResponseComposite =
+  wishlistControllerAddWishlistResponse201;
+
+export type wishlistControllerAddWishlistResponse =
+  wishlistControllerAddWishlistResponseComposite & {
+    headers: Headers;
+  };
+
+export const getWishlistControllerAddWishlistUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/wishlist`;
+};
+
+export const wishlistControllerAddWishlist = async (
+  addWishlistRequest: AddWishlistRequest,
+  options?: RequestInit,
+): Promise<wishlistControllerAddWishlistResponse> => {
+  return http<wishlistControllerAddWishlistResponse>(
+    getWishlistControllerAddWishlistUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(addWishlistRequest),
+    },
+  );
+};
+
+export const getWishlistControllerAddWishlistMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishlistControllerAddWishlist>>,
+    TError,
+    { data: AddWishlistRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof wishlistControllerAddWishlist>>,
+  TError,
+  { data: AddWishlistRequest },
+  TContext
+> => {
+  const mutationKey = ["wishlistControllerAddWishlist"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof wishlistControllerAddWishlist>>,
+    { data: AddWishlistRequest }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return wishlistControllerAddWishlist(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type WishlistControllerAddWishlistMutationResult = NonNullable<
+  Awaited<ReturnType<typeof wishlistControllerAddWishlist>>
+>;
+export type WishlistControllerAddWishlistMutationBody = AddWishlistRequest;
+export type WishlistControllerAddWishlistMutationError = unknown;
+
+export const useWishlistControllerAddWishlist = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof wishlistControllerAddWishlist>>,
+      TError,
+      { data: AddWishlistRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof wishlistControllerAddWishlist>>,
+  TError,
+  { data: AddWishlistRequest },
+  TContext
+> => {
+  const mutationOptions =
+    getWishlistControllerAddWishlistMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type wishlistControllerGetWishlistsByReceiverNameResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type wishlistControllerGetWishlistsByReceiverNameResponseComposite =
+  wishlistControllerGetWishlistsByReceiverNameResponse200;
+
+export type wishlistControllerGetWishlistsByReceiverNameResponse =
+  wishlistControllerGetWishlistsByReceiverNameResponseComposite & {
+    headers: Headers;
+  };
+
+export const getWishlistControllerGetWishlistsByReceiverNameUrl = (
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `https://api-dev.pockey.pics/api/v1/wishlist?${stringifiedParams}`
+    : `https://api-dev.pockey.pics/api/v1/wishlist`;
+};
+
+export const wishlistControllerGetWishlistsByReceiverName = async (
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: RequestInit,
+): Promise<wishlistControllerGetWishlistsByReceiverNameResponse> => {
+  return http<wishlistControllerGetWishlistsByReceiverNameResponse>(
+    getWishlistControllerGetWishlistsByReceiverNameUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getWishlistControllerGetWishlistsByReceiverNameQueryKey = (
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+) => {
+  return [
+    `https://api-dev.pockey.pics/api/v1/wishlist`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getWishlistControllerGetWishlistsByReceiverNameQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getWishlistControllerGetWishlistsByReceiverNameQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>>
+  > = ({ signal }) =>
+    wishlistControllerGetWishlistsByReceiverName(params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type WishlistControllerGetWishlistsByReceiverNameQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>>
+  >;
+export type WishlistControllerGetWishlistsByReceiverNameQueryError = unknown;
+
+export function useWishlistControllerGetWishlistsByReceiverName<
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWishlistControllerGetWishlistsByReceiverName<
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWishlistControllerGetWishlistsByReceiverName<
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useWishlistControllerGetWishlistsByReceiverName<
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getWishlistControllerGetWishlistsByReceiverNameQueryOptions(
+      params,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchWishlistControllerGetWishlistsByReceiverNameQuery = async <
+  TData = Awaited<
+    ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+  >,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  params: WishlistControllerGetWishlistsByReceiverNameParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof wishlistControllerGetWishlistsByReceiverName>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions =
+    getWishlistControllerGetWishlistsByReceiverNameQueryOptions(
+      params,
+      options,
+    );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export type wishlistControllerRemoveWishlistResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type wishlistControllerRemoveWishlistResponseComposite =
+  wishlistControllerRemoveWishlistResponse200;
+
+export type wishlistControllerRemoveWishlistResponse =
+  wishlistControllerRemoveWishlistResponseComposite & {
+    headers: Headers;
+  };
+
+export const getWishlistControllerRemoveWishlistUrl = (id: number) => {
+  return `https://api-dev.pockey.pics/api/v1/wishlist/${id}`;
+};
+
+export const wishlistControllerRemoveWishlist = async (
+  id: number,
+  options?: RequestInit,
+): Promise<wishlistControllerRemoveWishlistResponse> => {
+  return http<wishlistControllerRemoveWishlistResponse>(
+    getWishlistControllerRemoveWishlistUrl(id),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getWishlistControllerRemoveWishlistMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof http>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["wishlistControllerRemoveWishlist"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return wishlistControllerRemoveWishlist(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type WishlistControllerRemoveWishlistMutationResult = NonNullable<
+  Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>
+>;
+
+export type WishlistControllerRemoveWishlistMutationError = unknown;
+
+export const useWishlistControllerRemoveWishlist = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof wishlistControllerRemoveWishlist>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationOptions =
+    getWishlistControllerRemoveWishlistMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export type wishlistControllerGetWishlistGroupsResponse200 = {
+  data: undefined;
+  status: 200;
+};
+
+export type wishlistControllerGetWishlistGroupsResponseComposite =
+  wishlistControllerGetWishlistGroupsResponse200;
+
+export type wishlistControllerGetWishlistGroupsResponse =
+  wishlistControllerGetWishlistGroupsResponseComposite & {
+    headers: Headers;
+  };
+
+export const getWishlistControllerGetWishlistGroupsUrl = () => {
+  return `https://api-dev.pockey.pics/api/v1/wishlist/summary`;
+};
+
+export const wishlistControllerGetWishlistGroups = async (
+  options?: RequestInit,
+): Promise<wishlistControllerGetWishlistGroupsResponse> => {
+  return http<wishlistControllerGetWishlistGroupsResponse>(
+    getWishlistControllerGetWishlistGroupsUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getWishlistControllerGetWishlistGroupsQueryKey = () => {
+  return [`https://api-dev.pockey.pics/api/v1/wishlist/summary`] as const;
+};
+
+export const getWishlistControllerGetWishlistGroupsQueryOptions = <
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof http>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getWishlistControllerGetWishlistGroupsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>
+  > = ({ signal }) =>
+    wishlistControllerGetWishlistGroups({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type WishlistControllerGetWishlistGroupsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>
+>;
+export type WishlistControllerGetWishlistGroupsQueryError = unknown;
+
+export function useWishlistControllerGetWishlistGroups<
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+          TError,
+          Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWishlistControllerGetWishlistGroups<
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+          TError,
+          Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWishlistControllerGetWishlistGroups<
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useWishlistControllerGetWishlistGroups<
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getWishlistControllerGetWishlistGroupsQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchWishlistControllerGetWishlistGroupsQuery = async <
+  TData = Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+  TError = unknown,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof wishlistControllerGetWishlistGroups>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof http>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions =
+    getWishlistControllerGetWishlistGroupsQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
 };
