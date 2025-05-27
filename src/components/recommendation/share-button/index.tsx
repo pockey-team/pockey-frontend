@@ -18,9 +18,10 @@ import { cn } from "@/lib/utils";
 interface Props {
   item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
   className?: string;
+  receiverName?: string;
 }
 
-export const ShareButton = ({ className = "", item }: Props) => {
+export const ShareButton = ({ className = "", item, receiverName }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCloseSheet = () => {
@@ -33,7 +34,7 @@ export const ShareButton = ({ className = "", item }: Props) => {
         <Button
           variant="ghost"
           className={cn(
-            "rounded-lg bg-gray-700 text-gray-300 text-subtitle-18-semibold",
+            "rounded-lg bg-gray-700 text-gray-300 text-subtitle-18-semibold hover:bg-gray-700/80 hover:text-gray-300",
             className,
           )}
         >
@@ -43,7 +44,7 @@ export const ShareButton = ({ className = "", item }: Props) => {
       <SheetContent
         side="bottom"
         showCloseButton={false}
-        className="flex max-h-[254px] flex-col items-center rounded-tl-2xl rounded-tr-2xl border-none bg-gray-700 px-24px"
+        className="desktop: mx-auto flex max-h-[254px] desktop:max-w-md mobile:max-w-full flex-col items-center rounded-tl-2xl rounded-tr-2xl border-none bg-gray-700 px-24px"
       >
         <SheetBar />
         <SheetHeader>
@@ -60,6 +61,7 @@ export const ShareButton = ({ className = "", item }: Props) => {
           <ShareUrlButton
             detailId={item.product.id.toString()}
             onCloseSheet={handleCloseSheet}
+            receiverName={receiverName}
           />
         </div>
       </SheetContent>

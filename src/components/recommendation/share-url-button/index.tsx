@@ -7,12 +7,17 @@ import { Button } from "@/components/ui/button";
 interface Props {
   detailId: string;
   onCloseSheet?: () => void;
+  receiverName?: string;
 }
 
-export const ShareUrlButton = ({ detailId, onCloseSheet }: Props) => {
+export const ShareUrlButton = ({
+  detailId,
+  onCloseSheet,
+  receiverName,
+}: Props) => {
   const sessionId = window.sessionStorage.getItem("pockey.sessionId");
 
-  const resultUrl = `${window.location.origin}/recommendation/share/${detailId}?sessionId=${sessionId}`;
+  const resultUrl = `${window.location.origin}/recommendation/share/${detailId}?sessionId=${sessionId}&receiverName=${receiverName}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(resultUrl);
