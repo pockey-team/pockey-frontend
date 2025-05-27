@@ -12,6 +12,10 @@ export interface SocialLoginCommand {
   deviceId?: string;
 }
 
+export interface WithdrawRequest {
+  reason: string;
+}
+
 export interface StartSessionRequest {
   deviceId: string;
   receiverName: string;
@@ -20,6 +24,11 @@ export interface StartSessionRequest {
 export interface SubmitAnswerRequest {
   step: number;
   answer: string;
+}
+
+export interface AddWishlistRequest {
+  productId: number;
+  receiverName: string;
 }
 
 export type PostControllerGetPostsParams = {
@@ -116,3 +125,7 @@ export type RecommendSessionControllerSubmitAnswer201 =
   | RecommendSessionControllerSubmitAnswer201OneOfFour
   | RecommendSessionControllerSubmitAnswer201OneOfEight
   | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[];
+
+export type WishlistControllerGetWishlistsByReceiverNameParams = {
+  receiverName: string;
+};
