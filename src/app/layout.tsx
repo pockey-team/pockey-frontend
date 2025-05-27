@@ -50,7 +50,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={cn(Pretendard.variable)}>
         <Providers>{children}</Providers>
-        <Toaster />
+        <Toaster position="bottom-center" />
       </body>
       <GoogleAnalytics gaId="G-WZHVL0HJH5" />
     </html>
