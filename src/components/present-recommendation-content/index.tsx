@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getPresents } from "@/api/Present/get-presents";
 import { HeaderSection } from "@/components/present-recommendation-content/header-section";
@@ -17,6 +18,7 @@ interface PresentRecommendationContentProps {
 export const PresentRecommendationContent = ({
   isMobile,
 }: PresentRecommendationContentProps) => {
+  const _session = useSession();
   const router = useRouter();
   const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
 
@@ -80,6 +82,31 @@ export const PresentRecommendationContent = ({
 
     animateSequence();
   }, [cloverControl]);
+
+  // const { data: wishlist } = useQuery({
+  //   queryKey: ["wishlist"],
+  //   queryFn: () => wishlistControllerGetWishlistsByReceiverName({
+  //     receiverName: "포키"
+  //   }, {
+  //     headers: {
+  //       Authorization: `Bearer ${session.data?.accessToken}`
+  //     }
+  //   }),
+  //   enabled: session.status === "authenticated" && !!session.data?.accessToken
+  // })
+
+  // console.log('wishlist', wishlist)
+
+  // const { data: wishlistSummary } = useQuery({
+  //   queryKey: ["wishlistSummary"],
+  //   queryFn: () =>
+  //     wishlistControllerGetWishlistGroups({
+  //       headers: {
+  //         Authorization: `Bearer ${session.data?.accessToken}`,
+  //       },
+  //     }),
+  //   enabled: session.status === "authenticated" && !!session.data?.accessToken,
+  // });
 
   return (
     <div className="relative flex h-full flex-col">

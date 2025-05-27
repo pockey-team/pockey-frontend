@@ -86,7 +86,7 @@ export const SaveImageButton = ({ item, onCloseSheet }: Props) => {
       >
         <Image
           src="/share/download.svg"
-          alt="URL 복사"
+          alt="이미지 저장"
           width={24}
           height={24}
         />
