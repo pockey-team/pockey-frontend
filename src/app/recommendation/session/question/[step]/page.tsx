@@ -109,10 +109,10 @@ export default function RecommendationSessionQuestionPage() {
               duration: 0.5,
               delay: isFirst ? 3 : 0,
             }}
-            className="mt-[62px] mb-24px transition-spacing duration-500"
+            className="mt-[62px] mb-24px"
           >
             <QuestionStepper
-              wide={phase === "selection"}
+              wide={phase === "selection" || phase === "exit"}
               currentStep={currentStep}
               totalSteps={4}
             />
