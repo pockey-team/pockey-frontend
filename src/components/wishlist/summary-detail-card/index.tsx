@@ -64,7 +64,7 @@ export const SummaryDetailCard = ({
 
   return (
     <div className="flex h-[284px] w-[171px] flex-col items-center justify-center gap-8px rounded-2xl bg-gradient-summary-card p-12px">
-      <div className="relative h-[9rem] w-full overflow-hidden rounded-2xl">
+      <div className="relative h-[146px] w-full overflow-hidden rounded-2xl">
         <Image src={imageUrl} alt="" fill className="object-cover" priority />
 
         <Button
@@ -90,9 +90,13 @@ export const SummaryDetailCard = ({
       </div>
       <Button
         asChild
-        className="hover:!bg-primary-500/80 !text-gray-900 w-full rounded-2xl bg-primary-500 py-8px text-body-13-semibold"
+        className="hover:!bg-primary-500/80 !text-gray-900 !rounded-xl w-full bg-primary-500 py-8px text-body-13-semibold"
       >
-        <Link href={product.url} target="_blank">
+        <Link
+          href={product.url}
+          target="_blank"
+          onClick={(e) => e.stopPropagation()}
+        >
           구매하기
         </Link>
       </Button>

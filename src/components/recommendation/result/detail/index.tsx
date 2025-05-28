@@ -44,21 +44,6 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
     return items.find((item) => item.product.id === productId);
   }, [productId, items]);
 
-  // const { data: productDetail } = useQuery({
-  // 	queryKey: ["productDetail", productId, receiverName],
-  // 	queryFn: () =>
-  // 		productControllerGetProduct(productId, {
-  // 			headers: {
-  // 				Authorization: `Bearer ${session?.accessToken}`,
-  // 			},
-  // 		}),
-  // 	enabled: !!session?.accessToken && !!productId && !!receiverName,
-  // });
-
-  // const productDetailData:
-  // 	| RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct
-  // 	| undefined = productDetail?.data;
-
   return (
     <Page className="flex min-h-screen flex-col bg-gray-900">
       <Page.Header className="sticky top-0 z-30 bg-gray-900">
@@ -81,23 +66,6 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
           noPadding
           className="!px-0px desktop:max-w-[390px] mobile:max-w-full bg-gray-900 pb-[100px]"
         >
-          {/* {productDetailData ? (
-						<DetailCard
-							data={productDetailData}
-							receiverName={receiverName}
-							session={session}
-						/>
-					) : item ? (
-						<DetailCard
-							data={item}
-							receiverName={receiverName}
-							session={session}
-						/>
-					) : (
-						<div className="flex min-h-[50vh] w-full items-center justify-center">
-							<p>존재 하지 않는 상품입니다.</p>
-						</div>
-					)} */}
           {item ? (
             <DetailCard
               data={item}

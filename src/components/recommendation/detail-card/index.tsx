@@ -273,17 +273,6 @@ export const DetailCard = ({
             />
           </div>
         )}
-
-        {/* {isSharePage && (
-          <div className="flex w-full items-center justify-center">
-            <Image
-              src="/share/footer-logo.svg"
-              alt="footer-logo"
-              width={74}
-              height={24}
-            />
-          </div>
-        )} */}
       </div>
     </div>
   );

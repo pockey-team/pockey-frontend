@@ -9,6 +9,15 @@ interface Props {
 export const WishListSummaryCard = ({ receiverName, count, images }: Props) => {
   const displayImages = images.slice(0, 4);
 
+  const displayImagesWithId = displayImages.map((image, index) => {
+    return [
+      {
+        id: index + 1,
+        image,
+      },
+    ];
+  });
+
   const fallbackItems = Array.from({
     length: Math.max(0, 4 - displayImages.length),
   }).map((_, index) => {
@@ -23,11 +32,11 @@ export const WishListSummaryCard = ({ receiverName, count, images }: Props) => {
         <p className="text-body-14-medium text-gray-200">{receiverName}</p>
         <p className="text-caption-12-medium text-gray-400">{count}개</p>
       </div>
-      <div className="grid h-[12.75rem] w-[10.75rem] grid-cols-2 grid-rows-2 overflow-hidden rounded-2xl">
-        {displayImages.map((image) => (
-          <div key={image} className="relative h-full w-full">
+      <div className="grid h-[208px] w-[9.7rem] grid-cols-2 grid-rows-2 overflow-hidden rounded-2xl">
+        {displayImagesWithId.flat().map((image) => (
+          <div key={image.id} className="relative h-full w-full">
             <Image
-              src={image}
+              src={image.image}
               alt={receiverName}
               className="object-cover object-center"
               fill
