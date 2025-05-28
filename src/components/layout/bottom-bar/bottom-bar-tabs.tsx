@@ -66,7 +66,7 @@ export const BottomBarTabs = () => {
           "relative z-10 flex h-full flex-1 items-center justify-center rounded-full text-center font-bold tracking-tight hover:bg-transparent",
           !active ? "text-blue-500" : "text-gray-500",
         )}
-        onClick={() => handleToggle(false, "/recommendation/result")}
+        onClick={() => handleToggle(false, "/wishlist")}
         disabled={isAnimating}
       >
         <ResultIcon width={35} height={35} />

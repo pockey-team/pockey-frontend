@@ -144,28 +144,16 @@ export const PresentBoxSection = ({
           scale: { type: "spring", stiffness: 100, damping: 10, delay: 0.1 },
           default: { duration: 0 },
         }}
-        className="flex flex-col items-center justify-start overflow-hidden text-center"
-        style={{
-          width: CARD_WIDTH,
-          height: CARD_HEIGHT,
-          transformOrigin: "center center",
-          padding: "20px",
-        }}
+        className="flex h-[23.188rem] w-[17.688rem] flex-col items-center justify-start overflow-hidden p-24px text-center"
       >
-        <div
-          style={{
-            height: `${IMAGE_CONTAINER_SIZE}px`,
-            width: `${IMAGE_CONTAINER_SIZE}px`,
-          }}
-          className="mb-12px"
-        />
+        <div className="size-[14.688rem]" />
 
         <motion.div
           variants={contentVariants}
           animate={isNextStepButtonClicked ? "expanded" : "normal"}
           className="w-full"
         >
-          <p className="mb-[18px] text-body-16-bold text-gray-600">
+          <p className="mb-[18px] font-bold text-[1rem] text-gray-600">
             오늘의 선물 꾸러미
           </p>
           <Button
@@ -211,7 +199,7 @@ export const PresentBoxSection = ({
         }}
       >
         <motion.div
-          className="relative size-full"
+          className="relative mx-auto size-[14.688rem]"
           variants={{
             hidden: { y: 50, opacity: 0.2 },
             visible: { y: 30, opacity: 1 },
@@ -233,7 +221,6 @@ export const PresentBoxSection = ({
             src="/present.svg"
             alt="선물 이미지"
             fill
-            sizes={`${IMAGE_CONTAINER_SIZE}px`}
             className="object-contain"
             priority
           />

@@ -1,7 +1,12 @@
 import { ResultDetail } from "@/components/recommendation/result/detail";
+import { SummaryDetail } from "@/components/recommendation/summary/detail";
 
 type Params = Promise<{ id: string }>;
-type SearchParams = Promise<{ name: string }>;
+type SearchParams = Promise<{
+  name: string;
+  wish?: boolean;
+  recommendation?: boolean;
+}>;
 
 const ResultDetailPage = async ({
   params,
@@ -15,8 +20,22 @@ const ResultDetailPage = async ({
 
   const detailId = param.id;
   const receiverName = searchParam.name;
+  const isWishlist = searchParam.wish;
+
   return (
-    <ResultDetail productId={Number(detailId)} receiverName={receiverName} />
+    <>
+      {isWishlist ? (
+        <SummaryDetail
+          productId={Number(detailId)}
+          receiverName={receiverName}
+        />
+      ) : (
+        <ResultDetail
+          productId={Number(detailId)}
+          receiverName={receiverName}
+        />
+      )}
+    </>
   );
 };
 
