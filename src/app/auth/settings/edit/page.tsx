@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import type { PropsWithChildren } from "react";
 import { SignOutButton } from "@/components/auth/sign-out";
+import { AuthWithdarwButton } from "@/components/auth/withdraw";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { authOptions } from "@/lib/auth";
@@ -60,7 +61,9 @@ const AuthSettingsEditPage = async () => {
           <PersonButton>로그아웃</PersonButton>
         </SignOutButton>
         <div className="mx-8px h-[48px] w-[1px] bg-gray-700" />
-        <PersonButton disabled>회원탈퇴</PersonButton>
+        <AuthWithdarwButton>
+          <PersonButton>회원탈퇴</PersonButton>
+        </AuthWithdarwButton>
       </Page.Container>
     </Page>
   );
