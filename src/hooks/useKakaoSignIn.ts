@@ -19,6 +19,7 @@ export const useKakaoSignIn = ({
         const cookieValue = encodeURIComponent(deviceId);
         const maxAgeInSeconds = 5 * 60;
         const path = "/";
+        // biome-ignore lint/suspicious/noDocumentCookie: false positive
         document.cookie = `${cookieName}=${cookieValue}; path=${path}; max-age=${maxAgeInSeconds}; SameSite=Lax`;
       }
 

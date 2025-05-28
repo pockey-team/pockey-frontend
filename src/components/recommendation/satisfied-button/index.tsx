@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   itemId: number;
+  receiverName: string;
 }
 
-export const SatisfiedButton = ({ itemId }: Props) => {
+export const SatisfiedButton = ({ itemId, receiverName }: Props) => {
   const { isLoginDialogOpen, setIsLoginDialogOpen, isLoggedIn } =
     useLoginDialog();
 
@@ -17,7 +18,7 @@ export const SatisfiedButton = ({ itemId }: Props) => {
 
   const handleClick = () => {
     if (isLoggedIn) {
-      router.push(`/recommendation/result/${itemId}`);
+      router.push(`/recommendation/result/${itemId}?name=${receiverName}`);
       return;
     }
 
@@ -29,7 +30,7 @@ export const SatisfiedButton = ({ itemId }: Props) => {
       <Button
         onClick={handleClick}
         variant="outline"
-        className="w-1/2 rounded-xl bg-primary-500 py-16px text-subtitle-18-bold text-xl tracking-tight hover:bg-[#C0DAFF]/80 focus:bg-primary-500 focus-visible:bg-primary-500 active:bg-primary-500"
+        className="w-1/2 rounded-xl border-none bg-primary-500 py-16px text-subtitle-18-bold text-xl tracking-tight hover:bg-primary-500/80 focus:bg-primary-500 focus-visible:bg-primary-500 active:bg-primary-500"
       >
         마음에 들어요
       </Button>

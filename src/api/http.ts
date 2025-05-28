@@ -1,12 +1,20 @@
 export const http = async <T>(url: string, init: RequestInit): Promise<T> => {
   const response = await fetch(url, init);
-  const data = handleDate(await response.json());
+  try {
+    const data = handleDate(await response.json());
 
-  return {
-    data,
-    status: response.status,
-    headers: response.headers,
-  } as T;
+    return {
+      data,
+      status: response.status,
+      headers: response.headers,
+    } as T;
+  } catch (_error) {
+    return {
+      data: null,
+      status: response.status,
+      headers: response.headers,
+    } as T;
+  }
 };
 
 const isDateString = (value: any): boolean => {

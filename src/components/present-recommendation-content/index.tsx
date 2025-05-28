@@ -1,14 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { getPresents } from "@/api/Present/get-presents";
 import { HeaderSection } from "@/components/present-recommendation-content/header-section";
 import { PresentBoxSection } from "@/components/present-recommendation-content/present-box-section";
-import { RecommendationSection } from "@/components/present-recommendation-content/recommendation-section";
 
 interface PresentRecommendationContentProps {
   isMobile: boolean;
@@ -17,6 +15,7 @@ interface PresentRecommendationContentProps {
 export const PresentRecommendationContent = ({
   isMobile,
 }: PresentRecommendationContentProps) => {
+  const _session = useSession();
   const router = useRouter();
   const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
 
@@ -24,18 +23,6 @@ export const PresentRecommendationContent = ({
     setIsNextStepButtonClicked(true);
     setTimeout(() => router.push("/recommendation/init"), 1_000);
   };
-
-  const { data: presents } = useQuery({
-    queryKey: ["presents"],
-    queryFn: () =>
-      getPresents({
-        delay: 1000,
-        empty: true,
-        error: false,
-      }),
-  });
-
-  const hasPresents = presents && presents.length > 0;
 
   const [animationState, setAnimationState] = useState<"initial" | "animating">(
     "initial",
@@ -115,38 +102,34 @@ export const PresentRecommendationContent = ({
         />
       </motion.div>
 
-      {!hasPresents && (
+      <div className="mt-[3.5rem] flex flex-col gap-[1rem]">
         <HeaderSection
           isAnimating={isAnimating}
           isNextStepButtonClicked={isNextStepButtonClicked}
         />
-      )}
 
-      <motion.div
-        className="flex min-h-[50vh] flex-1 items-center justify-center overflow-y-auto"
-        initial={{ opacity: 0, y: 60 }}
-        animate={{
-          opacity: isAnimating ? 1 : 0,
-          y: isAnimating ? 0 : 60,
-        }}
-        transition={{
-          duration: 1,
-          delay: 1.2,
-          type: "spring",
-          damping: 24,
-          stiffness: 100,
-        }}
-      >
-        {hasPresents ? (
-          <RecommendationSection />
-        ) : (
+        <motion.div
+          className="flex items-center justify-center overflow-y-auto"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{
+            opacity: isAnimating ? 1 : 0,
+            y: isAnimating ? 0 : 60,
+          }}
+          transition={{
+            duration: 1,
+            delay: 1.2,
+            type: "spring",
+            damping: 24,
+            stiffness: 100,
+          }}
+        >
           <PresentBoxSection
             onClickNextStepButton={handleClickNextStepButton}
             isNextStepButtonClicked={isNextStepButtonClicked}
             isMobile={isMobile}
           />
-        )}
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };

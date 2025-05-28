@@ -17,7 +17,6 @@ export const main = async () => {
   // @ts-ignore
   const file = path.join(import.meta.dirname, "../src/api/openapi.json");
   await fs.writeFile(file, JSON.stringify(swaggerDoc, null, 2));
-  console.log(`Saved to ${file}`);
 };
 
 await main();

@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type {
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
+} from "@/api/__generated__/index.schemas";
 import { SaveImageButton } from "@/components/recommendation/save-image-button";
 import { ShareUrlButton } from "@/components/recommendation/share-url-button";
 import { Button } from "@/components/ui/button";
@@ -16,13 +19,15 @@ import {
 import { cn } from "@/lib/utils";
 
 interface Props {
-  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  item:
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
   className?: string;
+  receiverName?: string;
 }
 
-export const ShareButton = ({ className = "", item }: Props) => {
+export const ShareButton = ({ className = "", item, receiverName }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const handleCloseSheet = () => {
     setIsOpen(false);
   };
@@ -33,7 +38,7 @@ export const ShareButton = ({ className = "", item }: Props) => {
         <Button
           variant="ghost"
           className={cn(
-            "rounded-lg bg-gray-700 text-gray-300 text-subtitle-18-semibold",
+            "rounded-lg bg-gray-700 text-gray-300 text-subtitle-18-semibold hover:bg-gray-700/80 hover:text-gray-300",
             className,
           )}
         >
@@ -43,7 +48,7 @@ export const ShareButton = ({ className = "", item }: Props) => {
       <SheetContent
         side="bottom"
         showCloseButton={false}
-        className="flex max-h-[254px] flex-col items-center rounded-tl-2xl rounded-tr-2xl border-none bg-gray-700 px-24px"
+        className="desktop: mx-auto flex max-h-[254px] desktop:max-w-md mobile:max-w-full flex-col items-center rounded-tl-2xl rounded-tr-2xl border-none bg-gray-700 px-24px"
       >
         <SheetBar />
         <SheetHeader>
@@ -58,13 +63,22 @@ export const ShareButton = ({ className = "", item }: Props) => {
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
           <SaveImageButton item={item} onCloseSheet={handleCloseSheet} />
           <ShareUrlButton
-            detailId={item.product.id.toString()}
+            detailId={
+              isFullItem(item) ? item.product.id.toString() : item.id.toString()
+            }
             onCloseSheet={handleCloseSheet}
+            receiverName={receiverName}
           />
         </div>
       </SheetContent>
     </Sheet>
   );
+};
+
+const isFullItem = (
+  data: Props["item"],
+): data is RecommendSessionControllerSubmitAnswer201OneOfOneoneItem => {
+  return "product" in data;
 };
 
 const SheetBar = () => {
