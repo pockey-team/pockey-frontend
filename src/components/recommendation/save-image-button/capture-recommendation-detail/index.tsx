@@ -1,9 +1,14 @@
 import { type ForwardedRef, forwardRef, type Ref } from "react";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type {
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
+} from "@/api/__generated__/index.schemas";
 import { DetailCard } from "@/components/recommendation/detail-card";
 
 interface Props {
-  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  item:
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
   isCapturing: boolean;
   receiverName: string;
 }
@@ -16,6 +21,7 @@ export const CaptureRecommendationDetail = forwardRef(
     return (
       <div ref={ref as Ref<HTMLDivElement>}>
         <DetailCard
+          // @ts-ignore
           data={item}
           isCapturing={isCapturing}
           receiverName={receiverName}

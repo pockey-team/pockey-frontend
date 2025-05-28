@@ -30,8 +30,8 @@ export const RecommendationCard = ({
         className="flex flex-col overflow-hidden p-24px text-black"
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-        <div className="flex flex-col gap-12px">
-          <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-200">
+        <div className="flex flex-col">
+          <div className="relative aspect-square h-[234px] w-full overflow-hidden rounded-xl bg-gray-200">
             <Image
               className="object-cover"
               src={item.product.imageUrl || ""}
@@ -46,19 +46,20 @@ export const RecommendationCard = ({
           initial={{ opacity: 0, y: 10 }}
           animate={isCurrent ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.3 }}
-          className="mt-16px flex flex-col"
+          className="mt-16px flex h-[126px] flex-col"
         >
-          <p className="line-clamp-2 break-keep text-heading-20-semibold">
-            {item.product.name}
-          </p>
-
-          {isResult && (
-            <p className="break-keep py-4px font-semibold text-[#709DFF] text-body-14-semibold">
-              {item.minifiedReason}
+          <div className="flex-1">
+            <p className="line-clamp-2 break-keep text-start text-heading-20-semibold">
+              {item.product.name}
             </p>
-          )}
 
-          <div className="mt-8px flex items-center justify-between border-gray-300 border-t pt-8px text-body-16-regular">
+            {isResult && (
+              <p className="line-clamp-1 h-24px overflow-hidden break-keep py-4px text-start font-semibold text-[#709DFF] text-body-14-semibold">
+                {item.minifiedReason}
+              </p>
+            )}
+          </div>
+          <div className="mt-8px flex h-[30px] items-center justify-between border-gray-300 border-t pt-8px text-body-16-regular">
             <p className="text-gray-400">금액</p>
             <p className="line-clamp-1 self-end text-gray-600">
               {item.product.priceRange}

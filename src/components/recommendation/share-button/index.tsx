@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type {
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
+} from "@/api/__generated__/index.schemas";
 import { SaveImageButton } from "@/components/recommendation/save-image-button";
 import { ShareUrlButton } from "@/components/recommendation/share-url-button";
 import { Button } from "@/components/ui/button";
@@ -16,14 +19,15 @@ import {
 import { cn } from "@/lib/utils";
 
 interface Props {
-  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  item:
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
   className?: string;
   receiverName?: string;
 }
 
 export const ShareButton = ({ className = "", item, receiverName }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const handleCloseSheet = () => {
     setIsOpen(false);
   };
@@ -59,7 +63,9 @@ export const ShareButton = ({ className = "", item, receiverName }: Props) => {
         <div className="size-full flex-1 text-body-16-regular text-gray-100">
           <SaveImageButton item={item} onCloseSheet={handleCloseSheet} />
           <ShareUrlButton
-            detailId={item.product.id.toString()}
+            detailId={
+              isFullItem(item) ? item.product.id.toString() : item.id.toString()
+            }
             onCloseSheet={handleCloseSheet}
             receiverName={receiverName}
           />
@@ -67,6 +73,12 @@ export const ShareButton = ({ className = "", item, receiverName }: Props) => {
       </SheetContent>
     </Sheet>
   );
+};
+
+const isFullItem = (
+  data: Props["item"],
+): data is RecommendSessionControllerSubmitAnswer201OneOfOneoneItem => {
+  return "product" in data;
 };
 
 const SheetBar = () => {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { TOAST_STYLE } from "@/constants/recommendation-result";
 
 interface Props {
   detailId: string;
@@ -21,7 +22,12 @@ export const ShareUrlButton = ({
 
   const handleCopy = () => {
     navigator.clipboard.writeText(resultUrl);
-    toast.success("URL이 복사되었습니다.");
+    toast.success("URL이 복사되었어요.", {
+      duration: 2000,
+      id: "url-copy-toast",
+      icon: null,
+      style: TOAST_STYLE,
+    });
     onCloseSheet?.();
   };
 

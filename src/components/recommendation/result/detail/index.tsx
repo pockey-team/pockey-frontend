@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useMemo, useState } from "react";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { DetailCard } from "@/components/recommendation/detail-card";
 import { ShareButton } from "@/components/recommendation/share-button";
@@ -14,22 +15,49 @@ import { getSessionResultStorageKey } from "@/utils/recommendation";
 interface Props {
   productId: number;
   receiverName: string;
+  // session: Session | null;
 }
 
 export const ResultDetail = ({ productId, receiverName }: Props) => {
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
   const { sessionId = "default" } = useSearchParamsObject<{
     sessionId?: string;
   }>();
 
   const items: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[] =
-    JSON.parse(
-      window.sessionStorage.getItem(getSessionResultStorageKey(sessionId)) ||
-        "[]",
-    );
+    isBrowser
+      ? JSON.parse(
+          window.sessionStorage.getItem(
+            getSessionResultStorageKey(sessionId),
+          ) || "[]",
+        )
+      : [];
 
   const item = useMemo(() => {
     return items.find((item) => item.product.id === productId);
   }, [productId, items]);
+
+  // const { data: productDetail } = useQuery({
+  // 	queryKey: ["productDetail", productId, receiverName],
+  // 	queryFn: () =>
+  // 		productControllerGetProduct(productId, {
+  // 			headers: {
+  // 				Authorization: `Bearer ${session?.accessToken}`,
+  // 			},
+  // 		}),
+  // 	enabled: !!session?.accessToken && !!productId && !!receiverName,
+  // });
+
+  // const productDetailData:
+  // 	| RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct
+  // 	| undefined = productDetail?.data;
 
   return (
     <Page className="flex min-h-screen flex-col bg-gray-900">
@@ -53,8 +81,29 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
           noPadding
           className="!px-0px desktop:max-w-[390px] mobile:max-w-full bg-gray-900 pb-[100px]"
         >
+          {/* {productDetailData ? (
+						<DetailCard
+							data={productDetailData}
+							receiverName={receiverName}
+							session={session}
+						/>
+					) : item ? (
+						<DetailCard
+							data={item}
+							receiverName={receiverName}
+							session={session}
+						/>
+					) : (
+						<div className="flex min-h-[50vh] w-full items-center justify-center">
+							<p>존재 하지 않는 상품입니다.</p>
+						</div>
+					)} */}
           {item ? (
-            <DetailCard data={item} receiverName={receiverName} />
+            <DetailCard
+              data={item}
+              receiverName={receiverName}
+              session={session}
+            />
           ) : (
             <div className="flex min-h-[50vh] w-full items-center justify-center">
               <p>존재 하지 않는 상품입니다.</p>
@@ -67,7 +116,7 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
           {() => (
             <div className="flex items-center gap-12px">
               <Button
-                className="!text-gray-700 !rounded-2xl w-1/2 bg-primary-500 py-16px text-subtitle-18-bold hover:bg-primary-500/80"
+                className="!text-gray-700 !rounded-2xl hover:!bg-primary-500/80 w-1/2 bg-primary-500 py-16px text-subtitle-18-bold"
                 asChild
               >
                 <Link href={item?.product.url ?? ""} target="_blank">

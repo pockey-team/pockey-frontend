@@ -1,10 +1,10 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { useMemo, useState } from "react";
+import type { Session } from "next-auth";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { wishlistControllerAddWishlist } from "@/api/__generated__";
 import type {
@@ -14,16 +14,25 @@ import type {
 import { NextPick } from "@/components/recommendation/next-pick";
 import { ContentSection } from "@/components/recommendation/result/detail-contents/content-section";
 import { Button } from "@/components/ui/button";
+import { TOAST_STYLE } from "@/constants/recommendation-result";
+import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
+import { getSessionResultStorageKey } from "@/utils/recommendation";
+
+interface ProductItemWithWishlist
+  extends RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct {
+  isMyWishlist: boolean;
+}
 
 interface Props {
   data:
     | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem
-    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
+    | ProductItemWithWishlist;
   hideOnCapture?: boolean;
   isCapturing?: boolean;
   receiverName?: string;
   isSharePage?: boolean;
+  session?: Session | null;
 }
 
 export const DetailCard = ({
@@ -32,9 +41,37 @@ export const DetailCard = ({
   isCapturing = false,
   receiverName = "",
   isSharePage = false,
+  session,
 }: Props) => {
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
-  const session = useSession();
+  const queryClient = useQueryClient();
+
+  const { sessionId = "default" } = useSearchParamsObject<{
+    sessionId?: string;
+  }>();
+
+  const queryKey = useMemo(() => {
+    if (isFullItem(data)) {
+      return ["productDetail", data.product.id, receiverName];
+    }
+
+    return ["productDetail", data.id, receiverName];
+  }, [data, receiverName]);
+
+  const initialHeartFilledState = useMemo(() => {
+    if (isFullItem(data)) {
+      // isRecommendation이 true일 때 data.product는 세션 스토리지에서 온 아이템일 수 있으며,
+      // isMyWishlist 속성이 동적으로 추가되었을 수 있음을 @ts-ignore로 명시합니다.
+      // @ts-ignore
+      return !!data.product.isMyWishlist;
+    }
+    return !!data.isMyWishlist;
+  }, [data]);
+
+  const [isHeartFilled, setIsHeartFilled] = useState(initialHeartFilledState);
+
+  useEffect(() => {
+    setIsHeartFilled(initialHeartFilledState);
+  }, [initialHeartFilledState]);
 
   const productData = useMemo(() => {
     return isFullItem(data) ? data.product : data;
@@ -49,18 +86,55 @@ export const DetailCard = ({
         },
         {
           headers: {
-            Authorization: `Bearer ${session.data?.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
           },
         },
       ),
     onSuccess: () => {
       setIsHeartFilled(true);
-      toast.success("보관함에 추가되었습니다.");
+      queryClient.invalidateQueries({
+        queryKey,
+      });
+      // toast.success("보관함에 추가되었어요.");
     },
   });
 
-  const handleClickHeart = () => {
-    wishListMutation.mutateAsync();
+  const handleClickHeart = async () => {
+    if (isHeartFilled) {
+      return;
+    }
+
+    await wishListMutation.mutateAsync();
+
+    if (typeof window !== "undefined") {
+      const storageKey = getSessionResultStorageKey(sessionId);
+      const currentItemsString = window.sessionStorage.getItem(storageKey);
+      const currentItems: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[] =
+        currentItemsString ? JSON.parse(currentItemsString) : [];
+
+      const updatedItems = currentItems.map((pItem) => {
+        if (pItem.product.id === productData.id) {
+          return {
+            ...pItem,
+            product: {
+              ...pItem.product,
+              isMyWishlist: true,
+            },
+          };
+        }
+        return pItem;
+      });
+
+      window.sessionStorage.setItem(storageKey, JSON.stringify(updatedItems));
+      setIsHeartFilled(true);
+    }
+
+    toast.success("보관함에 추가되었어요.", {
+      duration: 2000,
+      id: "wishlist-toast",
+      icon: null,
+      style: TOAST_STYLE,
+    });
   };
 
   return (
@@ -124,10 +198,11 @@ export const DetailCard = ({
                     hideOnCapture ? "hidden" : "block",
                   )}
                   onClick={handleClickHeart}
-                  disabled={wishListMutation.isPending}
+                  disabled={wishListMutation.isPending || isHeartFilled}
                 >
                   <Heart
                     fill={isHeartFilled ? "#C9DAFF" : "none"}
+                    stroke="#C9DAFF"
                     className="border-primary-500 text-gray-100 hover:bg-primary-500 group-hover:text-primary-500"
                   />
                 </Button>
@@ -159,18 +234,20 @@ export const DetailCard = ({
           </ContentSection>
         )}
 
-        <ContentSection
-          title="이 선물로 전하고 싶은 마음"
-          subTitle={isFullItem(data) ? data.minifiedReason : undefined}
-          showBackground
-          isSharePage={isSharePage}
-        >
-          <p className={cn(isSharePage ? "text-gray-600" : "text-gray-100")}>
-            {isFullItem(data) ? data.reason : undefined}
-          </p>
-        </ContentSection>
+        {isFullItem(data) && (
+          <ContentSection
+            title="이 선물로 전하고 싶은 마음"
+            subTitle={isFullItem(data) ? data.minifiedReason : undefined}
+            showBackground
+            isSharePage={isSharePage}
+          >
+            <p className={cn(isSharePage ? "text-gray-600" : "text-gray-100")}>
+              {isFullItem(data) ? data.reason : undefined}
+            </p>
+          </ContentSection>
+        )}
 
-        {!isSharePage && (
+        {!isSharePage && session && (
           <ContentSection
             title="함께 보면 좋을 선물"
             hideOnCapture={hideOnCapture}
@@ -181,6 +258,7 @@ export const DetailCard = ({
                   ? data.product.nextPickProductIds
                   : data.nextPickProductIds
               }
+              session={session}
             />
           </ContentSection>
         )}

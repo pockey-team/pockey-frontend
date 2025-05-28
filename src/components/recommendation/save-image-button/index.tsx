@@ -6,13 +6,19 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
+import type {
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
+} from "@/api/__generated__/index.schemas";
 import { Button } from "@/components/ui/button";
+import { TOAST_STYLE } from "@/constants/recommendation-result";
 import { cn } from "@/lib/utils";
 import { CaptureRecommendationDetail } from "./capture-recommendation-detail";
 
 interface Props {
-  item: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem;
+  item:
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItem
+    | RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
   onCloseSheet?: () => void;
 }
 
@@ -52,7 +58,12 @@ export const SaveImageButton = ({ item, onCloseSheet }: Props) => {
             setIsCapturing(false);
             setIsLoading(false);
             onCloseSheet?.();
-            toast.success("이미지가 저장되었습니다.");
+            toast.success("이미지가 저장되었어요.", {
+              duration: 2000,
+              id: "save-image-toast",
+              icon: null,
+              style: TOAST_STYLE,
+            });
           })
           .catch((err) => {
             console.error("캡처 오류:", err);
