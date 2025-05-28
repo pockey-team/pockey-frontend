@@ -113,8 +113,13 @@ export type RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct = {
   nextPickProductIds: number[];
 };
 
+export type RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProductWithWishList =
+  RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct & {
+    isMyWishlist: boolean;
+  };
+
 export type RecommendSessionControllerSubmitAnswer201OneOfOneoneItem = {
-  product: RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct;
+  product: RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProductWithWishList;
   reason: string;
   minifiedReason: string;
   order: number;

@@ -87,6 +87,7 @@ export const getRecommendSessionControllerSubmitAnswerResponseMock =
           price: faker.number.int({ min: undefined, max: undefined }),
           priceRange: faker.string.alpha(20),
           ageRange: faker.string.alpha(20),
+          isMyWishlist: faker.datatype.boolean(),
           situation: Array.from(
             { length: faker.number.int({ min: 4, max: 4 }) },
             (_, i) => i + 1,
