@@ -103,6 +103,8 @@ const config: Config = {
         "gradient-card": "linear-gradient(168deg, #F5F8FF 40%, #CCDCFF 100%)",
         "gradient-recommendation":
           "linear-gradient(168deg, #141214 -17.08%, #2F3E60 95.84% )",
+        "gradient-summary-card":
+          "linear-gradient(168deg, #F5F8FF 90%, #CCDCFF 100%)",
       },
       borderRadius: {
         lg: "var(--radius)",
