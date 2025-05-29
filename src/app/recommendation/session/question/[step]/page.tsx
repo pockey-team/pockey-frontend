@@ -3,17 +3,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecommendSessionControllerSubmitAnswer } from "@/api/__generated__";
 import { CloverButtons } from "@/components/recommendation/clover-buttons";
 import { QuestionStepper } from "@/components/recommendation/question-stepper";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { PageError } from "@/components/shared/page-error";
+import { RECOMMENDATION_LOADING_TIPS } from "@/constants/recommendation-loading";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
+import { cn } from "@/lib/utils";
+import { getRandomFromArray } from "@/utils/random";
 import { createUrlFromSessionResponse } from "@/utils/recommendation";
 
-type Phase = "init" | "waiting" | "selection" | "exit";
+type Phase = "init" | "waiting" | "selection" | "exit" | "loading";
 
 export interface RecommendationSessionQuestionPageQuery {
   name: string;
@@ -23,6 +26,11 @@ export interface RecommendationSessionQuestionPageQuery {
 }
 
 export default function RecommendationSessionQuestionPage() {
+  const tip = useMemo(
+    () => getRandomFromArray(RECOMMENDATION_LOADING_TIPS),
+    [],
+  );
+
   const router = useRouter();
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,18 +45,18 @@ export default function RecommendationSessionQuestionPage() {
     });
   const currentStep = step - 5;
   const isFirst = currentStep === 1;
+  const isLast = currentStep === 4;
 
   const [phase, setPhase] = useState<Phase>(isFirst ? "init" : "selection");
 
   useEffect(() => {
-    if (!isFirst) {
-      return;
+    if (isFirst) {
+      const timeouts = [
+        setTimeout(() => setPhase("waiting"), 3_000),
+        setTimeout(() => setPhase("selection"), 4_000),
+      ];
+      return () => timeouts.forEach((timeout) => clearTimeout(timeout));
     }
-    const timeouts = [
-      setTimeout(() => setPhase("waiting"), 3_000),
-      setTimeout(() => setPhase("selection"), 4_000),
-    ];
-    return () => timeouts.forEach((timeout) => clearTimeout(timeout));
   }, [isFirst]);
 
   if (!name || !sessionId || !question || !options || !options.length) {
@@ -61,13 +69,26 @@ export default function RecommendationSessionQuestionPage() {
     setSelected(value);
     setIsLoading(true);
 
-    setTimeout(() => setPhase("exit"), 500);
-
     try {
-      const { data } = await mutation.mutateAsync({
-        sessionId,
-        data: { step, answer: value },
-      });
+      const [{ data }, _] = await Promise.all([
+        mutation.mutateAsync({
+          sessionId,
+          data: { step, answer: value },
+        }),
+        new Promise((resolve) =>
+          setTimeout(() => {
+            setPhase("exit");
+            if (isLast) {
+              setTimeout(() => {
+                setPhase("loading");
+                resolve(null);
+              }, 500);
+            } else {
+              resolve(null);
+            }
+          }, 500),
+        ),
+      ]);
 
       const url = createUrlFromSessionResponse(data, { name });
       router.push(url);
@@ -97,27 +118,20 @@ export default function RecommendationSessionQuestionPage() {
         </Page.Header.Right>
       </Page.Header>
       <Page.Container className="mt-4">
-        <motion.div
-          initial={{ y: isFirst ? 30 : 0 }}
-          animate={{ y: 0 }}
-          transition={{ delay: isFirst ? 3 : 0, duration: 0.5 }}
+        <div
+          className={cn(
+            "mt-[62px] mb-24px transition-all duration-500",
+            phase === "init" && "translate-y-20px opacity-0",
+            phase !== "init" && "opacity-100",
+            phase === "loading" && "translate-y-20px opacity-0",
+          )}
         >
-          <motion.div
-            initial={{ y: isFirst ? 20 : 0, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              duration: 0.5,
-              delay: isFirst ? 3 : 0,
-            }}
-            className="mt-[62px] mb-24px"
-          >
-            <QuestionStepper
-              wide={phase === "selection" || phase === "exit"}
-              currentStep={currentStep}
-              totalSteps={4}
-            />
-          </motion.div>
-        </motion.div>
+          <QuestionStepper
+            wide={phase === "selection" || (!isLast && phase === "exit")}
+            currentStep={currentStep}
+            totalSteps={4}
+          />
+        </div>
         <AnimatePresence mode="wait">
           {phase === "init" && <Landing />}
           {phase === "selection" && (
@@ -128,7 +142,7 @@ export default function RecommendationSessionQuestionPage() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: isFirst ? -20 : 0, opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="!text-heading-22-semibold mb-[54px] text-gray-100"
+                className="!text-heading-22-semibold mb-[54px] text-balance break-keep text-gray-100"
               >
                 {question}
               </Page.Title>
@@ -164,10 +178,28 @@ export default function RecommendationSessionQuestionPage() {
               )}
             </>
           )}
+          {phase === "loading" && <Loading />}
         </AnimatePresence>
       </Page.Container>
       <AnimatePresence mode="wait">
         {phase === "init" && <CloverImage />}
+        {phase === "loading" && (
+          <>
+            <CloverImage />
+            <Page.ActionButton>
+              {() => (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-[72px] text-center text-body-14-regular text-gray-300"
+                >
+                  {tip}
+                </motion.p>
+              )}
+            </Page.ActionButton>
+          </>
+        )}
       </AnimatePresence>
     </Page>
   );
@@ -197,6 +229,25 @@ const Landing = () => {
       >
         진심을 담은 선물을 찾아볼게요
       </Page.SubTitle>
+    </>
+  );
+};
+
+const Loading = () => {
+  return (
+    <>
+      <Page.Title
+        as={motion.h1}
+        initial={{ y: 65, opacity: 0 }}
+        animate={{ y: 30, opacity: 1 }}
+        exit={{ y: 65, opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-12px text-gray-100"
+      >
+        답변을 모두 완료하셨어요
+        <br />
+        선물에 진심을 담아볼게요
+      </Page.Title>
     </>
   );
 };
