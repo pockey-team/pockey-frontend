@@ -10,6 +10,7 @@ import { wishlistControllerGetWishlistsByReceiverName } from "@/api/__generated_
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
 import { SummaryDetailCard } from "@/components/wishlist/summary-detail-card";
+import { cn } from "@/lib/utils";
 
 interface Props {
   receiverName: string;
@@ -84,7 +85,10 @@ export const SummaryDetailCardSection = ({ receiverName, session }: Props) => {
         <Button
           asChild
           variant="ghost"
-          className="!rounded-2xl flex h-[284px] w-[171px] flex-col items-center justify-center gap-16px bg-gray-700 text-gray-500 hover:bg-gray-600/50 hover:text-gray-500"
+          className={cn(
+            "!rounded-2xl flex h-[284px] w-[171px] flex-col items-center justify-center gap-16px bg-gray-700 text-gray-500 hover:bg-gray-600/50 hover:text-gray-500",
+            "scale-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",
+          )}
         >
           <Link href="/recommendation/init">
             <Plus />

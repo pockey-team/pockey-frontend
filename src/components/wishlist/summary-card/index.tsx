@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface Props {
   receiverName: string;
@@ -32,7 +33,12 @@ export const WishListSummaryCard = ({ receiverName, count, images }: Props) => {
         <p className="text-body-14-medium text-gray-200">{receiverName}</p>
         <p className="text-caption-12-medium text-gray-400">{count}개</p>
       </div>
-      <div className="grid h-[208px] w-[9.7rem] grid-cols-2 grid-rows-2 overflow-hidden rounded-2xl">
+      <div
+        className={cn(
+          "grid h-[208px] w-[9.7rem] grid-cols-2 grid-rows-2 overflow-hidden rounded-2xl",
+          "scale-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",
+        )}
+      >
         {displayImagesWithId.flat().map((image) => (
           <div key={image.id} className="relative h-full w-full">
             <Image

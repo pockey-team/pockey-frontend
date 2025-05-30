@@ -59,8 +59,6 @@ export const DetailCard = ({
 
   const initialHeartFilledState = useMemo(() => {
     if (isFullItem(data)) {
-      // isRecommendation이 true일 때 data.product는 세션 스토리지에서 온 아이템일 수 있으며,
-      // isMyWishlist 속성이 동적으로 추가되었을 수 있음을 @ts-ignore로 명시합니다.
       // @ts-ignore
       return !!data.product.isMyWishlist;
     }
@@ -95,7 +93,6 @@ export const DetailCard = ({
       queryClient.invalidateQueries({
         queryKey,
       });
-      // toast.success("보관함에 추가되었어요.");
     },
   });
 
@@ -148,7 +145,7 @@ export const DetailCard = ({
         className={cn(
           isSharePage
             ? "size-[342px] overflow-hidden rounded-3xl"
-            : "h-[465px] mobile:w-full w-[390px]",
+            : "h-[29.0625rem] w-full",
           "relative mx-auto",
         )}
       >
