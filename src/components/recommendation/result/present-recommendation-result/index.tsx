@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoginDialog } from "@/components/recommendation/dialog/login";
 import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
@@ -31,10 +31,6 @@ export const PresentRecommendationResult = () => {
 
   const { isLoginDialogOpen, setIsLoginDialogOpen, isLoggedIn } =
     useLoginDialog();
-
-  // if (!name || !items || !Array.isArray(items)) {
-  //   return redirect("/");
-  // }
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextPickCount, setNextPickCount] = useState(AVAILABLE_NEXT_PICK_COUNT);
@@ -68,6 +64,10 @@ export const PresentRecommendationResult = () => {
       router.push(`/recommendation/result/${item.product.id}?name=${name}`);
     }
   };
+
+  if (!name || !items || !Array.isArray(items) || items.length === 0) {
+    return redirect("/");
+  }
 
   return (
     <div className="relative flex h-full flex-col">
@@ -121,13 +121,14 @@ export const PresentRecommendationResult = () => {
           )}
         </div>
       </div>
-
-      <ActionButtons
-        nextPickCount={nextPickCount}
-        onNextResult={handleNextResult}
-        itemId={item.product.id}
-        receiverName={name}
-      />
+      {item && (
+        <ActionButtons
+          nextPickCount={nextPickCount}
+          onNextResult={handleNextResult}
+          itemId={item.product.id}
+          receiverName={name}
+        />
+      )}
       <LoginDialog
         isOpen={isLoginDialogOpen}
         onOpenChange={setIsLoginDialogOpen}
