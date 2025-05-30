@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/shared/button";
+import { cn } from "@/lib/utils";
 
 interface Props {
   onClickNextStepButton: () => void;
@@ -118,7 +119,10 @@ export const PresentBoxSection = ({
           <p className="pb-[1.25rem]">오늘 준비할 선물 꾸러미</p>
           <Button
             onClick={onClickNextStepButton}
-            className="!rounded-xl w-full py-[.8125rem] text-subtitle-16-semibold"
+            className={cn(
+              "!rounded-xl w-full py-[.8125rem] text-subtitle-16-semibold",
+              "scale-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",
+            )}
             disabled={isNextStepButtonClicked}
           >
             지금 선물하기
