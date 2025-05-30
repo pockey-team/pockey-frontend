@@ -43,14 +43,14 @@ const WishlistDetailPage = async ({
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Page>
+    <Page className="h-dvh select-none bg-gray-900">
       <Page.Header>
         <Page.Header.Left>
           <Back />
         </Page.Header.Left>
       </Page.Header>
       <div className="relative flex-1 overflow-auto">
-        <Page.Container className="bg-gray-900 pb-40px">
+        <Page.Container className="pb-40px">
           <HydrationBoundary state={dehydratedState}>
             <SummaryDetailCardSection
               receiverName={receiverName}

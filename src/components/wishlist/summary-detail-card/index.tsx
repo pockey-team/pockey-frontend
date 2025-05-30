@@ -8,6 +8,7 @@ import { wishlistControllerRemoveWishlist } from "@/api/__generated__";
 import { Button } from "@/components/ui/button";
 import { TOAST_STYLE } from "@/constants/recommendation-result";
 import { getQueryClient } from "@/lib/tanstack-query";
+import { cn } from "@/lib/utils";
 
 interface Props {
   imageUrl: string;
@@ -63,7 +64,12 @@ export const SummaryDetailCard = ({
   };
 
   return (
-    <div className="flex h-[284px] w-[171px] flex-col items-center justify-center gap-8px rounded-2xl bg-gradient-summary-card p-12px">
+    <div
+      className={cn(
+        "flex h-[284px] w-[171px] flex-col items-center justify-center gap-8px rounded-2xl bg-gradient-summary-card p-12px",
+        "scale-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",
+      )}
+    >
       <div className="relative h-[146px] w-full overflow-hidden rounded-2xl">
         <Image src={imageUrl} alt="" fill className="object-cover" priority />
 
