@@ -3,25 +3,17 @@
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { HeaderSection } from "@/components/present-recommendation-content/header-section";
 import { PresentBoxSection } from "@/components/present-recommendation-content/present-box-section";
 
-interface PresentRecommendationContentProps {
-  isMobile: boolean;
-}
-
-export const PresentRecommendationContent = ({
-  isMobile,
-}: PresentRecommendationContentProps) => {
-  const _session = useSession();
+export const PresentRecommendationContent = () => {
   const router = useRouter();
   const [isNextStepButtonClicked, setIsNextStepButtonClicked] = useState(false);
 
   const handleClickNextStepButton = () => {
     setIsNextStepButtonClicked(true);
-    setTimeout(() => router.push("/recommendation/init"), 1_000);
+    setTimeout(() => router.push("/recommendation/init"), 1500);
   };
 
   const [animationState, setAnimationState] = useState<"initial" | "animating">(
@@ -81,6 +73,7 @@ export const PresentRecommendationContent = ({
           width={100}
           height={100}
           priority
+          className="select-none"
         />
       </motion.div>
 
@@ -99,6 +92,7 @@ export const PresentRecommendationContent = ({
           width={100}
           height={100}
           priority
+          className="select-none"
         />
       </motion.div>
 
@@ -126,7 +120,6 @@ export const PresentRecommendationContent = ({
           <PresentBoxSection
             onClickNextStepButton={handleClickNextStepButton}
             isNextStepButtonClicked={isNextStepButtonClicked}
-            isMobile={isMobile}
           />
         </motion.div>
       </div>
