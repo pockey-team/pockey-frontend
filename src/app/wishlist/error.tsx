@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 
 export default function WishlistErrorPage() {
   return (
-    <Page>
-      <Page.Container className="flex h-full flex-1 flex-col items-center justify-center">
+    <Page className="h-dvh bg-gray-900">
+      <Page.Container className="flex flex-1 select-none flex-col items-center justify-center">
         <Image
           src="/present.svg"
           alt="선물이미지"
@@ -30,7 +30,7 @@ export default function WishlistErrorPage() {
         {() => (
           <Button
             asChild
-            className="!rounded-2xl hover:!bg-primary-500/80 !text-gray-700 w-full bg-primary-500 py-16px text-subtitle-16-semibold"
+            className="!rounded-xl hover:!bg-primary-500/80 !text-gray-700 w-full bg-primary-500 py-16px text-subtitle-16-semibold"
           >
             <Link href="/recommendation/init">선물 하러 가기</Link>
           </Button>
