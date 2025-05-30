@@ -55,7 +55,7 @@ const SharePage = () => {
   }
 
   return (
-    <Page className="min-h-screen bg-gray-100">
+    <Page className="min-h-screen select-none bg-gray-100">
       <div className="absolute top-0px right-0px left-0px z-30 flex-1 overflow-auto desktop:bg-gray-900">
         <Page.Container className="!px-0px desktop:max-w-[390px] mobile:max-w-full flex-1 overflow-x-hidden bg-gray-100 py-16px pb-[110px]">
           {currentProduct ? (

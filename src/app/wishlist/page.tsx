@@ -39,7 +39,7 @@ const WishlistPage = async ({
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Page className="flex min-h-screen flex-col bg-gray-900">
+    <Page className="flex min-h-screen select-none flex-col bg-gray-900">
       <Page.Header>
         <Page.Header.Left>
           <Link href="/">
