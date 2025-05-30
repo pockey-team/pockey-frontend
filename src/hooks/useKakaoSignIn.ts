@@ -23,11 +23,15 @@ export const useKakaoSignIn = ({
         document.cookie = `${cookieName}=${cookieValue}; path=${path}; max-age=${maxAgeInSeconds}; SameSite=Lax`;
       }
 
+      const baseUrl = new URL(window.location.origin);
+      const fullCallbackUrl = new URL(callbackUrl, baseUrl);
+
       await signIn("kakao", {
-        callbackUrl: `${window.location.origin}${callbackUrl}`,
+        callbackUrl: fullCallbackUrl.toString(),
         redirect: true,
       });
     } catch (error) {
+      console.error("Login error:", error);
       onError?.(error);
     }
   };
