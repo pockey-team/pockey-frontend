@@ -5,12 +5,18 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   label?: string;
+  path?: string;
 }
 
-export const Back = ({ label }: Props) => {
+export const Back = ({ label, path }: Props) => {
   const router = useRouter();
 
   const handleClick = () => {
+    if (path) {
+      router.push(path);
+      return;
+    }
+
     router.back();
   };
 

@@ -15,7 +15,6 @@ import { getSessionResultStorageKey } from "@/utils/recommendation";
 interface Props {
   productId: number;
   receiverName: string;
-  // session: Session | null;
 }
 
 export const ResultDetail = ({ productId, receiverName }: Props) => {
@@ -48,7 +47,9 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
     <Page className="flex min-h-screen flex-col bg-gray-900">
       <Page.Header className="sticky top-0 z-30 bg-gray-900">
         <Page.Header.Left>
-          <Back />
+          <Back
+            path={`/recommendation/result?sessionId=${sessionId}&name=${receiverName}`}
+          />
         </Page.Header.Left>
         <Page.Header.Right>
           <Button

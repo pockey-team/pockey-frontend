@@ -93,32 +93,33 @@ export const PresentRecommendationResult = () => {
         animate={{ opacity: 0.7 }}
         transition={{ duration: 0.1 }}
       />
+      <div className="flex flex-1 flex-col gap-[1.375rem]">
+        <Page.Title className="mt-[1rem] text-gray-100">
+          <span className="text-primary-500">{name}</span>
+          님이
+          <br />
+          좋아할 선물을 준비했어요
+        </Page.Title>
 
-      <Page.Title className="desktop:mt-[60px] mt-16px text-gray-100">
-        <span className="text-primary-500">{name}</span>
-        님이
-        <br />
-        좋아할 선물을 준비했어요
-      </Page.Title>
-
-      <div className="mb-8px flex flex-1 items-center justify-center">
-        {item && (
-          <button
-            type="button"
-            onClick={handleClickProduct}
-            onKeyDown={handleClickProduct}
-            className="cursor-pointer"
-          >
-            <FlipCard
-              key={cardKey}
-              item={item}
-              flipDelay={500}
-              isDisappearing={isDisappearing}
-              isFloating={isFloating}
-              setIsFloating={setIsFloating}
-            />
-          </button>
-        )}
+        <div className="mb-8px flex flex-1 items-center justify-center">
+          {item && (
+            <button
+              type="button"
+              onClick={handleClickProduct}
+              onKeyDown={handleClickProduct}
+              className="cursor-pointer"
+            >
+              <FlipCard
+                key={cardKey}
+                item={item}
+                flipDelay={500}
+                isDisappearing={isDisappearing}
+                isFloating={isFloating}
+                setIsFloating={setIsFloating}
+              />
+            </button>
+          )}
+        </div>
       </div>
 
       <ActionButtons
