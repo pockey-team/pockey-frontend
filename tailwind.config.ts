@@ -72,10 +72,6 @@ const config: Config = {
       // Caption
       "caption-12-medium": ["12px", { lineHeight: "20px", fontWeight: "500" }],
     },
-    screens: {
-      mobile: "390px",
-      desktop: "1024px",
-    },
     spacing: {
       "0px": "0px",
       "2px": "2px",
@@ -92,6 +88,10 @@ const config: Config = {
       "56px": "56px",
     },
     extend: {
+      screens: {
+        mobile: "390px",
+        desktop: "1024px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
