@@ -58,7 +58,7 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
             variant="ghost"
             className="text-gray-500 hover:bg-transparent hover:text-gray-500"
           >
-            <Link href="/">닫기</Link>
+            <Link href="/find">닫기</Link>
           </Button>
         </Page.Header.Right>
       </Page.Header>
@@ -80,7 +80,7 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
           )}
         </Page.Container>
       </div>
-      <div className="sticky bottom-0 z-30 bg-gray-900">
+      <div className="sticky bottom-0 z-30 flex w-full items-center justify-center bg-gray-900">
         <Page.ActionButton className="!mb-0px !mx-0px mobile:!max-w-full desktop:!max-w-[390px] place-self-center py-8px">
           {() => (
             <div className="flex items-center gap-12px">

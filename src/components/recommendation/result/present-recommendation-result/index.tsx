@@ -79,7 +79,7 @@ export const PresentRecommendationResult = () => {
             variant="ghost"
             className="text-gray-500 hover:bg-transparent hover:text-gray-500"
           >
-            <Link href="/">닫기</Link>
+            <Link href="/find">닫기</Link>
           </Button>
         </Page.Header.Right>
       </Page.Header>
