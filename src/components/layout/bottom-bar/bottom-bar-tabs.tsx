@@ -11,12 +11,12 @@ export const BottomBarTabs = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [active, setActive] = useState(
-    pathname === "/" || pathname === "/main",
+    pathname === "/find" || pathname === "/main",
   );
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    setActive(pathname === "/" || pathname === "/main");
+    setActive(pathname === "/find" || pathname === "/main");
   }, [pathname]);
 
   const handleToggle = (newActive: boolean, path: string) => {
@@ -54,7 +54,7 @@ export const BottomBarTabs = () => {
           "relative z-10 flex h-full flex-1 items-center justify-center rounded-3xl text-center font-bold tracking-tight hover:bg-transparent",
           active ? "text-blue-500" : "text-gray-500",
         )}
-        onClick={() => handleToggle(true, "/")}
+        onClick={() => handleToggle(true, "/find")}
         disabled={isAnimating}
       >
         <HomeIcon width={35} height={35} />

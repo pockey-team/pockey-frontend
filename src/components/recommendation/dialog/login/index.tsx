@@ -28,10 +28,10 @@ export const LoginDialog = ({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="min-h-[276px] w-[310px] rounded-2xl border-none bg-gray-800 p-24px">
         <DialogHeader className="flex size-full flex-col justify-center gap-24px">
-          <DialogTitle className="whitespace-pre-line text-gray-100 text-heading-24-semibold">
+          <DialogTitle className="whitespace-pre-line text-center text-gray-100 text-heading-24-semibold leading-7 tracking-wide">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-body-14-semibold">
+          <DialogDescription className="text-center text-body-14-semibold">
             {description}
           </DialogDescription>
         </DialogHeader>
