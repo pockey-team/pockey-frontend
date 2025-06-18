@@ -42,7 +42,7 @@ export const StepSection = ({
         }}
         className="mx-auto flex max-w-full flex-col items-center justify-between sm:flex-row md:max-w-2xl lg:max-w-4xl"
       >
-        <div className="flex flex-col items-start">
+        <div className="flex w-full flex-col items-start">
           <p className="text-body-14-medium text-primary-500 lg:text-subtitle-18-semibold">
             STEP {stepNumber}
           </p>
@@ -54,8 +54,14 @@ export const StepSection = ({
           </p>
         </div>
 
-        <div className="mt-24px sm:mt-0px">
-          <Image src={image} alt="step-image" width={470} height={240} />
+        <div className="relative mt-24px h-[182px] w-[358px] sm:mt-0px sm:h-[240px] sm:w-[470px]">
+          <Image
+            src={image}
+            alt="step-image"
+            priority
+            fill
+            className="object-contain"
+          />
         </div>
       </motion.div>
     </div>

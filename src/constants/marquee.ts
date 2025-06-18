@@ -6,7 +6,7 @@ interface MarqueeItem {
 export const MARQUEE_ITEMS: MarqueeItem[] = [
   {
     id: 1,
-    image: "/static/landing/marquee/birth.svg",
+    image: "/static/landing/marquee/thanks.svg",
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ export const MARQUEE_ITEMS: MarqueeItem[] = [
   },
   {
     id: 3,
-    image: "/static/landing/marquee/congrat.svg",
+    image: "/static/landing/marquee/confetti.svg",
   },
   {
     id: 4,
@@ -22,6 +22,6 @@ export const MARQUEE_ITEMS: MarqueeItem[] = [
   },
   {
     id: 5,
-    image: "/static/landing/marquee/thanks.svg",
+    image: "/static/landing/marquee/birth.svg",
   },
 ];

@@ -1,26 +1,45 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { FramerMarquee } from "@/components/shared/marquee";
 import { MARQUEE_ITEMS } from "@/constants/marquee";
-import { FramerMarquee } from "../shared/marquee";
+
+const itemVariants = {
+  initial: { opacity: 0, y: 60 },
+  inView: {
+    opacity: 1,
+    y: 0,
+  },
+};
 
 export const GiftCollectionSection = () => {
   return (
     <div className="flex min-h-[456px] w-full items-center justify-center bg-gray-900">
-      <div className="relative flex h-[280px] max-w-lg items-center justify-center">
-        <FramerMarquee
-          repeat={1}
-          duration={18}
-          gap={0.75}
-          className="opacity-60"
-        >
+      <motion.div
+        variants={itemVariants}
+        initial="initial"
+        whileInView="inView"
+        viewport={{
+          once: true,
+          margin: "0px 0px -50% 0px",
+        }}
+        transition={{
+          type: "spring",
+          damping: 20,
+          stiffness: 100,
+          duration: 0.8,
+        }}
+        className="relative flex h-[280px] max-w-lg items-center justify-center"
+      >
+        <FramerMarquee repeat={4} duration={18} gap={0.75}>
           {MARQUEE_ITEMS.map((item) => (
             <Image
               key={item.id}
               src={item.image}
               alt={item.id.toString()}
-              width={200}
-              height={200}
+              width={220}
+              height={220}
               className="mx-12px"
               priority
             />
@@ -35,7 +54,7 @@ export const GiftCollectionSection = () => {
             '그 사람'에게 딱 맞는 선물을 찾아보세요
           </h1>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

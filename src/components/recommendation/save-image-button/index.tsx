@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type {
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
@@ -29,6 +29,15 @@ export const SaveImageButton = ({ item, onCloseSheet }: Props) => {
   const captureRef = useRef<HTMLDivElement>(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const onSaveAs = useCallback((url: string, fileName: string) => {
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    document.body.removeChild(link);
+  }, []);
 
   useEffect(() => {
     if (isCapturing && captureRef.current) {
@@ -71,20 +80,11 @@ export const SaveImageButton = ({ item, onCloseSheet }: Props) => {
           });
       }, 1500);
     }
-  }, [isCapturing, onCloseSheet, receiverName]);
+  }, [isCapturing, onCloseSheet, receiverName, onSaveAs]);
 
   const handleSaveImage = () => {
     setIsLoading(true);
     setIsCapturing(true);
-  };
-
-  const onSaveAs = (url: string, fileName: string) => {
-    const link = document.createElement("a");
-    document.body.appendChild(link);
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    document.body.removeChild(link);
   };
 
   return (
