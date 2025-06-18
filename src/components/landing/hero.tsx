@@ -13,7 +13,6 @@ export const HeroSection = () => {
           </h2>
         </div>
       </div>
-
       <div className="relative h-[36.875rem] w-full">
         <Image
           src="/static/landing/hero-gift.svg"
