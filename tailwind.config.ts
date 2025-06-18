@@ -36,7 +36,7 @@ const config: Config = {
       // Display
       "display-32-semibold": [
         "32px",
-        { lineHeight: "36px", fontWeight: "600" },
+        { lineHeight: "42px", fontWeight: "600" },
       ],
       // Heading
       "heading-24-semibold": [
@@ -91,6 +91,7 @@ const config: Config = {
       screens: {
         mobile: "390px",
         desktop: "1024px",
+        "ipad-pro": { min: "1024px", max: "1366px" },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
