@@ -46,10 +46,10 @@ export const StepSection = ({
           <p className="text-body-14-medium text-primary-500 lg:text-subtitle-18-semibold">
             STEP {stepNumber}
           </p>
-          <h1 className="mt-8px h-[72px] max-w-lg overflow-hidden break-keep text-heading-22-semibold leading-9 tracking-wide md:text-heading-24-semibold lg:text-display-32-semibold">
+          <h1 className="mt-8px h-[4.5rem] max-w-lg overflow-hidden break-keep text-heading-22-semibold leading-9 tracking-wide md:text-heading-24-semibold lg:text-display-32-semibold">
             {title}
           </h1>
-          <p className="mt-16px whitespace-nowrap text-body-14-regular text-gray-400">
+          <p className="mt-[1rem] whitespace-nowrap text-body-14-regular text-gray-400">
             {description}
           </p>
         </div>

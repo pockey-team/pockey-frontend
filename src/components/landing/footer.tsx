@@ -12,7 +12,7 @@ const itemVariants = {
 
 export const FooterSection = () => {
   return (
-    <div className="bg-gray-900 py-[5rem] md:pb-[8rem] lg:py-[6.25rem]">
+    <div className="bg-gray-900">
       <motion.div
         variants={itemVariants}
         transition={{
@@ -37,12 +37,6 @@ export const FooterSection = () => {
           상황, 예산, 취향까지 고려해 당신이 선물하고 싶은
           <br /> '그 사람'에게 딱 맞는 선물을 추천합니다.
         </p>
-        {/* <Button
-					asChild
-					className="hover:!bg-primary-500/80 !text-gray-900 !z-50 text-subtitle-16-semibold !rounded-md h-[50px] w-[280px] bg-primary-500 sm:h-52px sm:w-[358px]"
-				>
-					<Link href="/find">선물 찾으러 가기</Link>
-				</Button> */}
       </motion.div>
     </div>
   );
