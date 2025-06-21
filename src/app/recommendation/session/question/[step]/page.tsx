@@ -10,6 +10,7 @@ import { QuestionStepper } from "@/components/recommendation/question-stepper";
 import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { PageError } from "@/components/shared/page-error";
+import { SpinLoading } from "@/components/shared/spin-loading";
 import { RECOMMENDATION_LOADING_TIPS } from "@/constants/recommendation-loading";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
@@ -178,6 +179,7 @@ export default function RecommendationSessionQuestionPage() {
               )}
             </>
           )}
+          {phase === "exit" && <SpinLoading />}
           {phase === "loading" && <Loading />}
         </AnimatePresence>
       </Page.Container>
