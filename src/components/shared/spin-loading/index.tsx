@@ -4,7 +4,13 @@ import { motion } from "framer-motion";
 
 export const SpinLoading = () => {
   return (
-    <div className="fixed top-0px left-0px z-50 flex h-full w-full items-center justify-center bg-[#000]/70">
+    <motion.div
+      className="fixed top-0px left-0px z-50 flex h-full w-full items-center justify-center bg-[#000]/70"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       <div className="relative flex h-[140px] w-[140px] items-center justify-center overflow-hidden rounded-full bg-gray-800">
         <motion.div
           className="absolute"
@@ -42,7 +48,7 @@ export const SpinLoading = () => {
           <Clover />
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
