@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
 "use client";
 
 import { motion, type Variants } from "framer-motion";
@@ -108,7 +107,7 @@ export function FramerMarquee({
           .fill(0)
           .map((_, index) => (
             <motion.div
-              key={index}
+              key={index.toString()}
               ref={index === 0 ? contentRef : undefined}
               className={cn("flex shrink-0", {
                 "flex-row": !vertical,
