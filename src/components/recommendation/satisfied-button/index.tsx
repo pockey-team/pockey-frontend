@@ -1,9 +1,15 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { wishlistControllerAddWishlist } from "@/api/__generated__";
 import { LoginDialog } from "@/components/recommendation/dialog/login";
 import { useLoginDialog } from "@/components/recommendation/dialog/login/hooks/useLoginDialog";
 import { Button } from "@/components/ui/button";
+import { TOAST_STYLE } from "@/constants/recommendation-result";
+import { getQueryClient } from "@/lib/tanstack-query";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -14,11 +20,39 @@ interface Props {
 export const SatisfiedButton = ({ itemId, receiverName }: Props) => {
   const { isLoginDialogOpen, setIsLoginDialogOpen, isLoggedIn } =
     useLoginDialog();
-
+  const queryClient = getQueryClient();
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const handleClick = () => {
+  const likeMutation = useMutation({
+    mutationFn: async () =>
+      wishlistControllerAddWishlist(
+        {
+          productId: itemId,
+          receiverName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        },
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["wishlistSummary"],
+      });
+    },
+  });
+
+  const handleClick = async () => {
     if (isLoggedIn) {
+      await likeMutation.mutateAsync();
+      toast.success("보관함에 추가되었어요.", {
+        duration: 2000,
+        id: "wishlist-toast",
+        icon: null,
+        style: TOAST_STYLE,
+      });
       router.push(`/recommendation/result/${itemId}?name=${receiverName}`);
       return;
     }

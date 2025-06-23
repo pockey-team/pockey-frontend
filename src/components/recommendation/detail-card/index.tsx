@@ -1,23 +1,16 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import type { Session } from "next-auth";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { wishlistControllerAddWishlist } from "@/api/__generated__";
+import { useMemo } from "react";
 import type {
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct,
 } from "@/api/__generated__/index.schemas";
 import { NextPick } from "@/components/recommendation/next-pick";
 import { ContentSection } from "@/components/recommendation/result/detail-contents/content-section";
-import { Button } from "@/components/ui/button";
-import { TOAST_STYLE } from "@/constants/recommendation-result";
-import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
 import { cn } from "@/lib/utils";
-import { getSessionResultStorageKey } from "@/utils/recommendation";
 
 interface ProductItemWithWishlist
   extends RecommendSessionControllerSubmitAnswer201OneOfOneoneItemProduct {
@@ -43,96 +36,9 @@ export const DetailCard = ({
   isSharePage = false,
   session,
 }: Props) => {
-  const queryClient = useQueryClient();
-
-  const { sessionId = "default" } = useSearchParamsObject<{
-    sessionId?: string;
-  }>();
-
-  const queryKey = useMemo(() => {
-    if (isFullItem(data)) {
-      return ["productDetail", data.product.id, receiverName];
-    }
-
-    return ["productDetail", data.id, receiverName];
-  }, [data, receiverName]);
-
-  const initialHeartFilledState = useMemo(() => {
-    if (isFullItem(data)) {
-      // @ts-ignore
-      return !!data.product.isMyWishlist;
-    }
-    return !!data.isMyWishlist;
-  }, [data]);
-
-  const [isHeartFilled, setIsHeartFilled] = useState(initialHeartFilledState);
-
-  useEffect(() => {
-    setIsHeartFilled(initialHeartFilledState);
-  }, [initialHeartFilledState]);
-
   const productData = useMemo(() => {
     return isFullItem(data) ? data.product : data;
   }, [data]);
-
-  const wishListMutation = useMutation({
-    mutationFn: async () =>
-      wishlistControllerAddWishlist(
-        {
-          productId: productData.id,
-          receiverName,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        },
-      ),
-    onSuccess: () => {
-      setIsHeartFilled(true);
-      queryClient.invalidateQueries({
-        queryKey,
-      });
-    },
-  });
-
-  const handleClickHeart = async () => {
-    if (isHeartFilled) {
-      return;
-    }
-
-    await wishListMutation.mutateAsync();
-
-    if (typeof window !== "undefined") {
-      const storageKey = getSessionResultStorageKey(sessionId);
-      const currentItemsString = window.sessionStorage.getItem(storageKey);
-      const currentItems: RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[] =
-        currentItemsString ? JSON.parse(currentItemsString) : [];
-
-      const updatedItems = currentItems.map((pItem) => {
-        if (pItem.product.id === productData.id) {
-          return {
-            ...pItem,
-            product: {
-              ...pItem.product,
-              isMyWishlist: true,
-            },
-          };
-        }
-        return pItem;
-      });
-
-      window.sessionStorage.setItem(storageKey, JSON.stringify(updatedItems));
-      setIsHeartFilled(true);
-    }
-
-    toast.success("보관함에 추가되었어요.", {
-      duration: 2000,
-      id: "wishlist-toast",
-      icon: null,
-      style: TOAST_STYLE,
-    });
-  };
 
   return (
     <div
@@ -186,24 +92,7 @@ export const DetailCard = ({
                 {productData.name}
               </p>
 
-              {!isSharePage && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={cn(
-                    "group hover:bg-transparent",
-                    hideOnCapture ? "hidden" : "block",
-                  )}
-                  onClick={handleClickHeart}
-                  disabled={wishListMutation.isPending || isHeartFilled}
-                >
-                  <Heart
-                    fill={isHeartFilled ? "#C9DAFF" : "none"}
-                    stroke="#C9DAFF"
-                    className="border-primary-500 text-gray-100 hover:bg-primary-500 group-hover:text-primary-500"
-                  />
-                </Button>
-              )}
+              {!isSharePage && <Heart fill="#C9DAFF" stroke="#C9DAFF" />}
             </div>
             {!isSharePage && (
               <p
