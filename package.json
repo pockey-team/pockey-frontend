@@ -9,7 +9,7 @@
     "codegen:fetch": "tsx scripts/fetch-openapi.ts",
     "codegen:generate": "orval --config orval.config.ts",
     "dev": "next dev --turbopack",
-    "lint": "biome check --write ./src",
+    "lint": "biome check ./src",
     "prepare": "simple-git-hooks",
     "start": "next start"
   },
