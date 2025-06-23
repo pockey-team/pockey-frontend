@@ -12,7 +12,7 @@ const itemVariants = {
 
 export const FooterSection = () => {
   return (
-    <div className="bg-gray-900">
+    <div className="relative bg-gray-900">
       <motion.div
         variants={itemVariants}
         transition={{
@@ -38,6 +38,7 @@ export const FooterSection = () => {
           <br /> '그 사람'에게 딱 맞는 선물을 추천합니다.
         </p>
       </motion.div>
+      <div className="h-[80px] bg-gray-900" />
     </div>
   );
 };

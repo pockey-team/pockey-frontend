@@ -20,7 +20,7 @@ export const STEPS: Step[] = [
         조건을 자동 설정해요.
       </>
     ),
-    image: "/static/landing/step1.svg",
+    image: "/static/landing/step1.png",
   },
   {
     stepNumber: 2,
@@ -36,7 +36,7 @@ export const STEPS: Step[] = [
         생성하고, 답변을 분석하여 어울리는 선물을 추천해요.
       </>
     ),
-    image: "/static/landing/step2.svg",
+    image: "/static/landing/step2.png",
   },
   {
     stepNumber: 3,
@@ -53,6 +53,6 @@ export const STEPS: Step[] = [
         상대와 어울리는지 파악할 수 있어요.
       </>
     ),
-    image: "/static/landing/step3.svg",
+    image: "/static/landing/step3.png",
   },
 ];
