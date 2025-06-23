@@ -15,7 +15,7 @@ const itemVariants = {
 
 export const GiftCollectionSection = () => {
   return (
-    <div className="flex min-h-[456px] w-full items-center justify-center bg-gray-900">
+    <div className="flex w-full items-center justify-center overflow-x-hidden overflow-y-hidden bg-gray-900 pt-[15rem]">
       <motion.div
         variants={itemVariants}
         initial="initial"

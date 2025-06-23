@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 interface Props {
   stepNumber: number;
@@ -25,7 +24,7 @@ export const StepSection = ({
   image,
 }: Props) => {
   return (
-    <div className="w-full bg-gray-900 px-24px py-[72px] sm:px-32px">
+    <div className="w-full bg-gray-900 px-24px py-[6.25rem] first:pb-[6.25rem] sm:px-32px">
       <motion.div
         variants={itemVariants}
         initial="initial"
@@ -55,12 +54,12 @@ export const StepSection = ({
         </div>
 
         <div className="relative mt-24px h-[182px] w-[358px] sm:mt-0px sm:h-[240px] sm:w-[470px]">
-          <Image
+          {/** biome-ignore lint/performance/noImgElement: next/image 사용 시 발생하는 화질 저하 문제 해결을 위해 img 태그 사용 */}
+          <img
             src={image}
             alt="step-image"
-            priority
-            fill
-            className="object-contain"
+            className="h-full w-full object-cover"
+            loading="lazy"
           />
         </div>
       </motion.div>
