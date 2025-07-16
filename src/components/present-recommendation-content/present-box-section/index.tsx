@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/shared/button";
@@ -14,6 +15,14 @@ export const PresentBoxSection = ({
   onClickNextStepButton,
   isNextStepButtonClicked,
 }: Props) => {
+  const handleGiftRecommendationClick = () => {
+    sendGAEvent("event", "start_recommendation_click", {
+      source: "main",
+      button_text: "지금 선물하기",
+    });
+    onClickNextStepButton();
+  };
+
   return (
     <div className="relative flex h-full flex-col">
       {isNextStepButtonClicked ? (
@@ -118,7 +127,7 @@ export const PresentBoxSection = ({
           </motion.div>
           <p className="pb-[1.25rem]">오늘 준비할 선물 꾸러미</p>
           <Button
-            onClick={onClickNextStepButton}
+            onClick={handleGiftRecommendationClick}
             className={cn(
               "!rounded-xl w-full py-[.8125rem] text-subtitle-16-semibold",
               "scale-100 active:scale-95 active:transition-all active:duration-300 active:ease-in-out",

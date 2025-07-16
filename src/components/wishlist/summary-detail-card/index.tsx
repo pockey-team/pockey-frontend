@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@next/third-parties/google";
 import { useMutation } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import Image from "next/image";
@@ -63,6 +64,14 @@ export const SummaryDetailCard = ({
     deleteMutation.mutateAsync();
   };
 
+  const handleBuyClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    sendGAEvent("event", "recommendation_action_click", {
+      action: "buy",
+      button_text: "구매하기",
+    });
+  };
+
   return (
     <div
       className={cn(
@@ -98,11 +107,7 @@ export const SummaryDetailCard = ({
         asChild
         className="hover:!bg-primary-500/80 !text-gray-900 !rounded-xl w-full bg-primary-500 py-8px text-body-13-semibold"
       >
-        <Link
-          href={product.url}
-          target="_blank"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <Link href={product.url} target="_blank" onClick={handleBuyClick}>
           구매하기
         </Link>
       </Button>

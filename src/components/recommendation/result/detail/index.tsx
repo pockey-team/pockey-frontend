@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
@@ -42,6 +43,16 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
   const item = useMemo(() => {
     return items.find((item) => item.product.id === productId);
   }, [productId, items]);
+
+  const handleBuyClick = () => {
+    sendGAEvent("event", "recommendation_action_click", {
+      action: "buy",
+      button_text: "구매하기",
+    });
+    if (item?.product.url) {
+      window.open(item.product.url, "_blank");
+    }
+  };
 
   return (
     <Page className="flex min-h-screen flex-col bg-gray-900">
@@ -86,11 +97,9 @@ export const ResultDetail = ({ productId, receiverName }: Props) => {
             <div className="flex items-center gap-12px">
               <Button
                 className="!text-gray-700 !rounded-2xl hover:!bg-primary-500/80 w-1/2 bg-primary-500 py-16px text-subtitle-18-bold"
-                asChild
+                onClick={handleBuyClick}
               >
-                <Link href={item?.product.url ?? ""} target="_blank">
-                  구매하기
-                </Link>
+                구매하기
               </Button>
               {item && (
                 <ShareButton
