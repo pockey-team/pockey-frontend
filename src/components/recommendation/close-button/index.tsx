@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,10 @@ export const RecommendationCloseButton = ({
   });
 
   const handleSave = () => {
+    sendGAEvent("event", "save_decision_click", {
+      choice: "save",
+      button_text: "저장할래요",
+    });
     login();
   };
 
