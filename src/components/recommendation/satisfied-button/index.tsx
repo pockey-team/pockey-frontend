@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -45,6 +46,11 @@ export const SatisfiedButton = ({ itemId, receiverName }: Props) => {
   });
 
   const handleClick = async () => {
+    sendGAEvent("event", "result_feedback_click", {
+      feedback: "like",
+      button_text: "마음에 들어요",
+    });
+
     if (isLoggedIn) {
       await likeMutation.mutateAsync();
       toast.success("보관함에 추가되었어요.", {
