@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@next/third-parties/google";
 import { motion } from "framer-motion";
 import { SatisfiedButton } from "@/components/recommendation/satisfied-button";
 import { Page } from "@/components/shared/page";
@@ -17,6 +18,14 @@ export const ActionButtons = ({
   itemId,
   receiverName,
 }: ActionButtonsProps) => {
+  const handleClik = () => {
+    sendGAEvent("event", "result_feedback_click", {
+      feedback: "dislike",
+      button_text: "별로예요",
+    });
+    onNextResult();
+  };
+
   return (
     <Page.ActionButton
       className="py-[1rem]"
@@ -37,7 +46,7 @@ export const ActionButtons = ({
           <SatisfiedButton itemId={itemId} receiverName={receiverName} />
           <Button
             disabled={nextPickCount === 0}
-            onClick={onNextResult}
+            onClick={handleClik}
             variant="ghost"
             className={cn(
               "w-1/2 rounded-xl bg-gray-700 py-16px text-gray-500 text-subtitle-18-bold text-xl tracking-tight hover:bg-gray-700/80 hover:text-gray-500 focus:bg-gray-700 focus:text-gray-500 active:bg-gray-700 active:text-gray-500",
