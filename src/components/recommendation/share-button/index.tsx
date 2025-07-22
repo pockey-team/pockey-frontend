@@ -1,5 +1,6 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import { useState } from "react";
 import type {
   RecommendSessionControllerSubmitAnswer201OneOfOneoneItem,
@@ -32,8 +33,18 @@ export const ShareButton = ({ className = "", item, receiverName }: Props) => {
     setIsOpen(false);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      sendGAEvent("event", "recommendation_action_click", {
+        action: "share",
+        button_text: "공유하기",
+      });
+    }
+    setIsOpen(open);
+  };
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"

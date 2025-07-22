@@ -1,6 +1,8 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +22,25 @@ export const RecommendationCloseButton = ({
   callbackTargetResultId,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const { login } = useKakaoSignIn({
     callbackUrl: `/recommendation/result/${callbackTargetResultId}`,
   });
 
   const handleSave = () => {
+    sendGAEvent("event", "save_decision_click", {
+      choice: "save",
+      button_text: "저장할래요",
+    });
     login();
+  };
+
+  const handleCancel = () => {
+    sendGAEvent("event", "save_decision_click", {
+      choice: "cancel",
+      button_text: "그만할래요",
+    });
+    router.push("/");
   };
 
   return (
@@ -48,9 +63,14 @@ export const RecommendationCloseButton = ({
           >
             저장할래요
           </Button>
-          <Button className="flex-1 py-16px text-subtitle-18-semibold" asChild>
-            <Link href="/">그만할래요</Link>
-          </Button>
+          {/** biome-ignore lint/a11y/useKeyWithClickEvents: Replaced from Link */}
+          {/** biome-ignore lint/a11y/noStaticElementInteractions: Replaced from Link */}
+          <span
+            className="flex-1 py-16px text-subtitle-18-semibold"
+            onClick={handleCancel}
+          >
+            그만할래요
+          </span>
         </div>
       </DialogContent>
     </Dialog>

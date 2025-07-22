@@ -1,7 +1,7 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import Image from "next/image";
-import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRecommendSessionControllerGetRecommendSessionResults } from "@/api/__generated__/index";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
@@ -50,6 +50,14 @@ const SharePage = () => {
 
   const targetUrl = `${window.location.origin}/recommendation/init`;
 
+  const handleStartRecommendation = () => {
+    sendGAEvent("event", "start_recommendation_click", {
+      source: "shared_result",
+      button_text: "나도 선물하기",
+    });
+    window.open(targetUrl, "_blank");
+  };
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -76,11 +84,9 @@ const SharePage = () => {
             <Button
               variant="ghost"
               className="!rounded-2xl hover:!bg-primary-500/80 w-full bg-primary-500 py-16px text-gray-700 text-subtitle-18-bold"
-              asChild
+              onClick={handleStartRecommendation}
             >
-              <Link href={targetUrl} target="_blank">
-                나도 선물 추천받기
-              </Link>
+              나도 선물하기
             </Button>
           </div>
         </Page.Container>
