@@ -21,7 +21,7 @@ interface WishlistItem {
 }
 
 export const SummaryCardSection = ({ session, receiverName }: Props) => {
-  const { data: wishlistSummary } = useQuery({
+  const { data: wishlistSummary, isLoading } = useQuery({
     queryKey: ["wishlistSummary"],
     queryFn: () =>
       wishlistControllerGetWishlistGroups({
@@ -29,9 +29,14 @@ export const SummaryCardSection = ({ session, receiverName }: Props) => {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       }),
+    select: (data) => data.data,
   });
 
-  const wishSummaryList: WishlistItem[] = wishlistSummary?.data ?? [];
+  if (!isLoading || !wishlistSummary) {
+    throw new Error("위시리스트 데이터를 불러올 수 없습니다.");
+  }
+
+  const wishSummaryList: WishlistItem[] = wishlistSummary ?? [];
 
   const uniqueWishList = Array.from(
     new Map(wishSummaryList.map((item) => [item.receiverName, item])).values(),
