@@ -35,6 +35,22 @@ const SharePage = () => {
   const sessionId = searchParams.get("sessionId")?.toString();
   const receiverName = searchParams.get("receiverName")?.toString();
 
+  const targetUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/recommendation/init`
+      : "/recommendation/init";
+
+  const handleStartRecommendation = () => {
+    sendGAEvent("event", "start_recommendation_click", {
+      source: "shared_result",
+      button_text: "나도 선물하기",
+    });
+
+    if (typeof window !== "undefined") {
+      window.open(targetUrl, "_blank");
+    }
+  };
+
   const { data: product, isLoading } =
     useRecommendSessionControllerGetRecommendSessionResults<
       RecommendSessionControllerSubmitAnswer201OneOfOneoneItem[]
@@ -47,16 +63,6 @@ const SharePage = () => {
     });
 
   const currentProduct = product?.find((item) => item.product.id === productId);
-
-  const targetUrl = `${window.location.origin}/recommendation/init`;
-
-  const handleStartRecommendation = () => {
-    sendGAEvent("event", "start_recommendation_click", {
-      source: "shared_result",
-      button_text: "나도 선물하기",
-    });
-    window.open(targetUrl, "_blank");
-  };
 
   if (isLoading) {
     return <LoadingScreen />;
