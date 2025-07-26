@@ -29,9 +29,13 @@ export const SummaryCardSection = ({ session, receiverName }: Props) => {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       }),
+    select: (data) => data.data,
   });
+  if (!wishlistSummary) {
+    throw new Error("위시리스트 데이터를 불러올 수 없습니다.");
+  }
 
-  const wishSummaryList: WishlistItem[] = wishlistSummary?.data ?? [];
+  const wishSummaryList: WishlistItem[] = wishlistSummary ?? [];
 
   const uniqueWishList = Array.from(
     new Map(wishSummaryList.map((item) => [item.receiverName, item])).values(),

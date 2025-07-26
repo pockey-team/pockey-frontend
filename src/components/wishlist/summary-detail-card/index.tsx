@@ -2,7 +2,6 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { useMutation } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Session } from "next-auth";
 import { toast } from "sonner";
 import { wishlistControllerRemoveWishlist } from "@/api/__generated__";
@@ -66,6 +65,7 @@ export const SummaryDetailCard = ({
 
   const handleBuyClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    window.open(product.url, "_blank");
     sendGAEvent("event", "recommendation_action_click", {
       action: "buy",
       button_text: "구매하기",
@@ -104,12 +104,10 @@ export const SummaryDetailCard = ({
         </div>
       </div>
       <Button
-        asChild
+        onClick={handleBuyClick}
         className="hover:!bg-primary-500/80 !text-gray-900 !rounded-xl w-full bg-primary-500 py-8px text-body-13-semibold"
       >
-        <Link href={product.url} target="_blank" onClick={handleBuyClick}>
-          구매하기
-        </Link>
+        구매하기
       </Button>
     </div>
   );

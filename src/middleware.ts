@@ -2,13 +2,7 @@ import { NextResponse } from "next/server";
 
 import { withAuth } from "next-auth/middleware";
 
-const protectedRoutes = ["/recommendation/result/"];
-
-const _isProtectedRoute = (path: string) => {
-  return protectedRoutes.some(
-    (route) => path.startsWith(route) && route !== path,
-  );
-};
+const PROTECTED_ROUTES = ["/recommendation/result/"];
 
 export const config = {
   matcher: [
@@ -22,10 +16,17 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: () => {
-        // if (isProtectedRoute(req.nextUrl.pathname)) {
-        //   return !!token;
-        // }
+      authorized: ({ token, req }) => {
+        const { pathname } = req.nextUrl;
+
+        const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
+          pathname.startsWith(route),
+        );
+
+        if (isProtectedRoute) {
+          return !!token;
+        }
+
         return true;
       },
     },

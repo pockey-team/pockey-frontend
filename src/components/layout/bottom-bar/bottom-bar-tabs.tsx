@@ -11,12 +11,12 @@ export const BottomBarTabs = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [active, setActive] = useState(
-    pathname === "/find" || pathname === "/main",
+    pathname === "/find" || pathname === "/",
   );
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    setActive(pathname === "/find" || pathname === "/main");
+    setActive(pathname === "/find" || pathname === "/");
   }, [pathname]);
 
   const handleToggle = (newActive: boolean, path: string) => {
