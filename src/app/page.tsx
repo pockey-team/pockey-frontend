@@ -22,7 +22,7 @@ export default async function Home() {
         <PresentRecommendationContent />
       </Page.Container>
       <Page.ActionButton>
-        {(props) => <BottomBar {...props} />}
+        {(props) => <BottomBar {...props} className="relative z-50" />}
       </Page.ActionButton>
     </Page>
   );
