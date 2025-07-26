@@ -32,13 +32,15 @@ const AuthSettingsEditPage = async () => {
       </Page.Header>
 
       <Page.Container className="flex justify-center py-32px">
-        <Image
-          src={image}
-          alt="profile"
-          width={92}
-          height={92}
-          className="rounded-full"
-        />
+        <div className="size-[92px] overflow-hidden rounded-full bg-gray-600">
+          <Image
+            src={image}
+            alt="profile"
+            width={92}
+            height={92}
+            className="h-full w-full object-cover"
+          />
+        </div>
       </Page.Container>
 
       <Page.Container className="pb-24px">
