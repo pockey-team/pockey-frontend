@@ -21,7 +21,7 @@ interface WishlistItem {
 }
 
 export const SummaryCardSection = ({ session, receiverName }: Props) => {
-  const { data: wishlistSummary, isLoading } = useQuery({
+  const { data: wishlistSummary } = useQuery({
     queryKey: ["wishlistSummary"],
     queryFn: () =>
       wishlistControllerGetWishlistGroups({
@@ -31,8 +31,7 @@ export const SummaryCardSection = ({ session, receiverName }: Props) => {
       }),
     select: (data) => data.data,
   });
-
-  if (!isLoading || !wishlistSummary) {
+  if (!wishlistSummary) {
     throw new Error("위시리스트 데이터를 불러올 수 없습니다.");
   }
 
