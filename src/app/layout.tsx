@@ -1,4 +1,4 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import localFont from "next/font/local";
@@ -53,6 +53,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <Toaster position="bottom-center" />
       </body>
       <GoogleAnalytics gaId="G-WZHVL0HJH5" />
+      <GoogleTagManager gtmId="GTM-K9QCN4JT" />
     </html>
   );
 }
