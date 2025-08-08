@@ -1,9 +1,11 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
+import { wishlistControllerAddWishlist } from "@/api/__generated__";
 import type { RecommendSessionControllerSubmitAnswer201OneOfOneoneItem } from "@/api/__generated__/index.schemas";
 import { DetailCard } from "@/components/recommendation/detail-card";
 import { ShareButton } from "@/components/recommendation/share-button";
@@ -11,6 +13,7 @@ import { Back } from "@/components/shared/back";
 import { Page } from "@/components/shared/page";
 import { Button } from "@/components/ui/button";
 import { useSearchParamsObject } from "@/hooks/useSearchParamsObject";
+import { getQueryClient } from "@/lib/tanstack-query";
 import { getSessionResultStorageKey } from "@/utils/recommendation";
 
 interface Props {
@@ -21,7 +24,52 @@ interface Props {
 export const ResultDetail = ({ productId, receiverName }: Props) => {
   const [isBrowser, setIsBrowser] = useState(false);
 
+  const queryClient = getQueryClient();
   const { data: session } = useSession();
+
+  const likeMutation = useMutation({
+    mutationFn: async ({
+      productId,
+      receiverName,
+    }: {
+      productId: number;
+      receiverName: string;
+    }) =>
+      wishlistControllerAddWishlist(
+        {
+          productId,
+          receiverName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        },
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["wishlistSummary"],
+      });
+      // alert("저장성공");
+    },
+    onError: (error) => {
+      console.error("Like mutation failed", error);
+      // alert(
+      //   `저장에 실패했습니다. 잠시 후 다시 시도해주세요. 에러: ${error.message}`
+      // );
+    },
+  });
+
+  useEffect(() => {
+    const pendingAction = sessionStorage.getItem(
+      "pockey-pending-wishlist-action",
+    );
+    if (pendingAction && session?.accessToken) {
+      const { productId, receiverName } = JSON.parse(pendingAction);
+      likeMutation.mutate({ productId, receiverName });
+      sessionStorage.removeItem("pockey-pending-wishlist-action");
+    }
+  }, [session, likeMutation.mutate]);
 
   useEffect(() => {
     setIsBrowser(true);
